@@ -1,13 +1,14 @@
 import Model from '../Model/Model';
 import View from '../View/View';
+import Options from './Options';
 
 class Presenter {
   private view: View
 
   private model: Model
 
-  constructor() {
-    this.view = new View();
+  constructor(anchor: HTMLElement, options: Options) {
+    this.view = new View(anchor);
     this.model = new Model({
       min: 0,
       max: 10,

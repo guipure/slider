@@ -1,15 +1,14 @@
 import Presenter from './Presenter/Presenter';
-
-const presenter = new Presenter();
+import Options from './Presenter/Options';
 
 declare global {
   interface JQuery {
-    slider(): void
+    slider(options?: Options): void
   }
 }
 
 (function ($) {
-  $.fn.slider = function () {
-    alert('wow');
+  $.fn.slider = function (options: Options): void {
+    new Presenter(this.get(0), options);
   };
 }(jQuery));
