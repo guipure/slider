@@ -23,7 +23,7 @@ class EventManager {
     );
   }
 
-  public notify(eventType: string, data: object = null): void {
+  public notify(eventType: string, data: object = {}): void {
     const eventListeners = this.listeners[eventType];
 
     if (eventListeners) {
