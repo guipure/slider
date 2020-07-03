@@ -10,6 +10,9 @@ module.exports = {
     filename: '[name].js',
     path: path.resolve(__dirname, 'dist')
   },
+  resolve: {
+    extensions: ['.js', '.ts', '.json']
+  },
   module: {
     rules: [
       {
