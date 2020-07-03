@@ -1,5 +1,5 @@
 interface EventListener {
-  update(data: any): void
+  update(data: object): void
 }
 
-export default EventListener
+export default EventListener;

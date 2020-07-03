@@ -1,4 +1,4 @@
-import ModelOptions from './ModelOptions'
+import ModelOptions from './ModelOptions';
 
 class Model {
   constructor(private options: ModelOptions) {
@@ -6,4 +6,4 @@ class Model {
   }
 }
 
-export default Model
+export default Model;

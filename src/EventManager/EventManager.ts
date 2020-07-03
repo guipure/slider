@@ -1,33 +1,37 @@
-import EventListener from './EventListener'
+import EventListener from './EventListener';
+
+interface Listeners {
+  [key: string]: Array<EventListener>
+}
 
 class EventManager {
-  private listeners: object = {}
+  private listeners: Listeners = {}
 
-  public subscribe(eventType: string, listener: EventListener) {
-    const eventListeners = this.listeners[eventType]
-    
+  public subscribe(eventType: string, listener: EventListener): void {
+    const eventListeners = this.listeners[eventType];
+
     if (eventListeners) {
-      eventListeners.push(listener)
+      eventListeners.push(listener);
     } else {
-      this.listeners[eventType] = [listener]
+      this.listeners[eventType] = [listener];
     }
   }
 
-  public unsubscribe(eventType: string, listener: EventListener) {
+  public unsubscribe(eventType: string, listener: EventListener): void {
     this.listeners[eventType] = this.listeners[eventType].filter(
-      (eventListener: EventListener) => eventListener !== listener
-    )
+      (eventListener: EventListener) => eventListener !== listener,
+    );
   }
 
-  public notify(eventType: string, data: any = null) {
-    const eventListeners = this.listeners[eventType]
-    
+  public notify(eventType: string, data: object = null): void {
+    const eventListeners = this.listeners[eventType];
+
     if (eventListeners) {
       eventListeners.forEach((eventListener: EventListener) => {
-        eventListener.update(data)
-      })
-    } 
+        eventListener.update(data);
+      });
+    }
   }
 }
 
-export default EventManager
+export default EventManager;

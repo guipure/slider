@@ -1,6 +1,6 @@
 class View {
-  constructor(public anchor: HTMLElement = document.body) { 
-    this.render()
+  constructor(public anchor: HTMLElement = document.body) {
+    this.render();
   }
 
   private render(): void {
@@ -10,9 +10,9 @@ class View {
         <div class="thumb"></div>
         <div class="thumb"></div>
       </div>
-    `
-    this.anchor.innerHTML = template
+    `;
+    this.anchor.innerHTML = template;
   }
 }
 
-export default View
+export default View;
