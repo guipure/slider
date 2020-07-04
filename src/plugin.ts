@@ -1,5 +1,5 @@
 import Presenter from './Presenter/Presenter';
-import Options from './Presenter/Options';
+import { Options } from './Presenter/Options';
 
 declare global {
   interface JQuery {
