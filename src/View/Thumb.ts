@@ -39,9 +39,9 @@ class Thumb {
     function moveThumbAt(coordinate: number) {
       const thumbWidth: number = Number.parseInt(getComputedStyle(thumb).width);
       if (orientation === 'horizontal') {
-        thumb.style.left = `${coordinate - getSliderPosition().x - thumbWidth / 2}px`;
+        thumb.style.left = `${coordinate - getSliderPosition().x - pageXOffset - thumbWidth / 2}px`;
       } else {
-        thumb.style.top = `${coordinate - getSliderPosition().y - thumbWidth / 2}px`;
+        thumb.style.top = `${coordinate - getSliderPosition().y - pageYOffset - thumbWidth / 2}px`;
       }
     }
 
