@@ -5,4 +5,13 @@ interface Options {
   step?: number,
 }
 
-export default Options;
+interface ViewOptions {
+  orientation?: 'horizontal' | 'vertical',
+}
+
+interface ModelOptions {
+  max?: number,
+  step?: number,
+}
+
+export { Options, ViewOptions, ModelOptions };

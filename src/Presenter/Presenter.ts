@@ -1,6 +1,6 @@
 import Model from '../Model/Model';
 import View from '../View/View';
-import Options from './Options';
+import { Options, ViewOptions, ModelOptions } from './Options';
 
 class Presenter {
   private view: View
@@ -8,12 +8,11 @@ class Presenter {
   private model: Model
 
   constructor(anchor: HTMLElement, options: Options) {
-    this.view = new View(anchor);
-    this.model = new Model({
-      min: 0,
-      max: 10,
-      step: 1,
-    });
+    const viewOptions: ViewOptions = options as ViewOptions;
+    const modelOptions: ModelOptions = options as ModelOptions;
+
+    this.view = new View(anchor, viewOptions);
+    this.model = new Model(modelOptions);
   }
 }
 
