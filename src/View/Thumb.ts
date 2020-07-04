@@ -1,35 +1,57 @@
+import { ViewOptions } from '../Presenter/Options';
+
 class Thumb {
-  constructor(anchor: HTMLElement) {
-    const slider = anchor.querySelector(".slider");
+  constructor(anchor: HTMLElement, private options: ViewOptions) {
+    const slider = anchor.querySelector('.slider');
     const thumb = this.createThumb();
     slider && slider.append(thumb);
   }
 
   private createThumb(): HTMLElement {
     const thumb = document.createElement('div');
-    thumb.className = "thumb";
+    thumb.className = `thumb thumb-${this.options.orientation}`;
     thumb.addEventListener('mousedown', this.thumbHandler);
     return thumb;
   }
 
   private thumbHandler(event: any) {
     const thumb: HTMLElement = event.currentTarget;
-    moveThumbAt(event.pageX);
-    document.addEventListener("mousemove", onMouseMove);
-    document.addEventListener("mouseup", onMouseUp);
+    const orientation = thumb.classList.contains('thumb-horizontal') ? 'horizontal' : 'vertical';
+    const coordinate = getCoordinate(event);
+    moveThumbAt(coordinate);
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+
+    function getCoordinate(event: any) {
+      const coordinate = orientation === 'horizontal' ? event.pageX : event.pageY;
+      return coordinate;
+    }
+
+    function getSliderPosition() {
+      if (!thumb.parentElement) {
+        throw 'Thumb has no parent element';
+      }
+      const slider: HTMLElement = thumb.parentElement;
+      const sliderPosition = slider.getBoundingClientRect();
+      return sliderPosition;
+    }
 
     function moveThumbAt(coordinate: number) {
       const thumbWidth: number = Number.parseInt(getComputedStyle(thumb).width);
-      thumb.style.left = coordinate - thumbWidth + "px";
+      if (orientation === 'horizontal') {
+        thumb.style.left = `${coordinate - getSliderPosition().x - thumbWidth / 2}px`;
+      } else {
+        thumb.style.top = `${coordinate - getSliderPosition().y - thumbWidth / 2}px`;
+      }
     }
 
     function onMouseMove(event: any) {
-      moveThumbAt(event.pageX);
+      moveThumbAt(getCoordinate(event));
     }
 
     function onMouseUp() {
-      document.removeEventListener("mousemove", onMouseMove);
-      document.removeEventListener("mouseup", onMouseUp);
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
     }
   }
 }
