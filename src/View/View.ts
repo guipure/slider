@@ -12,7 +12,7 @@ class View {
 
   private render(): void {
     this.slider = new Slider(this.anchor);
-    new Track(this.anchor, this.options);
+    new Track(this.slider, this.options);
     new Thumb(this.slider, this.options);
     new Thumb(this.slider, this.options);
   }

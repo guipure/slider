@@ -1,10 +1,21 @@
 import { ViewOptions } from '../Presenter/Options';
+import Slider from './Slider';
 
 class Track {
-  constructor(anchor: HTMLElement, private options: ViewOptions) {
-    const track = `<div class="track track-${options.orientation}"></div>`;
-    const slider = anchor.querySelector('.slider');
-    slider && slider.insertAdjacentHTML('beforeend', track);
+  constructor(private slider: Slider, private options: ViewOptions) {
+    const track = this.createTrack();
+    slider.element.append(track);
+  }
+
+  private createTrack() {
+    const track = document.createElement('div');
+    track.className = `track track-${this.options.orientation}`;
+    track.addEventListener('click', this.onClick);
+    return track;
+  }
+
+  private onClick() {
+    console.log('clicked')
   }
 }
 
