@@ -1,7 +1,14 @@
 class Slider {
+  public sliderDiv: HTMLElement;
+
   constructor(anchor: HTMLElement) {
-    const slider = '<div class="slider"></div>';
-    anchor.insertAdjacentHTML('beforeend', slider);
+    this.sliderDiv = document.createElement('div');
+    this.sliderDiv.className = 'slider';
+    anchor.append(this.sliderDiv);
+  }
+
+  public getSliderPosition() {
+    return this.sliderDiv.getBoundingClientRect()
   }
 }
 
