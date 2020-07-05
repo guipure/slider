@@ -1,14 +1,14 @@
 class Slider {
-  public sliderDiv: HTMLElement;
+  public element: HTMLElement;
 
   constructor(anchor: HTMLElement) {
-    this.sliderDiv = document.createElement('div');
-    this.sliderDiv.className = 'slider';
-    anchor.append(this.sliderDiv);
+    this.element = document.createElement('div');
+    this.element.className = 'slider';
+    anchor.append(this.element);
   }
 
   public getSliderPosition() {
-    return this.sliderDiv.getBoundingClientRect()
+    return this.element.getBoundingClientRect()
   }
 }
 

@@ -1,12 +1,12 @@
 interface Options {
-  orientation?: 'horizontal' | 'vertical',
+  orientation: 'horizontal' | 'vertical',
   min?: number,
   max?: number,
   step?: number,
 }
 
 interface ViewOptions {
-  orientation?: 'horizontal' | 'vertical',
+  orientation: 'horizontal' | 'vertical',
 }
 
 interface ModelOptions {

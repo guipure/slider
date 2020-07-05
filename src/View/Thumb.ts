@@ -2,55 +2,117 @@ import { ViewOptions } from '../Presenter/Options';
 import Slider from './Slider';
 
 class Thumb {
+  private element?: HTMLElement;
+
   constructor(private slider: Slider, private options: ViewOptions) {
-    const thumb = this.createThumb();
-    slider.sliderDiv && slider.sliderDiv.append(thumb);
+    this.element = this.createThumb();
   }
 
   private createThumb(): HTMLElement {
     const thumb = document.createElement('div');
     thumb.className = `thumb thumb-${this.options.orientation}`;
     thumb.addEventListener('mousedown', this.onMouseDown.bind(this));
+    this.slider.element.append(thumb);
+    const allThumbs = this.slider.element.querySelectorAll('.thumb');
+    if (allThumbs.length > 1) {
+      const thumbProp: 'left' | 'top' = this.options.orientation === 'horizontal' ? 'left' : 'top';
+      thumb.style[thumbProp] = thumb.getBoundingClientRect().width + 'px';
+    }
     return thumb;
   }
 
-  public moveThumbAt(thumb: HTMLElement, coordinate: number, orientation: string): void {
-    const thumbHalfWidth: number = Number.parseInt(getComputedStyle(thumb).width) / 2;
-    let startSliderPosition: number;
-    let endSliderPosition: number;
-    let pageOffset: number;
+  private hasCollision(): boolean {
+    const allThumbs = this.slider.element.querySelectorAll('.thumb');
+
+    if (allThumbs.length === 1) return false;
+
+    let thumbProp: {start: 'left' | 'top', end: 'right' | 'bottom'};
+
+    if (this.options.orientation === 'horizontal') {
+      thumbProp = {start: 'left', end: 'right'};
+    } else {
+      thumbProp = {start: 'top', end: 'bottom'};
+    }
+
+    const firstThumb = allThumbs[0];
+    const secondThumb = allThumbs[1];
+    const firstThumbStart = firstThumb.getBoundingClientRect()[thumbProp.start];
+    const firstThumbEnd = firstThumb.getBoundingClientRect()[thumbProp.end];
+    const secondThumbStart = secondThumb.getBoundingClientRect()[thumbProp.start];
+    const secondThumbEnd = secondThumb.getBoundingClientRect()[thumbProp.end];
+
+    if (firstThumbStart === secondThumbStart) return true;
+    else if (firstThumbStart < secondThumbStart) {
+      return firstThumbEnd >= secondThumbStart;
+    } else {
+      return secondThumbEnd >= firstThumbStart;
+    }
+  }
+
+  public moveThumbAt(coordinate: number): void {
+    if (!this.element) throw 'Thumb not found';
+
     let thumbProp: 'left' | 'top';
 
-    if (orientation === 'horizontal') {
-      startSliderPosition = this.slider.getSliderPosition().left;
-      endSliderPosition = this.slider.getSliderPosition().right;
-      pageOffset = pageXOffset;
+    if (this.options.orientation === 'horizontal') {
       thumbProp = 'left';
     } else {
-      startSliderPosition = this.slider.getSliderPosition().top;
-      endSliderPosition = this.slider.getSliderPosition().bottom;
-      pageOffset = pageYOffset;
       thumbProp = 'top';
     }
 
-    const start: number = startSliderPosition + pageOffset + thumbHalfWidth;
-    const end: number = endSliderPosition + pageOffset - thumbHalfWidth;
+    const [start, end] = this.findEdges(this.element);
 
     if (coordinate < start) {
-      thumb.style[thumbProp] = '0px';
+      this.element.style[thumbProp] = '0px';
     } else if (coordinate > end) {
-      thumb.style[thumbProp] = `${end - start}px`;
+      this.element.style[thumbProp] = `${end - start}px`;
     } else {
-      thumb.style[thumbProp] = `${coordinate - start}px`;
+      this.element.style[thumbProp] = `${coordinate - start}px`;
+    }
+  }
+
+  private findEdges(thumb: HTMLElement): [number, number] {
+    const allThumbs = this.slider.element.querySelectorAll('.thumb');
+    let thumbProp: {start: 'left' | 'top', end: 'right' | 'bottom'};
+    let pageOffset: number;
+    const thumbHalfWidth: number = allThumbs[0].getBoundingClientRect().width / 2;
+    
+    if (this.options.orientation === 'horizontal') {
+      pageOffset = pageXOffset;
+      thumbProp = {start: 'left', end: 'right'};
+    } else {
+      pageOffset = pageYOffset;
+      thumbProp = {start: 'top', end: 'bottom'};
+    }
+
+    const sliderStart: number = this.slider.getSliderPosition()[thumbProp.start] + pageOffset + thumbHalfWidth;
+    const sliderEnd: number = this.slider.getSliderPosition()[thumbProp.end] + pageOffset - thumbHalfWidth;
+    
+    if (allThumbs.length === 1) {
+      return [sliderStart, sliderEnd];
+    }
+
+    const thumbStart = thumb.getBoundingClientRect()[thumbProp.start];
+    const otherThumb = allThumbs[0] === thumb ? allThumbs[1] : allThumbs[0];
+    const otherThumbStart = otherThumb.getBoundingClientRect()[thumbProp.start];
+    const otherThumbEnd = otherThumb.getBoundingClientRect()[thumbProp.end];
+
+    if (thumbStart < otherThumbStart) {
+      return [sliderStart, otherThumbStart - thumbHalfWidth];
+    } else {
+      return [otherThumbEnd - thumbHalfWidth, sliderEnd];
     }
   }
 
   private onMouseDown(event: any) {
-    const thumb: HTMLElement = event.currentTarget;
-    const orientation = thumb.classList.contains('thumb-horizontal') ? 'horizontal' : 'vertical';
+    const thumb = this.element;
+    if (!thumb) {
+      throw 'Thumb not found'
+    }
+    const orientation = this.options.orientation;
     const coordinate = getCoordinate(event);
-    this.moveThumbAt(thumb, coordinate, orientation);
-    const onMouseMove = (event: any) => this.moveThumbAt(thumb, getCoordinate(event), orientation);
+    this.moveThumbAt(coordinate);
+    const onMouseMove = (event: any) => this.moveThumbAt(getCoordinate(event));
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
 
