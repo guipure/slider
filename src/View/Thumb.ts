@@ -6,6 +6,10 @@ class Thumb {
 
   constructor(private slider: Slider, private options: ViewOptions) {
     this.element = this.createThumb();
+    this.moveThumbAt(0);
+    if (this.hasCollision()) {
+      this.moveThumbAt(1000);
+    }
   }
 
   private createThumb(): HTMLElement {
@@ -13,11 +17,6 @@ class Thumb {
     thumb.className = `thumb thumb-${this.options.orientation}`;
     thumb.addEventListener('mousedown', this.onMouseDown.bind(this));
     this.slider.element.append(thumb);
-    const allThumbs = this.slider.element.querySelectorAll('.thumb');
-    if (allThumbs.length > 1) {
-      const thumbProp: 'left' | 'top' = this.options.orientation === 'horizontal' ? 'left' : 'top';
-      thumb.style[thumbProp] = thumb.getBoundingClientRect().width + 'px';
-    }
     return thumb;
   }
 
@@ -52,56 +51,64 @@ class Thumb {
   public moveThumbAt(coordinate: number): void {
     if (!this.element) throw 'Thumb not found';
 
+    const thumbHalfWidth: number = this.element.getBoundingClientRect().width / 2;
     let thumbProp: 'left' | 'top';
-
+    
     if (this.options.orientation === 'horizontal') {
       thumbProp = 'left';
     } else {
       thumbProp = 'top';
     }
 
-    const [start, end, sliderStart] = this.findEdges(this.element);
+    const sliderStart: number = this.slider.getSliderPosition()[thumbProp];
+    const prevPosition: number = this.element.getBoundingClientRect()[thumbProp] - sliderStart;
+    
+    this.element.style[thumbProp] = `${this.fixCoordinate(coordinate) - sliderStart - thumbHalfWidth}px`;
 
-    if (coordinate < start) {
-      this.element.style[thumbProp] = `${start - sliderStart}px`;
-    } else if (coordinate > end) {
-      this.element.style[thumbProp] = `${end - sliderStart}px`;
-    } else {
-      this.element.style[thumbProp] = `${coordinate - sliderStart}px`;
+    if (this.hasCollision()) {
+      this.element.style[thumbProp] = `${prevPosition}px`;
     }
   }
 
-  private findEdges(thumb: HTMLElement): [number, number, number] {
-    const allThumbs = this.slider.element.querySelectorAll('.thumb');
-    let thumbProp: {start: 'left' | 'top', end: 'right' | 'bottom'};
-    let pageOffset: number;
-    const thumbHalfWidth: number = thumb.getBoundingClientRect().width / 2;
-    
+  private fixCoordinate(coordinate: number): number {
+    if (!this.options.values) throw 'Values not found';
+    const values = this.convertValuesToPixels(this.options.values);
+    const valuesDiff = values.map((value) => Math.abs(value - coordinate));
+    const minDiff = Math.min(...valuesDiff);
+    let closestIndex: number = 0;
+    valuesDiff.forEach((value, index) => {
+      if (value === minDiff) {
+        closestIndex = index;
+      }
+    });
+    return values[closestIndex];
+  }
+
+  private convertValuesToPixels(values: number[]): number[] {
+    const sliderPosition = this.slider.getSliderPosition();
+    let sliderStart;
+    let sliderEnd;
+
     if (this.options.orientation === 'horizontal') {
-      pageOffset = pageXOffset;
-      thumbProp = {start: 'left', end: 'right'};
+      sliderStart = sliderPosition.left;
+      sliderEnd = sliderPosition.right;
     } else {
-      pageOffset = pageYOffset;
-      thumbProp = {start: 'top', end: 'bottom'};
+      sliderStart = sliderPosition.top;
+      sliderEnd = sliderPosition.bottom;
     }
 
-    const sliderStart: number = this.slider.getSliderPosition()[thumbProp.start] + pageOffset + thumbHalfWidth;
-    const sliderEnd: number = this.slider.getSliderPosition()[thumbProp.end] + pageOffset - thumbHalfWidth;
-    
-    if (allThumbs.length === 1) {
-      return [sliderStart, sliderEnd, sliderStart];
+    const pxValues = [];
+    const pxStep = (sliderEnd - sliderStart) / (values[values.length - 1] - values[0]);
+    let pxValue = sliderStart;
+
+    while (pxValues.length < values.length) {
+      pxValues.push(pxValue);
+      pxValue += pxStep;
     }
 
-    const thumbStart = thumb.getBoundingClientRect()[thumbProp.start] + pageOffset - thumbHalfWidth;
-    const otherThumb = allThumbs[0] === thumb ? allThumbs[1] : allThumbs[0];
-    const otherThumbStart = otherThumb.getBoundingClientRect()[thumbProp.start] + pageOffset - thumbHalfWidth;
-    const otherThumbEnd = otherThumb.getBoundingClientRect()[thumbProp.end] + pageOffset + thumbHalfWidth;
+    pxValues.push(sliderEnd);
 
-    if (thumbStart < otherThumbStart) {
-      return [sliderStart, otherThumbStart, sliderStart];
-    } else {
-      return [otherThumbEnd, sliderEnd, sliderStart];
-    }
+    return pxValues;
   }
 
   private onMouseDown(event: any) {
@@ -117,7 +124,7 @@ class Thumb {
     document.addEventListener('mouseup', onMouseUp);
 
     function getCoordinate(event: any) {
-      const coordinate = orientation === 'horizontal' ? event.pageX : event.pageY;
+      const coordinate = orientation === 'horizontal' ? event.clientX : event.clientY;
       return coordinate;
     }        
 
