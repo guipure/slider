@@ -1,12 +1,14 @@
 import { ModelOptions } from '../Presenter/Options';
+import EventManager from '../EventManager/EventManager';
 
 class Model {
-  private values: number[];
+  public values: number[];
+  public events: EventManager;
 
   constructor(private options: ModelOptions) {
+    this.events = new EventManager();
     this.checkOptions()
     this.values = this.calculateValues();
-    console.log(this.values);
   }
 
   private checkOptions(): void {
@@ -32,6 +34,7 @@ class Model {
     }
 
     values.push(max);
+    this.events.notify('values', values);
 
     return values;
   }
