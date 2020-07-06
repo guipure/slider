@@ -60,22 +60,22 @@ class Thumb {
       thumbProp = 'top';
     }
 
-    const [start, end] = this.findEdges(this.element);
+    const [start, end, sliderStart] = this.findEdges(this.element);
 
     if (coordinate < start) {
-      this.element.style[thumbProp] = '0px';
+      this.element.style[thumbProp] = `${start - sliderStart}px`;
     } else if (coordinate > end) {
-      this.element.style[thumbProp] = `${end - start}px`;
+      this.element.style[thumbProp] = `${end - sliderStart}px`;
     } else {
-      this.element.style[thumbProp] = `${coordinate - start}px`;
+      this.element.style[thumbProp] = `${coordinate - sliderStart}px`;
     }
   }
 
-  private findEdges(thumb: HTMLElement): [number, number] {
+  private findEdges(thumb: HTMLElement): [number, number, number] {
     const allThumbs = this.slider.element.querySelectorAll('.thumb');
     let thumbProp: {start: 'left' | 'top', end: 'right' | 'bottom'};
     let pageOffset: number;
-    const thumbHalfWidth: number = allThumbs[0].getBoundingClientRect().width / 2;
+    const thumbHalfWidth: number = thumb.getBoundingClientRect().width / 2;
     
     if (this.options.orientation === 'horizontal') {
       pageOffset = pageXOffset;
@@ -89,18 +89,18 @@ class Thumb {
     const sliderEnd: number = this.slider.getSliderPosition()[thumbProp.end] + pageOffset - thumbHalfWidth;
     
     if (allThumbs.length === 1) {
-      return [sliderStart, sliderEnd];
+      return [sliderStart, sliderEnd, sliderStart];
     }
 
-    const thumbStart = thumb.getBoundingClientRect()[thumbProp.start];
+    const thumbStart = thumb.getBoundingClientRect()[thumbProp.start] + pageOffset - thumbHalfWidth;
     const otherThumb = allThumbs[0] === thumb ? allThumbs[1] : allThumbs[0];
-    const otherThumbStart = otherThumb.getBoundingClientRect()[thumbProp.start];
-    const otherThumbEnd = otherThumb.getBoundingClientRect()[thumbProp.end];
+    const otherThumbStart = otherThumb.getBoundingClientRect()[thumbProp.start] + pageOffset - thumbHalfWidth;
+    const otherThumbEnd = otherThumb.getBoundingClientRect()[thumbProp.end] + pageOffset + thumbHalfWidth;
 
     if (thumbStart < otherThumbStart) {
-      return [sliderStart, otherThumbStart - thumbHalfWidth];
+      return [sliderStart, otherThumbStart, sliderStart];
     } else {
-      return [otherThumbEnd - thumbHalfWidth, sliderEnd];
+      return [otherThumbEnd, sliderEnd, sliderStart];
     }
   }
 
