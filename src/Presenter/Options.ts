@@ -1,5 +1,6 @@
 interface Options {
   orientation: 'horizontal' | 'vertical',
+  type: 'single' | 'double',
   min?: number,
   max?: number,
   step?: number,
@@ -7,9 +8,11 @@ interface Options {
 
 interface ViewOptions {
   orientation: 'horizontal' | 'vertical',
+  type: 'single' | 'double',
 }
 
 interface ModelOptions {
+  min?: number,
   max?: number,
   step?: number,
 }
