@@ -2,7 +2,7 @@ import { ViewOptions } from '../Presenter/Options';
 import Slider from './Slider';
 
 class Thumb {
-  private element?: HTMLElement;
+  public element: HTMLElement;
 
   constructor(private slider: Slider, private options: ViewOptions) {
     this.element = this.createThumb();
