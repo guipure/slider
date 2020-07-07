@@ -3,11 +3,12 @@ import EventManager from '../EventManager/EventManager';
 
 class Model {
   public values: number[];
+
   public events: EventManager;
 
   constructor(private options: ModelOptions) {
     this.events = new EventManager();
-    this.checkOptions()
+    this.checkOptions();
     this.values = this.calculateValues();
   }
 
@@ -19,13 +20,13 @@ class Model {
     }
 
     if (step <= 0) {
-      throw 'Step must be positive number'
+      throw 'Step must be positive number';
     }
   }
 
   private calculateValues(): number[] {
     const { min, max, step } = this.options;
-    let values: number[] = [];
+    const values: number[] = [];
     let currVal = min;
 
     while (currVal < max) {

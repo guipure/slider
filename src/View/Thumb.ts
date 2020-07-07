@@ -28,9 +28,9 @@ class Thumb {
     let thumbProp: {start: 'left' | 'top', end: 'right' | 'bottom'};
 
     if (this.options.orientation === 'horizontal') {
-      thumbProp = {start: 'left', end: 'right'};
+      thumbProp = { start: 'left', end: 'right' };
     } else {
-      thumbProp = {start: 'top', end: 'bottom'};
+      thumbProp = { start: 'top', end: 'bottom' };
     }
 
     const firstThumb = allThumbs[0];
@@ -41,11 +41,10 @@ class Thumb {
     const secondThumbEnd = secondThumb.getBoundingClientRect()[thumbProp.end];
 
     if (firstThumbStart === secondThumbStart) return true;
-    else if (firstThumbStart < secondThumbStart) {
+    if (firstThumbStart < secondThumbStart) {
       return firstThumbEnd >= secondThumbStart;
-    } else {
-      return secondThumbEnd >= firstThumbStart;
     }
+    return secondThumbEnd >= firstThumbStart;
   }
 
   public moveThumbAt(coordinate: number): void {
@@ -53,7 +52,7 @@ class Thumb {
 
     const thumbHalfWidth: number = this.element.getBoundingClientRect().width / 2;
     let thumbProp: 'left' | 'top';
-    
+
     if (this.options.orientation === 'horizontal') {
       thumbProp = 'left';
     } else {
@@ -62,7 +61,7 @@ class Thumb {
 
     const sliderStart: number = this.slider.getSliderPosition()[thumbProp];
     const prevPosition: number = this.element.getBoundingClientRect()[thumbProp] - sliderStart;
-    
+
     this.element.style[thumbProp] = `${this.fixCoordinate(coordinate) - sliderStart - thumbHalfWidth}px`;
 
     if (this.hasCollision()) {
@@ -75,7 +74,7 @@ class Thumb {
     const values = this.convertValuesToPixels(this.options.values);
     const valuesDiff = values.map((value) => Math.abs(value - coordinate));
     const minDiff = Math.min(...valuesDiff);
-    let closestIndex: number = 0;
+    let closestIndex = 0;
     valuesDiff.forEach((value, index) => {
       if (value === minDiff) {
         closestIndex = index;
@@ -114,9 +113,9 @@ class Thumb {
   private onMouseDown(event: any) {
     const thumb = this.element;
     if (!thumb) {
-      throw 'Thumb not found'
+      throw 'Thumb not found';
     }
-    const orientation = this.options.orientation;
+    const { orientation } = this.options;
     const coordinate = getCoordinate(event);
     this.moveThumbAt(coordinate);
     const onMouseMove = (event: any) => this.moveThumbAt(getCoordinate(event));
@@ -126,16 +125,16 @@ class Thumb {
     function getCoordinate(event: any) {
       const coordinate = orientation === 'horizontal' ? event.clientX : event.clientY;
       return coordinate;
-    }        
+    }
 
     function onMouseUp() {
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
     }
 
-    thumb.ondragstart = function() {
+    thumb.ondragstart = function () {
       return false;
-    }
+    };
   }
 }
 

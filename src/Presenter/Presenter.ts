@@ -19,7 +19,7 @@ class Presenter implements EventListener {
   }
 
   public update(data: object) {
-    console.log('update! '+ data);
+    console.log(`update! ${data}`);
   }
 }
 

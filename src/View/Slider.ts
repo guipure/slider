@@ -1,11 +1,14 @@
-import { ViewOptions } from "../Presenter/Options";
-import Track from "./Track";
-import Thumb from "./Thumb";
+import { ViewOptions } from '../Presenter/Options';
+import Track from './Track';
+import Thumb from './Thumb';
 
 class Slider {
   public element: HTMLElement;
+
   private track: Track;
+
   private thumb: Thumb;
+
   private otherThumb?: Thumb;
 
   constructor(private anchor: HTMLElement, private options: ViewOptions) {
@@ -27,9 +30,9 @@ class Slider {
 
   private onTrackClick(event: any) {
     if (this.options.orientation === 'horizontal') {
-      this.closestThumb(event.detail.clientX).moveThumbAt(event.detail.pageX);
+      this.closestThumb(event.detail.clientX).moveThumbAt(event.detail.clientX);
     } else {
-      this.closestThumb(event.detail.clientY).moveThumbAt(event.detail.pageY);
+      this.closestThumb(event.detail.clientY).moveThumbAt(event.detail.clientY);
     }
   }
 
@@ -39,19 +42,18 @@ class Slider {
     }
 
     const thumbHalfWidth = this.thumb.element.getBoundingClientRect().width / 2;
-    let side: 'left' | 'top' = this.options.orientation === 'horizontal' ? 'left' : 'top';
+    const side: 'left' | 'top' = this.options.orientation === 'horizontal' ? 'left' : 'top';
     const thumbPosition = this.thumb.element.getBoundingClientRect()[side] + thumbHalfWidth;
     const otherThumbPosition = this.otherThumb.element.getBoundingClientRect()[side] + thumbHalfWidth;
-    
+
     if (Math.abs(thumbPosition - coordinate) < Math.abs(otherThumbPosition - coordinate)) {
       return this.thumb;
-    } else {
-      return this.otherThumb;
     }
+    return this.otherThumb;
   }
 
   public getSliderPosition() {
-    return this.element.getBoundingClientRect()
+    return this.element.getBoundingClientRect();
   }
 }
 

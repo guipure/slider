@@ -17,7 +17,7 @@ class Track {
   }
 
   private onClick(event: any) {
-    const customEvent = new CustomEvent('trackclick', {bubbles: true, detail: event});
+    const customEvent = new CustomEvent('trackclick', { bubbles: true, detail: event });
     this.element.dispatchEvent(customEvent);
   }
 }
