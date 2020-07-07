@@ -2,14 +2,21 @@ import { ModelOptions } from '../Presenter/Options';
 import EventManager from '../EventManager/EventManager';
 
 class Model {
-  public values: number[];
+  public state: ModelOptions;
 
   public events: EventManager;
 
   constructor(private options: ModelOptions) {
     this.events = new EventManager();
     this.checkOptions();
-    this.values = this.calculateValues();
+    this.state = {...options};
+    this.state.values = this.calculateValues();
+    this.setState = this.setState.bind(this);
+  }
+
+  public setState(newState: ModelOptions) {
+    this.state = {...this.state, ...newState};
+    this.state.values = this.calculateValues();
   }
 
   private checkOptions(): void {
@@ -25,7 +32,7 @@ class Model {
   }
 
   private calculateValues(): number[] {
-    const { min, max, step } = this.options;
+    const { min, max, step } = this.state;
     const values: number[] = [];
     let currVal = min;
 

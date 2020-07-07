@@ -16,6 +16,7 @@ interface ModelOptions {
   min: number,
   max: number,
   step: number,
+  values?: number[],
 }
 
 export { Options, ViewOptions, ModelOptions };

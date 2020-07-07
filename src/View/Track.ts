@@ -1,17 +1,17 @@
 import { ViewOptions } from '../Presenter/Options';
-import Slider from './Slider';
+import View from './View';
 
 class Track {
   private element: HTMLElement;
 
-  constructor(private slider: Slider, private options: ViewOptions) {
+  constructor(private slider: View) {
     this.element = this.createTrack();
     slider.element.append(this.element);
   }
 
   private createTrack() {
     const element = document.createElement('div');
-    element.className = `track track-${this.options.orientation}`;
+    element.className = `track track-${this.slider.state.orientation}`;
     element.addEventListener('click', this.onClick.bind(this));
     return element;
   }

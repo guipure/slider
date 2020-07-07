@@ -1,23 +1,46 @@
 import { ViewOptions } from '../Presenter/Options';
-import Slider from './Slider';
+import View from './View';
 
 class Thumb {
   public element: HTMLElement;
 
-  constructor(private slider: Slider, private options: ViewOptions) {
+  constructor(private slider: View) {
     this.element = this.createThumb();
+    this.update(slider.state);
     this.moveThumbAt(0);
     if (this.hasCollision()) {
       this.moveThumbAt(1000);
     }
+    this.slider.events.subscribe('newViewState', this.update.bind(this))
   }
 
   private createThumb(): HTMLElement {
     const thumb = document.createElement('div');
-    thumb.className = `thumb thumb-${this.options.orientation}`;
+    const doesOtherThumbExist = this.slider.element.querySelector('.thumb') ? true : false;
+    const thumbNumber: 'first' | 'second' = doesOtherThumbExist ? 'second' : 'first';
+    thumb.className = `thumb thumb-${this.slider.state.orientation} thumb-${thumbNumber}`;
     thumb.addEventListener('mousedown', this.onMouseDown.bind(this));
     this.slider.element.append(thumb);
     return thumb;
+  }
+
+  private update(newState: ViewOptions): void {
+    if (this.element.classList.contains('thumb-second')) {
+      if (newState.type === 'single') {
+        this.hideThumb();
+      } else {
+        this.showThumb();
+        console.log('show')
+      }
+    }
+  }
+
+  private showThumb(): void {
+    this.element.style.display = 'block';
+  }
+
+  private hideThumb(): void {
+    this.element.style.display = 'none';
   }
 
   private hasCollision(): boolean {
@@ -27,7 +50,7 @@ class Thumb {
 
     let thumbProp: {start: 'left' | 'top', end: 'right' | 'bottom'};
 
-    if (this.options.orientation === 'horizontal') {
+    if (this.slider.state.orientation === 'horizontal') {
       thumbProp = { start: 'left', end: 'right' };
     } else {
       thumbProp = { start: 'top', end: 'bottom' };
@@ -53,7 +76,7 @@ class Thumb {
     const thumbHalfWidth: number = this.element.getBoundingClientRect().width / 2;
     let thumbProp: 'left' | 'top';
 
-    if (this.options.orientation === 'horizontal') {
+    if (this.slider.state.orientation === 'horizontal') {
       thumbProp = 'left';
     } else {
       thumbProp = 'top';
@@ -70,8 +93,8 @@ class Thumb {
   }
 
   private fixCoordinate(coordinate: number): number {
-    if (!this.options.values) throw 'Values not found';
-    const values = this.convertValuesToPixels(this.options.values);
+    if (!this.slider.state.values) throw 'Values not found';
+    const values = this.convertValuesToPixels(this.slider.state.values);
     const valuesDiff = values.map((value) => Math.abs(value - coordinate));
     const minDiff = Math.min(...valuesDiff);
     let closestIndex = 0;
@@ -88,7 +111,7 @@ class Thumb {
     let sliderStart;
     let sliderEnd;
 
-    if (this.options.orientation === 'horizontal') {
+    if (this.slider.state.orientation === 'horizontal') {
       sliderStart = sliderPosition.left;
       sliderEnd = sliderPosition.right;
     } else {
@@ -115,7 +138,7 @@ class Thumb {
     if (!thumb) {
       throw 'Thumb not found';
     }
-    const { orientation } = this.options;
+    const { orientation } = this.slider.state;
     const coordinate = getCoordinate(event);
     this.moveThumbAt(coordinate);
     const onMouseMove = (event: any) => this.moveThumbAt(getCoordinate(event));
