@@ -1,34 +1,28 @@
-import EventListener from './EventListener';
+type EventCallback = (data?: any) => void;
 
-interface Listeners {
-  [key: string]: Array<EventListener>
+interface Callbacks {
+  [key: string]: Array<EventCallback>
 }
 
 class EventManager {
-  private listeners: Listeners = {}
+  private callbacks: Callbacks = {}
 
-  public subscribe(eventType: string, listener: EventListener): void {
-    const eventListeners = this.listeners[eventType];
+  public subscribe(eventType: string, callback: EventCallback): void {
+    const eventCallbacks = this.callbacks[eventType];
 
-    if (eventListeners) {
-      eventListeners.push(listener);
+    if (eventCallbacks) {
+      eventCallbacks.push(callback);
     } else {
-      this.listeners[eventType] = [listener];
+      this.callbacks[eventType] = [callback];
     }
   }
 
-  public unsubscribe(eventType: string, listener: EventListener): void {
-    this.listeners[eventType] = this.listeners[eventType].filter(
-      (eventListener: EventListener) => eventListener !== listener,
-    );
-  }
+  public notify(eventType: string, data: object): void {
+    const eventCallbacks = this.callbacks[eventType];
 
-  public notify(eventType: string, data: object = {}): void {
-    const eventListeners = this.listeners[eventType];
-
-    if (eventListeners) {
-      eventListeners.forEach((eventListener: EventListener) => {
-        eventListener.update(data);
+    if (eventCallbacks) {
+      eventCallbacks.forEach((eventCallback: EventCallback) => {
+        eventCallback(data);
       });
     }
   }

@@ -1,9 +1,8 @@
 import Model from '../Model/Model';
 import View from '../View/View';
 import { Options, ViewOptions, ModelOptions } from './Options';
-import EventListener from '../EventManager/EventListener';
 
-class Presenter implements EventListener {
+class Presenter {
   private view: View
 
   private model: Model
@@ -13,13 +12,9 @@ class Presenter implements EventListener {
     const viewOptions: ViewOptions = options as ViewOptions;
 
     this.model = new Model(modelOptions);
-    this.model.events.subscribe('values', this);
+    this.model.events.subscribe('values', (data) => alert(data));
     viewOptions.values = this.model.values;
     this.view = new View(anchor, viewOptions);
-  }
-
-  public update(data: object) {
-    console.log(`update! ${data}`);
   }
 }
 
