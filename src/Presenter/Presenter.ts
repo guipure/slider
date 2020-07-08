@@ -7,6 +7,7 @@ class Presenter {
   private view: View
 
   private model: Model
+
   private settings: Settings;
 
   constructor(anchor: HTMLElement, options: Options) {
@@ -18,12 +19,12 @@ class Presenter {
     this.view = new View(anchor, viewOptions);
     this.settings = new Settings(anchor, options);
     this.model.events.subscribe('values', (values) => {
-      this.view.setState({...this.view.state, values});
+      this.view.setState({ ...this.view.state, values });
     });
     this.settings.events.subscribe('newSettings', (newOptions: Options) => {
       this.view.setState(newOptions as ViewOptions);
       this.model.setState(newOptions as ModelOptions);
-    })
+    });
   }
 }
 

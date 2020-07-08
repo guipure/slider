@@ -4,9 +4,13 @@ interface Options {
   min: number,
   max: number,
   step: number,
+  from: number,
+  to: number,
 }
 
 interface ViewOptions {
+  from: number,
+  to: number,
   orientation: 'horizontal' | 'vertical',
   type: 'single' | 'double',
   values?: number[],

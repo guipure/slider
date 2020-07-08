@@ -1,12 +1,13 @@
-import EventManager from "../EventManager/EventManager";
-import { Options } from "../Presenter/Options";
+import EventManager from '../EventManager/EventManager';
+import { Options } from '../Presenter/Options';
 
 class Settings {
   public events: EventManager;
+
   private form: HTMLFormElement;
 
   constructor(private anchor: HTMLElement, public state: Options) {
-    this.events = new EventManager;
+    this.events = new EventManager();
     this.form = document.createElement('form');
     this.form.className = 'settings';
     anchor.append(this.form);
@@ -29,6 +30,16 @@ class Settings {
     <label class="settings__label">
       <p class="settings__name">step</p>
       <input class="settings__input" type="number" name="step">
+    </label>
+
+    <label class="settings__label">
+      <p class="settings__name">from</p>
+      <input class="settings__input" type="number" name="from">
+    </label>
+
+    <label class="settings__label">
+      <p class="settings__name">to</p>
+      <input class="settings__input" type="number" name="to">
     </label>
 
     <label class="settings__label">
@@ -64,39 +75,60 @@ class Settings {
     inputs.forEach((input: HTMLInputElement) => {
       switch (input.name) {
         case 'min':
-          input.onchange = () => this.setState({min: Number(input.value)});
+          input.onchange = () => this.setState({ min: Number(input.value) });
           input.value = this.state.min.toString();
           break;
         case 'max':
-          input.onchange = () => this.setState({max: Number(input.value)});
+          input.onchange = () => this.setState({ max: Number(input.value) });
           input.value = this.state.max.toString();
           break;
         case 'step':
-          input.onchange = () => this.setState({step: Number(input.value)});
+          const stepCheck = (num: number): number => (num > 0 ? num : 1);
+          input.onchange = () => this.setState({ step: stepCheck(Number(input.value)) });
           input.value = this.state.step.toString();
           break;
+        case 'from':
+          const onChangeFrom = () => {
+            let from = Number(input.value);
+            if (from < this.state.min) {
+              from = this.state.min;
+            }
+            this.setState({ from });
+            input.value = from.toString();
+          };
+          input.onchange = onChangeFrom;
+          input.value = this.state.from.toString();
+          break;
+        case 'to':
+          const onChangeTo = () => {
+            let to = Number(input.value);
+            if (to > this.state.max) {
+              to = this.state.max;
+            }
+            this.setState({ to });
+            input.value = to.toString();
+          };
+          input.onchange = onChangeTo;
+          input.value = this.state.to.toString();
+          break;
         case 'orientation':
-          input.onchange = () => this.setState({orientation: input.value});
+          input.onchange = () => this.setState({ orientation: input.value });
           if (input.value === 'horizontal') {
             if (this.state.orientation === 'horizontal') {
               input.checked = true;
             }
-          } else {
-            if (this.state.orientation === 'vertical') {
-              input.checked = true;
-            }
+          } else if (this.state.orientation === 'vertical') {
+            input.checked = true;
           }
           break;
         case 'type':
-          input.onchange = () => this.setState({type: input.value});
+          input.onchange = () => this.setState({ type: input.value });
           if (input.value === 'single') {
             if (this.state.type === 'single') {
               input.checked = true;
             }
-          } else {
-            if (this.state.type === 'double') {
-              input.checked = true;
-            }
+          } else if (this.state.type === 'double') {
+            input.checked = true;
           }
           break;
       }
@@ -104,7 +136,7 @@ class Settings {
   }
 
   private setState(newSetting: any) {
-    this.state = {...this.state, ...newSetting};
+    this.state = { ...this.state, ...newSetting };
     this.events.notify('newSettings', this.state);
   }
 }

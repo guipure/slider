@@ -5,27 +5,32 @@ import EventManager from '../EventManager/EventManager';
 
 class Thumb {
   public element: HTMLElement;
+
   public events: EventManager;
+
   private pxValues?: number[];
 
   constructor(private slider: View) {
     this.events = new EventManager();
     if (this.slider.state.values) {
-      this.pxValues = this.convertValuesToPixels(this.slider.state.values);
+      this.pxValues = this.createPxValues(this.slider.state.values);
     }
     this.element = this.createThumb();
     this.update(slider.state);
-    this.moveThumbAt(0);
-    if (this.hasCollision()) {
-      this.moveThumbAt(10000);
+
+    if (this.element.classList.contains('thumb-first')) {
+      this.moveThumbAt(this.valueToPx(slider.state.from));
+    } else {
+      this.moveThumbAt(this.valueToPx(slider.state.to));
     }
+
     const label = new ThumbLabel(this, slider);
     this.slider.events.subscribe('newViewState', this.update.bind(this));
   }
 
   private createThumb(): HTMLElement {
     const thumb = document.createElement('div');
-    const doesOtherThumbExist = this.slider.element.querySelector('.thumb') ? true : false;
+    const doesOtherThumbExist = !!this.slider.element.querySelector('.thumb');
     const thumbNumber: 'first' | 'second' = doesOtherThumbExist ? 'second' : 'first';
     thumb.className = `thumb thumb-${this.slider.state.orientation} thumb-${thumbNumber}`;
     thumb.addEventListener('mousedown', this.onMouseDown.bind(this));
@@ -41,9 +46,15 @@ class Thumb {
         this.showThumb();
       }
     }
-  
+
     if (this.slider.state.values) {
-      this.pxValues = this.convertValuesToPixels(this.slider.state.values);
+      this.pxValues = this.createPxValues(this.slider.state.values);
+    }
+
+    if (this.element.classList.contains('thumb-first')) {
+      this.moveThumbAt(this.valueToPx(this.slider.state.from));
+    } else {
+      this.moveThumbAt(this.valueToPx(this.slider.state.to));
     }
 
     this.events.notify('thumbUpdate');
@@ -59,18 +70,17 @@ class Thumb {
 
   public getPosition(): number {
     let thumbProp: 'left' | 'top';
-    let pageOffset;
-    const thumbHalfWidth: number = this.element.getBoundingClientRect().width / 2;
 
     if (this.slider.state.orientation === 'horizontal') {
       thumbProp = 'left';
-      pageOffset = pageXOffset;
     } else {
       thumbProp = 'top';
-      pageOffset = pageYOffset;
     }
 
-    const position: number = this.element.getBoundingClientRect()[thumbProp] + pageOffset + thumbHalfWidth;
+    const sliderStart: number = this.slider.getSliderPosition()[thumbProp];
+    const thumbStart: number = this.element.getBoundingClientRect()[thumbProp];
+    const thumbHalfWidth: number = this.element.getBoundingClientRect().width / 2;
+    const position: number = thumbStart - sliderStart + thumbHalfWidth;
     if (!this.pxValues || !this.slider.state.values) throw Error('Values not found');
     const index = this.closestIndex(this.pxValues, position);
     return this.slider.state.values[index];
@@ -106,20 +116,16 @@ class Thumb {
   public moveThumbAt(coordinate: number): void {
     const thumbHalfWidth: number = this.element.getBoundingClientRect().width / 2;
     let thumbProp: 'left' | 'top';
-    let pageOffset;
 
     if (this.slider.state.orientation === 'horizontal') {
       thumbProp = 'left';
-      pageOffset = pageXOffset;
     } else {
       thumbProp = 'top';
-      pageOffset = pageYOffset;
     }
 
     const sliderStart: number = this.slider.getSliderPosition()[thumbProp];
     const prevPosition: number = this.element.getBoundingClientRect()[thumbProp] - sliderStart;
-    const correction: number = pageOffset + sliderStart + thumbHalfWidth;
-    this.element.style[thumbProp] = `${this.fixCoordinate(coordinate + pageOffset) - correction}px`;
+    this.element.style[thumbProp] = `${this.fixCoordinate(coordinate - sliderStart) - thumbHalfWidth}px`;
 
     if (this.hasCollision()) {
       this.element.style[thumbProp] = `${prevPosition}px`;
@@ -140,29 +146,50 @@ class Thumb {
     return diffArray.findIndex((x) => x === minDiff);
   }
 
-  private convertValuesToPixels(values: number[]): number[] {
+  private createPxValues(values: number[]): number[] {
     const sliderPosition = this.slider.getSliderPosition();
     let sliderStart;
     let sliderEnd;
 
     if (this.slider.state.orientation === 'horizontal') {
-      sliderStart = sliderPosition.left + pageXOffset;
-      sliderEnd = sliderPosition.right + pageXOffset;
+      sliderStart = sliderPosition.left;
+      sliderEnd = sliderPosition.right;
     } else {
-      sliderStart = sliderPosition.top + pageYOffset;
-      sliderEnd = sliderPosition.bottom + pageYOffset;
+      sliderStart = sliderPosition.top;
+      sliderEnd = sliderPosition.bottom;
     }
 
     const pxValues = [];
     const pxStep = (sliderEnd - sliderStart) / (values.length - 1);
-    let pxValue = sliderStart;
+    let pxValue = 0;
 
     while (pxValues.length < values.length) {
       pxValues.push(pxValue);
       pxValue += pxStep;
     }
-    
+
     return pxValues;
+  }
+
+  private valueToPx(value: number): number {
+    const { values } = this.slider.state;
+    if (!values) throw Error('Values not found');
+    const sliderPosition = this.slider.getSliderPosition();
+    let sliderStart;
+    let sliderEnd;
+
+    if (this.slider.state.orientation === 'horizontal') {
+      sliderStart = sliderPosition.left;
+      sliderEnd = sliderPosition.right;
+    } else {
+      sliderStart = sliderPosition.top;
+      sliderEnd = sliderPosition.bottom;
+    }
+
+    const pxStep = (sliderEnd - sliderStart) / (values.length - 1);
+    const index = values.findIndex((x) => x === value);
+
+    return pxStep * index + sliderStart;
   }
 
   private onMouseDown(event: any) {

@@ -1,5 +1,5 @@
-import Thumb from "./Thumb";
-import View from "./View";
+import Thumb from './Thumb';
+import View from './View';
 
 class ThumbLabel {
   private element: HTMLElement

@@ -5,7 +5,9 @@ import EventManager from '../EventManager/EventManager';
 
 class View {
   public state: ViewOptions;
+
   public events: EventManager;
+
   public element: HTMLElement = document.body;
 
   private track?: Track;
@@ -15,7 +17,7 @@ class View {
   private otherThumb?: Thumb;
 
   constructor(private anchor: HTMLElement, private options: ViewOptions) {
-    this.state = {...options};
+    this.state = { ...options };
     this.events = new EventManager();
     this.createSlider();
     this.setState = this.setState.bind(this);
@@ -23,7 +25,7 @@ class View {
 
   public setState(newState: ViewOptions) {
     const currentState: ViewOptions = this.state;
-    this.state = {...newState};
+    this.state = { ...newState };
 
     if (currentState.orientation !== newState.orientation) {
       this.element.remove();
@@ -45,15 +47,15 @@ class View {
 
   private onTrackClick(event: any) {
     if (this.state.orientation === 'horizontal') {
-      this.closestThumb(event.detail.clientX).moveThumbAt(event.detail.clientX);
+      this.closestThumb(event.detail.clientX).moveThumbAt(event.detail.pageX);
     } else {
-      this.closestThumb(event.detail.clientY).moveThumbAt(event.detail.clientY);
+      this.closestThumb(event.detail.clientY).moveThumbAt(event.detail.pageY);
     }
   }
 
   private closestThumb(coordinate: number): Thumb {
     if (!this.thumb) {
-      throw Error('Thumb not found')
+      throw Error('Thumb not found');
     }
 
     if (!this.otherThumb) {

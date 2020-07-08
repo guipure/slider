@@ -9,13 +9,13 @@ class Model {
   constructor(private options: ModelOptions) {
     this.events = new EventManager();
     this.checkOptions();
-    this.state = {...options};
+    this.state = { ...options };
     this.state.values = this.calculateValues();
     this.setState = this.setState.bind(this);
   }
 
   public setState(newState: ModelOptions) {
-    this.state = {...this.state, ...newState};
+    this.state = { ...this.state, ...newState };
     this.state.values = this.calculateValues();
   }
 

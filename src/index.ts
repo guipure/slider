@@ -7,6 +7,8 @@ $('.slider-wrapper').slider({
   min: 1,
   max: 10,
   step: 1,
+  from: 3,
+  to: 6,
 });
 
 $('.another').slider({
@@ -14,5 +16,7 @@ $('.another').slider({
   type: 'double',
   min: 1,
   max: 10,
-  step: 1.2,
+  step: 0.5,
+  from: 3.5,
+  to: 6.5,
 });
