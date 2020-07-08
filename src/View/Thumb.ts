@@ -1,17 +1,26 @@
 import { ViewOptions } from '../Presenter/Options';
 import View from './View';
+import { ThumbLabel } from './ThumbLabel';
+import EventManager from '../EventManager/EventManager';
 
 class Thumb {
   public element: HTMLElement;
+  public events: EventManager;
+  private pxValues?: number[];
 
   constructor(private slider: View) {
+    this.events = new EventManager();
+    if (this.slider.state.values) {
+      this.pxValues = this.convertValuesToPixels(this.slider.state.values);
+    }
     this.element = this.createThumb();
     this.update(slider.state);
     this.moveThumbAt(0);
     if (this.hasCollision()) {
-      this.moveThumbAt(1000);
+      this.moveThumbAt(10000);
     }
-    this.slider.events.subscribe('newViewState', this.update.bind(this))
+    const label = new ThumbLabel(this);
+    this.slider.events.subscribe('newViewState', this.update.bind(this));
   }
 
   private createThumb(): HTMLElement {
@@ -30,7 +39,6 @@ class Thumb {
         this.hideThumb();
       } else {
         this.showThumb();
-        console.log('show')
       }
     }
   }
@@ -41,6 +49,26 @@ class Thumb {
 
   private hideThumb(): void {
     this.element.style.display = 'none';
+  }
+
+  public getPosition(): number {
+    let thumbProp: 'left' | 'top';
+    let pageOffset;
+    const thumbHalfWidth: number = this.element.getBoundingClientRect().width / 2;
+
+    if (this.slider.state.orientation === 'horizontal') {
+      thumbProp = 'left';
+      pageOffset = pageXOffset;
+    } else {
+      thumbProp = 'top';
+      pageOffset = pageYOffset;
+    }
+
+    const position: number = this.element.getBoundingClientRect()[thumbProp] + pageOffset + thumbHalfWidth;
+
+    if (!this.pxValues || !this.slider.state.values) throw Error('Values not found');
+    const index = this.closestIndex(this.pxValues, position);
+    return this.slider.state.values[index];
   }
 
   private hasCollision(): boolean {
@@ -71,39 +99,40 @@ class Thumb {
   }
 
   public moveThumbAt(coordinate: number): void {
-    if (!this.element) throw 'Thumb not found';
-
     const thumbHalfWidth: number = this.element.getBoundingClientRect().width / 2;
     let thumbProp: 'left' | 'top';
+    let pageOffset;
 
     if (this.slider.state.orientation === 'horizontal') {
       thumbProp = 'left';
+      pageOffset = pageXOffset;
     } else {
       thumbProp = 'top';
+      pageOffset = pageYOffset;
     }
 
     const sliderStart: number = this.slider.getSliderPosition()[thumbProp];
     const prevPosition: number = this.element.getBoundingClientRect()[thumbProp] - sliderStart;
-
-    this.element.style[thumbProp] = `${this.fixCoordinate(coordinate) - sliderStart - thumbHalfWidth}px`;
+    const correction: number = pageOffset + sliderStart + thumbHalfWidth;
+    this.element.style[thumbProp] = `${this.fixCoordinate(coordinate + pageOffset) - correction}px`;
 
     if (this.hasCollision()) {
       this.element.style[thumbProp] = `${prevPosition}px`;
     }
+
+    this.events.notify('thumbMove');
   }
 
   private fixCoordinate(coordinate: number): number {
-    if (!this.slider.state.values) throw 'Values not found';
-    const values = this.convertValuesToPixels(this.slider.state.values);
-    const valuesDiff = values.map((value) => Math.abs(value - coordinate));
-    const minDiff = Math.min(...valuesDiff);
-    let closestIndex = 0;
-    valuesDiff.forEach((value, index) => {
-      if (value === minDiff) {
-        closestIndex = index;
-      }
-    });
-    return values[closestIndex];
+    if (!this.pxValues) throw 'Values not found';
+    const index = this.closestIndex(this.pxValues, coordinate);
+    return this.pxValues[index];
+  }
+
+  private closestIndex(array: number[], value: number) {
+    const diffArray = array.map((x) => Math.abs(x - value));
+    const minDiff = Math.min(...diffArray);
+    return diffArray.findIndex((x) => x === minDiff);
   }
 
   private convertValuesToPixels(values: number[]): number[] {
@@ -112,24 +141,22 @@ class Thumb {
     let sliderEnd;
 
     if (this.slider.state.orientation === 'horizontal') {
-      sliderStart = sliderPosition.left;
-      sliderEnd = sliderPosition.right;
+      sliderStart = sliderPosition.left + pageXOffset;
+      sliderEnd = sliderPosition.right + pageXOffset;
     } else {
-      sliderStart = sliderPosition.top;
-      sliderEnd = sliderPosition.bottom;
+      sliderStart = sliderPosition.top + pageYOffset;
+      sliderEnd = sliderPosition.bottom + pageYOffset;
     }
 
     const pxValues = [];
-    const pxStep = (sliderEnd - sliderStart) / (values[values.length - 1] - values[0]);
+    const pxStep = (sliderEnd - sliderStart) / (values.length - 1);
     let pxValue = sliderStart;
 
     while (pxValues.length < values.length) {
       pxValues.push(pxValue);
       pxValue += pxStep;
     }
-
-    pxValues.push(sliderEnd);
-
+    
     return pxValues;
   }
 

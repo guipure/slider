@@ -21,8 +21,8 @@ class Presenter {
       this.view.setState({...this.view.state, values});
     });
     this.settings.events.subscribe('newSettings', (newOptions: Options) => {
-      this.model.setState(newOptions as ModelOptions);
       this.view.setState(newOptions as ViewOptions);
+      this.model.setState(newOptions as ModelOptions);
     })
   }
 }

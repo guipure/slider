@@ -17,7 +17,7 @@ class EventManager {
     }
   }
 
-  public notify(eventType: string, data: object): void {
+  public notify(eventType: string, data?: object): void {
     const eventCallbacks = this.callbacks[eventType];
 
     if (eventCallbacks) {
