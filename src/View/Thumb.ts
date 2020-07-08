@@ -19,7 +19,7 @@ class Thumb {
     if (this.hasCollision()) {
       this.moveThumbAt(10000);
     }
-    const label = new ThumbLabel(this);
+    const label = new ThumbLabel(this, slider);
     this.slider.events.subscribe('newViewState', this.update.bind(this));
   }
 
@@ -41,6 +41,12 @@ class Thumb {
         this.showThumb();
       }
     }
+  
+    if (this.slider.state.values) {
+      this.pxValues = this.convertValuesToPixels(this.slider.state.values);
+    }
+
+    this.events.notify('thumbUpdate');
   }
 
   private showThumb(): void {
@@ -65,7 +71,6 @@ class Thumb {
     }
 
     const position: number = this.element.getBoundingClientRect()[thumbProp] + pageOffset + thumbHalfWidth;
-
     if (!this.pxValues || !this.slider.state.values) throw Error('Values not found');
     const index = this.closestIndex(this.pxValues, position);
     return this.slider.state.values[index];
