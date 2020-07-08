@@ -2,6 +2,7 @@ import { ViewOptions } from '../Presenter/Options';
 import Track from './Track';
 import Thumb from './Thumb';
 import EventManager from '../EventManager/EventManager';
+import { Scale } from './Scale';
 
 class View {
   public state: ViewOptions;
@@ -43,6 +44,7 @@ class View {
     this.track = new Track(this);
     this.thumb = new Thumb(this);
     this.otherThumb = new Thumb(this);
+    new Scale(this);
   }
 
   private onTrackClick(event: any) {
