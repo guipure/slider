@@ -7,6 +7,7 @@ interface Options {
   from: number,
   to: number,
   hide_from_to: boolean,
+  hide_scale: boolean,
 }
 
 interface ViewOptions {
@@ -16,6 +17,7 @@ interface ViewOptions {
   type: 'single' | 'double',
   values?: number[],
   hide_from_to: boolean,
+  hide_scale: boolean,
 }
 
 interface ModelOptions {

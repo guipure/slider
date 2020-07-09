@@ -4,7 +4,7 @@ class Scale {
   private element: HTMLElement;
 
   constructor(private slider: View) {
-    this.element = document.createElement('span');
+    this.element = document.createElement('div');
     this.element.className = `scale_${slider.state.orientation}`;
     this.initScale();
     this.slider.element.append(this.element);
@@ -12,7 +12,13 @@ class Scale {
     slider.events.subscribe('newViewState', this.initScale);
   }
 
-  private initScale() {
+  private initScale(): void {
+    if (this.slider.state.hide_scale) {
+      this.element.style.display = 'none';
+      return;
+    }
+    this.element.style.display = 'block';
+
     const { values } = this.slider.state;
     const { pxValues } = this.slider;
 

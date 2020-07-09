@@ -149,7 +149,7 @@ class Settings {
           }
           break;
         case 'hide_from_to':
-          alert('hide')
+          alert('hide');
           input.onchange = () => this.setState({ hide_from_to: Boolean(input.value) });
           input.value = this.state.hide_from_to.toString();
           break;
@@ -160,6 +160,10 @@ class Settings {
           case 'hide_from_to':
             select.onchange = () => this.setState({ hide_from_to: select.value === 'true' });
             select.value = this.state.hide_from_to.toString();
+            break;
+          case 'hide_scale':
+            select.onchange = () => this.setState({ hide_scale: select.value === 'true' });
+            select.value = this.state.hide_scale.toString();
             break;
         }
       });

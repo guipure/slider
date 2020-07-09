@@ -10,6 +10,7 @@ $('.slider-wrapper').slider({
   from: 3,
   to: 6,
   hide_from_to: false,
+  hide_scale: false,
 });
 
 $('.another').slider({
@@ -21,4 +22,5 @@ $('.another').slider({
   from: 3.5,
   to: 6.5,
   hide_from_to: false,
+  hide_scale: false,
 });
