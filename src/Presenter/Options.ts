@@ -16,6 +16,7 @@ interface ViewOptions {
   orientation: 'horizontal' | 'vertical',
   type: 'single' | 'double',
   values?: number[],
+  pxValues?: number[],
   hide_from_to: boolean,
   hide_scale: boolean,
 }

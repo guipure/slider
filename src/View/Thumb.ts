@@ -8,13 +8,8 @@ class Thumb {
 
   public events: EventManager;
 
-  private pxValues?: number[];
-
   constructor(private slider: View) {
     this.events = new EventManager();
-    if (this.slider.state.values) {
-      this.pxValues = this.createPxValues(this.slider.state.values);
-    }
     this.element = this.createThumb();
     this.update(slider.state);
 
@@ -47,14 +42,14 @@ class Thumb {
       }
     }
 
-    if (this.slider.state.values) {
-      this.pxValues = this.createPxValues(this.slider.state.values);
-    }
-
     if (this.element.classList.contains('thumb-first')) {
-      this.moveThumbAt(this.valueToPx(this.slider.state.from));
+      if (this.getPosition() !== this.slider.state.from) {
+        this.moveThumbAtValue(this.slider.state.from);
+      }
     } else {
-      this.moveThumbAt(this.valueToPx(this.slider.state.to));
+      if (this.getPosition() !== this.slider.state.to) {
+        this.moveThumbAtValue(this.slider.state.to);
+      }
     }
 
     this.events.notify('thumbUpdate');
@@ -81,8 +76,8 @@ class Thumb {
     const thumbStart: number = this.element.getBoundingClientRect()[thumbProp];
     const thumbHalfWidth: number = this.element.getBoundingClientRect().width / 2;
     const position: number = thumbStart - sliderStart + thumbHalfWidth;
-    if (!this.pxValues || !this.slider.state.values) throw Error('Values not found');
-    const index = this.closestIndex(this.pxValues, position);
+    if (!this.slider.state.pxValues || !this.slider.state.values) throw Error('Values not found');
+    const index = this.closestIndex(this.slider.state.pxValues, position);
     return this.slider.state.values[index];
   }
 
@@ -139,40 +134,15 @@ class Thumb {
   }
 
   private fixCoordinate(coordinate: number): number {
-    if (!this.pxValues) throw 'Values not found';
-    const index = this.closestIndex(this.pxValues, coordinate);
-    return this.pxValues[index];
+    if (!this.slider.state.pxValues) throw 'Values not found';
+    const index = this.closestIndex(this.slider.state.pxValues, coordinate);
+    return this.slider.state.pxValues[index];
   }
 
   private closestIndex(array: number[], value: number) {
     const diffArray = array.map((x) => Math.abs(x - value));
     const minDiff = Math.min(...diffArray);
     return diffArray.findIndex((x) => x === minDiff);
-  }
-
-  private createPxValues(values: number[]): number[] {
-    const sliderPosition = this.slider.getSliderPosition();
-    let sliderStart;
-    let sliderEnd;
-
-    if (this.slider.state.orientation === 'horizontal') {
-      sliderStart = sliderPosition.left;
-      sliderEnd = sliderPosition.right;
-    } else {
-      sliderStart = sliderPosition.top;
-      sliderEnd = sliderPosition.bottom;
-    }
-
-    const pxValues = [];
-    const pxStep = (sliderEnd - sliderStart) / (values.length - 1);
-    let pxValue = 0;
-
-    while (pxValues.length < values.length) {
-      pxValues.push(pxValue);
-      pxValue += pxStep;
-    }
-    this.slider.pxValues = pxValues;
-    return pxValues;
   }
 
   private valueToPx(value: number): number {

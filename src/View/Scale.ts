@@ -21,7 +21,7 @@ class Scale {
     this.element.style.display = 'block';
 
     const { values } = this.slider.state;
-    const { pxValues } = this.slider;
+    const { pxValues } = this.slider.state;
 
     if (!values || !pxValues) throw Error('Values not found');
 

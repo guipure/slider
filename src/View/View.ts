@@ -17,8 +17,6 @@ class View {
 
   private otherThumb?: Thumb;
 
-  public pxValues?: number[];
-
   constructor(private anchor: HTMLElement, private options: ViewOptions) {
     this.state = { ...options };
     this.events = new EventManager();
@@ -26,9 +24,12 @@ class View {
     this.setState = this.setState.bind(this);
   }
 
-  public setState(newState: ViewOptions) {
+  public setState(newState: any) {
     const currentState: ViewOptions = this.state;
-    this.state = { ...newState };
+    this.state = { ...currentState, ...newState };
+    if (this.state.values) {
+      this.createPxValues(this.state.values);
+    }
 
     if (currentState.orientation !== newState.orientation) {
       this.element.remove();
@@ -44,6 +45,9 @@ class View {
     this.element.addEventListener('trackclick', this.onTrackClick.bind(this));
     this.element.addEventListener('scaleclick', this.onScaleClick.bind(this));
     this.anchor.prepend(this.element);
+    if (this.state.values) {
+      this.createPxValues(this.state.values);
+    }
     this.track = new Track(this);
     this.thumb = new Thumb(this);
     this.otherThumb = new Thumb(this);
@@ -88,6 +92,28 @@ class View {
 
   public getSliderPosition() {
     return this.element.getBoundingClientRect();
+  }
+
+  private createPxValues(values: number[]): void {
+    const sliderPosition = this.getSliderPosition();
+    let sliderLength;
+
+    if (this.state.orientation === 'horizontal') {
+      sliderLength = sliderPosition.width;
+    } else {
+      sliderLength = sliderPosition.height;
+    }
+
+    const pxValues = [];
+    const pxStep = sliderLength / (values.length - 1);
+    let pxValue = 0;
+    
+    while (pxValues.length < values.length) {
+      pxValues.push(pxValue);
+      pxValue += pxStep;
+    }
+
+    this.state.pxValues = pxValues;
   }
 }
 
