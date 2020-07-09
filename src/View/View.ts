@@ -55,19 +55,55 @@ class View {
   }
 
   private onTrackClick(event: any) {
+    let value: number;
+
     if (this.state.orientation === 'horizontal') {
-      this.closestThumb(event.detail.clientX).moveThumbAt(event.detail.pageX);
+      value = this.convertPxToValue(event.detail.clientX);
     } else {
-      this.closestThumb(event.detail.clientY).moveThumbAt(event.detail.pageY);
+      value = this.convertPxToValue(event.detail.clientY);
+    }
+    
+    const fromDistance = Math.abs(this.state.from - value);
+    const toDistance = Math.abs(this.state.to - value);
+
+    if (fromDistance < toDistance) {
+      this.setState( {from: value});
+    } else {
+      this.setState( {to: value});
     }
   }
 
   private onScaleClick(event: any) {
-    if (this.state.orientation === 'horizontal') {
-      this.closestThumb(event.detail.event.clientX).moveThumbAtValue(event.detail.value);
+    const value = event.detail.value;
+    const fromDistance = Math.abs(this.state.from - value);
+    const toDistance = Math.abs(this.state.to - value);
+
+    if (fromDistance < toDistance) {
+      this.setState( {from: value});
     } else {
-      this.closestThumb(event.detail.event.clientY).moveThumbAtValue(event.detail.value);
+      this.setState( {to: value});
     }
+  }
+
+  private convertPxToValue(coordinate: number): number {
+    let sliderStart;
+
+    if (this.state.orientation === 'horizontal') {
+      sliderStart = this.getSliderPosition().left;
+    } else {
+      sliderStart = this.getSliderPosition().top;
+    }
+
+    if (!this.state.values || !this.state.pxValues) throw Error('Values not found');
+    const index = this.closestIndex(this.state.pxValues, coordinate - sliderStart);
+
+    return this.state.values[index];
+  }
+
+  private closestIndex(array: number[], value: number) {
+    const diffArray = array.map((x) => Math.abs(x - value));
+    const minDiff = Math.min(...diffArray);
+    return diffArray.findIndex((x) => x === minDiff);
   }
 
   private closestThumb(coordinate: number): Thumb {
