@@ -6,6 +6,7 @@ interface Options {
   step: number,
   from: number,
   to: number,
+  hide_from_to: boolean,
 }
 
 interface ViewOptions {
@@ -14,6 +15,7 @@ interface ViewOptions {
   orientation: 'horizontal' | 'vertical',
   type: 'single' | 'double',
   values?: number[],
+  hide_from_to: boolean,
 }
 
 interface ModelOptions {

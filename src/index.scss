@@ -39,9 +39,18 @@
 
 .thumb-label {
   position: relative;
-  top: -20px;
-  left: 20px;
   user-select: none;
+  width: 50px;
+  text-align: center;
+}
+
+.thumb-label_horizontal {
+  top: -20px;
+  left: -15px;
+}
+
+.thumb-label_vertical {
+  left: -50px;
 }
 
 .scale_horizontal {

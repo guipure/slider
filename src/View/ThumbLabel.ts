@@ -5,8 +5,8 @@ class ThumbLabel {
   private element: HTMLElement
 
   constructor(private thumb: Thumb, private slider: View) {
-    this.element = document.createElement('span');
-    this.element.className = 'thumb-label';
+    this.element = document.createElement('div');
+    this.element.className = `thumb-label thumb-label_${slider.state.orientation}`;
     this.update();
     thumb.element.append(this.element);
     this.update = this.update.bind(this);
@@ -16,6 +16,12 @@ class ThumbLabel {
 
   private update() {
     this.element.innerHTML = this.thumb.getPosition().toString();
+
+    if (this.slider.state.hide_from_to) {
+      this.element.style.display = 'none';
+    } else {
+      this.element.style.display = 'block';
+    }
   }
 }
 

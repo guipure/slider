@@ -65,6 +65,22 @@ class Settings {
         <input class="settings__input" type="radio" name="type" value="double">
       </label>
     </label>
+
+    <label class="settings__label">
+      <p class="settings__name">hide_from_to</p>
+      <select name="hide_from_to">
+        <option value="true">true</option>
+        <option value="false">false</option>
+      </select>
+    </label>
+
+    <label class="settings__label">
+      <p class="settings__name">hide_scale</p>
+      <select name="hide_scale">
+        <option value="true">true</option>
+        <option value="false">false</option>
+      </select>
+    </label>
     `;
 
     this.form.insertAdjacentHTML('beforeend', settingsTemplate);
@@ -72,6 +88,7 @@ class Settings {
 
   private initValues() {
     const inputs = this.form.querySelectorAll('input');
+    const selects = this.form.querySelectorAll('select');
     inputs.forEach((input: HTMLInputElement) => {
       switch (input.name) {
         case 'min':
@@ -131,7 +148,21 @@ class Settings {
             input.checked = true;
           }
           break;
+        case 'hide_from_to':
+          alert('hide')
+          input.onchange = () => this.setState({ hide_from_to: Boolean(input.value) });
+          input.value = this.state.hide_from_to.toString();
+          break;
       }
+
+      selects.forEach((select: HTMLSelectElement) => {
+        switch (select.name) {
+          case 'hide_from_to':
+            select.onchange = () => this.setState({ hide_from_to: select.value === 'true' });
+            select.value = this.state.hide_from_to.toString();
+            break;
+        }
+      });
     });
   }
 
