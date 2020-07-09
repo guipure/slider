@@ -42,6 +42,7 @@ class View {
     this.element = document.createElement('div');
     this.element.className = 'slider';
     this.element.addEventListener('trackclick', this.onTrackClick.bind(this));
+    this.element.addEventListener('scaleclick', this.onScaleClick.bind(this));
     this.anchor.prepend(this.element);
     this.track = new Track(this);
     this.thumb = new Thumb(this);
@@ -54,6 +55,14 @@ class View {
       this.closestThumb(event.detail.clientX).moveThumbAt(event.detail.pageX);
     } else {
       this.closestThumb(event.detail.clientY).moveThumbAt(event.detail.pageY);
+    }
+  }
+
+  private onScaleClick(event: any) {
+    if (this.state.orientation === 'horizontal') {
+      this.closestThumb(event.detail.event.clientX).moveThumbAtValue(event.detail.value);
+    } else {
+      this.closestThumb(event.detail.event.clientY).moveThumbAtValue(event.detail.value);
     }
   }
 

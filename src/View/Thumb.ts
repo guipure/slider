@@ -19,9 +19,9 @@ class Thumb {
     this.update(slider.state);
 
     if (this.element.classList.contains('thumb-first')) {
-      this.moveThumbAt(this.valueToPx(slider.state.from));
+      this.moveThumbAtValue(slider.state.from);
     } else {
-      this.moveThumbAt(this.valueToPx(slider.state.to));
+      this.moveThumbAtValue(slider.state.to);
     }
 
     const label = new ThumbLabel(this, slider);
@@ -132,6 +132,10 @@ class Thumb {
     }
 
     this.events.notify('thumbMove');
+  }
+
+  public moveThumbAtValue(value: number): void {
+    this.moveThumbAt(this.valueToPx(value));
   }
 
   private fixCoordinate(coordinate: number): number {

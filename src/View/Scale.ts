@@ -6,6 +6,7 @@ class Scale {
   constructor(private slider: View) {
     this.element = document.createElement('div');
     this.element.className = `scale_${slider.state.orientation}`;
+    this.element.addEventListener('click', this.onClick);
     this.initScale();
     this.slider.element.append(this.element);
     this.initScale = this.initScale.bind(this);
@@ -61,6 +62,14 @@ class Scale {
       scaleValue.style.top = `${position - height / 2}px`;
     }
     return scaleValue;
+  }
+
+  private onClick(event: Event) {
+    if (event.target instanceof HTMLElement) {
+      const value: number = Number(event.target.innerHTML);
+      const scaleEvent = new CustomEvent('scaleclick', { bubbles: true, detail: { event, value } });
+      event.target.dispatchEvent(scaleEvent);
+    }
   }
 }
 
