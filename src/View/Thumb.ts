@@ -167,7 +167,7 @@ class Thumb {
       pxValues.push(pxValue);
       pxValue += pxStep;
     }
-
+    this.slider.pxValues = pxValues;
     return pxValues;
   }
 

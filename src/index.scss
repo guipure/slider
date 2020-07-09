@@ -45,20 +45,20 @@
 }
 
 .scale_horizontal {
-  display: flex;
-  justify-content: space-between;
   position: relative;
   top: 30px;
   width: 100%;
 }
 
 .scale_vertical {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
   position: relative;
   left: 30px;
   height: 100%;
+}
+
+.scale__value {
+  position: absolute;
+  text-align: center;
 }
 
 .settings {

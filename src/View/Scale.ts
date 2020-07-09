@@ -1,4 +1,4 @@
-import View from "./View";
+import View from './View';
 
 class Scale {
   private element: HTMLElement;
@@ -13,29 +13,47 @@ class Scale {
   }
 
   private initScale() {
-    const values = this.slider.state.values;
+    const { values } = this.slider.state;
+    const { pxValues } = this.slider;
 
-    if (!values) throw Error('Values not found');
+    if (!values || !pxValues) throw Error('Values not found');
 
     this.element.innerHTML = '';
     this.element.className = `scale_${this.slider.state.orientation}`;
     let inc;
+    const maxIndex = values.length - 1;
+    const max = values[maxIndex];
 
     if (values.length <= 10) {
       inc = 1;
+    } else if (max < 1000) {
+      inc = Math.round(values.length / 7);
     } else {
-      inc = Math.round(values.length / 10);
+      inc = Math.round(values.length / 5);
     }
 
-    for (let index = 0; index < values.length; index += inc) {
-      this.element.append(this.createScaleValue(values[index]));
+    for (let index = 0; index < maxIndex; index += inc) {
+      if (maxIndex - index < inc) break;
+      this.element.append(this.createScaleValue(values[index], pxValues[index]));
     }
+
+    this.element.append(this.createScaleValue(max, pxValues[maxIndex]));
   }
 
-  private createScaleValue(value: number): HTMLElement {
+  private createScaleValue(value: number, position: number): HTMLElement {
     const scaleValue = document.createElement('span');
     scaleValue.className = 'scale__value';
     scaleValue.innerHTML = value.toString();
+
+    if (this.slider.state.orientation === 'horizontal') {
+      const width = 50;
+      scaleValue.style.width = `${width}px`;
+      scaleValue.style.left = `${position - width / 2}px`;
+    } else {
+      const height = 20;
+      scaleValue.style.height = `${height}px`;
+      scaleValue.style.top = `${position - height / 2}px`;
+    }
     return scaleValue;
   }
 }

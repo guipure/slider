@@ -17,6 +17,8 @@ class View {
 
   private otherThumb?: Thumb;
 
+  public pxValues?: number[];
+
   constructor(private anchor: HTMLElement, private options: ViewOptions) {
     this.state = { ...options };
     this.events = new EventManager();
