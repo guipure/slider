@@ -146,24 +146,20 @@ class Thumb {
   }
 
   private valueToPx(value: number): number {
-    const { values } = this.slider.state;
-    if (!values) throw Error('Values not found');
+    const { values, pxValues } = this.slider.state;
+    if (!values || !pxValues) throw Error('Values not found');
     const sliderPosition = this.slider.getSliderPosition();
     let sliderStart;
-    let sliderEnd;
 
     if (this.slider.state.orientation === 'horizontal') {
       sliderStart = sliderPosition.left;
-      sliderEnd = sliderPosition.right;
     } else {
       sliderStart = sliderPosition.top;
-      sliderEnd = sliderPosition.bottom;
     }
 
-    const pxStep = (sliderEnd - sliderStart) / (values.length - 1);
     const index = values.findIndex((x) => x === value);
 
-    return pxStep * index + sliderStart;
+    return pxValues[index] + sliderStart;
   }
 
   private onMouseDown(event: any) {
