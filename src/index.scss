@@ -28,6 +28,21 @@
   height: 100%;
 }
 
+.bar {
+  background-color: dodgerblue;
+  opacity: 0.5;
+  position: relative;
+  border-radius: 20px;
+}
+
+.bar-horizontal {
+  height: 10px;
+}
+
+.bar-vertical {
+  width: 10px;
+}
+
 .thumb {
   position: absolute;
   display: inline-block;
@@ -36,6 +51,7 @@
   background-color: dodgerblue;
   cursor: pointer;
   border-radius: 50%;
+  z-index: 2;
 }
 
 .thumb-label {

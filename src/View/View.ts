@@ -30,12 +30,12 @@ class View {
     this.state = { ...currentState, ...newState };
     if (!this.state.values) throw Error('Values not found');
     this.createPxValues(this.state.values);
-    
-    if (currentState.orientation !== newState.orientation) {
+
+    if (newState.orientation && currentState.orientation !== newState.orientation) {
       this.element.remove();
       this.createSlider();
     }
-
+    
     const {from, to, type, values} = this.state;
 
     if (to < from && type !== 'single') {
@@ -54,6 +54,18 @@ class View {
     this.events.notify('newViewState', this.state);
   }
 
+  public getThumbsPositions(): number[] {
+    const thumbs = this.element.querySelectorAll('.thumb');
+
+    const calculatePosition = (element: any): number => {
+      const prop: 'left' | 'top' = this.state.orientation === 'horizontal' ? 'left' : 'top';
+      return element.getBoundingClientRect()[prop] + element.getBoundingClientRect().width;
+    };
+
+    const thumbsPositions: number[] = [calculatePosition(thumbs[0]), calculatePosition(thumbs[1])].sort((a, b) => a - b);
+    return thumbsPositions
+  }
+
   private createSlider(): void {
     this.element = document.createElement('div');
     this.element.className = 'slider';
@@ -64,19 +76,24 @@ class View {
     if (this.state.values) {
       this.createPxValues(this.state.values);
     }
-    this.track = new Track(this);
     this.thumb = new Thumb(this);
     this.otherThumb = new Thumb(this);
+    this.track = new Track(this);
     new Scale(this);
   }
 
-  private onTrackClick(event: any) {
+  private onTrackClick(event: any): void {
     let value: number;
 
     if (this.state.orientation === 'horizontal') {
       value = this.convertPxToValue(event.detail.clientX);
     } else {
       value = this.convertPxToValue(event.detail.clientY);
+    }
+
+    if (this.state.type === 'single') {
+      this.setState( {from: value});
+      return;
     }
     
     const fromDistance = Math.abs(this.state.from - value);
@@ -89,8 +106,14 @@ class View {
     }
   }
 
-  private onScaleClick(event: any) {
+  private onScaleClick(event: any): void {
     const value = event.detail.value;
+
+    if (this.state.type === 'single') {
+      this.setState( {from: value});
+      return;
+    }
+
     const fromDistance = Math.abs(this.state.from - value);
     const toDistance = Math.abs(this.state.to - value);
 
@@ -127,22 +150,14 @@ class View {
   }
 
   private isFromOrTo(coordinate: number): 'from' | 'to' {
-    const thumbs = this.element.querySelectorAll('.thumb');
-
-    const calculatePosition = (element: any): number => {
-      const prop: 'left' | 'top' = this.state.orientation === 'horizontal' ? 'left' : 'top';
-      return element.getBoundingClientRect()[prop] + element.getBoundingClientRect().width;
-    };
-
-    const thumbPositions: number[] = [calculatePosition(thumbs[0]), calculatePosition(thumbs[1])].sort((a, b) => a - b);
-
-    const fromDistancePx = Math.abs(thumbPositions[0] - coordinate);
-    const toDistancePx = Math.abs(thumbPositions[1] - coordinate);
+    const thumbsPositions = this.getThumbsPositions();
+    const fromDistancePx = Math.abs(thumbsPositions[0] - coordinate);
+    const toDistancePx = Math.abs(thumbsPositions[1] - coordinate);
  
     return (fromDistancePx < toDistancePx) ? 'from' : 'to'
   }
 
-  private onThumbMouseDown(event: any) {
+  private onThumbMouseDown(event: any): void {
     const isHorizontal = this.state.orientation === 'horizontal'
     let axis: 'clientX' | 'clientY' = isHorizontal ? 'clientX' : 'clientY';
 
@@ -181,26 +196,6 @@ class View {
     const diffArray = array.map((x) => Math.abs(x - value));
     const minDiff = Math.min(...diffArray);
     return diffArray.findIndex((x) => x === minDiff);
-  }
-
-  private closestThumb(coordinate: number): Thumb {
-    if (!this.thumb) {
-      throw Error('Thumb not found');
-    }
-
-    if (!this.otherThumb) {
-      return this.thumb;
-    }
-
-    const thumbHalfWidth = this.thumb.element.getBoundingClientRect().width / 2;
-    const side: 'left' | 'top' = this.state.orientation === 'horizontal' ? 'left' : 'top';
-    const thumbPosition = this.thumb.element.getBoundingClientRect()[side] + thumbHalfWidth;
-    const otherThumbPosition = this.otherThumb.element.getBoundingClientRect()[side] + thumbHalfWidth;
-
-    if (Math.abs(thumbPosition - coordinate) < Math.abs(otherThumbPosition - coordinate)) {
-      return this.thumb;
-    }
-    return this.otherThumb;
   }
 
   public getSliderPosition() {
