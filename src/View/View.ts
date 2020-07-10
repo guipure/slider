@@ -3,6 +3,7 @@ import Track from './Track';
 import Thumb from './Thumb';
 import EventManager from '../EventManager/EventManager';
 import { Scale } from './Scale';
+import Presenter from '../Presenter/Presenter';
 
 class View {
   public state: ViewOptions;
@@ -27,16 +28,30 @@ class View {
   public setState(newState: any) {
     const currentState: ViewOptions = this.state;
     this.state = { ...currentState, ...newState };
-    if (this.state.values) {
-      this.createPxValues(this.state.values);
-    }
-
+    if (!this.state.values) throw Error('Values not found');
+    this.createPxValues(this.state.values);
+    
     if (currentState.orientation !== newState.orientation) {
       this.element.remove();
       this.createSlider();
-    } else {
-      this.events.notify('newViewState', this.state);
     }
+
+    const {from, to, type, values} = this.state;
+
+    if (to < from && type !== 'single') {
+      [this.state.to, this.state.from] = [from, to];
+    }
+
+    if (to === from && type !== 'single') {
+      const index = values.findIndex(val => val === to);
+      if (index + 1 < values.length) {
+        this.state.to = values[index + 1];
+      } else if (index > 0) {
+        this.state.from = values[index - 1];
+      }
+    }
+
+    this.events.notify('newViewState', this.state);
   }
 
   private createSlider(): void {
@@ -44,6 +59,7 @@ class View {
     this.element.className = 'slider';
     this.element.addEventListener('trackclick', this.onTrackClick.bind(this));
     this.element.addEventListener('scaleclick', this.onScaleClick.bind(this));
+    this.element.addEventListener('thumbmousedown', this.onThumbMouseDown.bind(this));
     this.anchor.prepend(this.element);
     if (this.state.values) {
       this.createPxValues(this.state.values);
@@ -82,6 +98,67 @@ class View {
       this.setState( {from: value});
     } else {
       this.setState( {to: value});
+    }
+  }
+
+  private setFromTo(side: 'from' | 'to', coordinate: number): void {
+    const value = this.convertPxToValue(coordinate);
+    const fromDistance = Math.abs(this.state.from - value);
+    const toDistance = Math.abs(this.state.to - value);
+
+    if (this.state.type === 'single') {
+      if (fromDistance) {
+        this.setState( {from: value});
+        return;
+      }
+    }
+
+    if (fromDistance * toDistance === 0) return;
+
+    if (side === 'from') {
+      if (this.state.to > value) {
+        this.setState( {from: value});
+      }
+    } else {
+      if (this.state.from < value) {
+        this.setState( {to: value});
+      }
+    }
+  }
+
+  private isFromOrTo(coordinate: number): 'from' | 'to' {
+    const thumbs = this.element.querySelectorAll('.thumb');
+
+    const calculatePosition = (element: any): number => {
+      const prop: 'left' | 'top' = this.state.orientation === 'horizontal' ? 'left' : 'top';
+      return element.getBoundingClientRect()[prop] + element.getBoundingClientRect().width;
+    };
+
+    const thumbPositions: number[] = [calculatePosition(thumbs[0]), calculatePosition(thumbs[1])].sort((a, b) => a - b);
+
+    const fromDistancePx = Math.abs(thumbPositions[0] - coordinate);
+    const toDistancePx = Math.abs(thumbPositions[1] - coordinate);
+ 
+    return (fromDistancePx < toDistancePx) ? 'from' : 'to'
+  }
+
+  private onThumbMouseDown(event: any) {
+    const isHorizontal = this.state.orientation === 'horizontal'
+    let axis: 'clientX' | 'clientY' = isHorizontal ? 'clientX' : 'clientY';
+
+    const side = this.isFromOrTo(event.detail[axis])
+    this.setFromTo(side, event.detail[axis]);
+
+    const onMouseMove = (event: any) => {
+      this.setFromTo(side, event[axis]);
+    };
+
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+
+    function onMouseUp() {
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
     }
   }
 

@@ -174,6 +174,11 @@ class Settings {
     this.state = { ...this.state, ...newSetting };
     this.events.notify('newSettings', this.state);
   }
+
+  public updateFromTo(newSetting: any) {
+    this.state = { ...this.state, ...newSetting };
+    this.initValues();
+  }
 }
 
 export { Settings };

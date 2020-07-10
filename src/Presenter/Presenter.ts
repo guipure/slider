@@ -25,6 +25,9 @@ class Presenter {
       this.view.setState(newOptions as ViewOptions);
       this.model.setState(newOptions as ModelOptions);
     });
+    this.view.events.subscribe('newViewState', (newState: ViewOptions) => {
+      this.settings.updateFromTo(newState);
+    })
   }
 }
 

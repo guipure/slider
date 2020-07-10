@@ -13,12 +13,6 @@ class Thumb {
     this.element = this.createThumb();
     this.update(slider.state);
 
-    if (this.element.classList.contains('thumb-first')) {
-      this.moveThumbAtValue(slider.state.from);
-    } else {
-      this.moveThumbAtValue(slider.state.to);
-    }
-
     const label = new ThumbLabel(this, slider);
     this.slider.events.subscribe('newViewState', this.update.bind(this));
   }
@@ -29,6 +23,9 @@ class Thumb {
     const thumbNumber: 'first' | 'second' = doesOtherThumbExist ? 'second' : 'first';
     thumb.className = `thumb thumb-${this.slider.state.orientation} thumb-${thumbNumber}`;
     thumb.addEventListener('mousedown', this.onMouseDown.bind(this));
+    thumb.ondragstart = function () {
+      return false;
+    };
     this.slider.element.append(thumb);
     return thumb;
   }
@@ -41,7 +38,7 @@ class Thumb {
         this.showThumb();
       }
     }
-
+    
     if (this.element.classList.contains('thumb-first')) {
       if (this.getPosition() !== this.slider.state.from) {
         this.moveThumbAtValue(this.slider.state.from);
@@ -122,9 +119,9 @@ class Thumb {
     const prevPosition: number = this.element.getBoundingClientRect()[thumbProp] - sliderStart;
     this.element.style[thumbProp] = `${this.fixCoordinate(coordinate - sliderStart) - thumbHalfWidth}px`;
 
-    if (this.hasCollision()) {
-      this.element.style[thumbProp] = `${prevPosition}px`;
-    }
+    // if (this.hasCollision()) {
+    //   this.element.style[thumbProp] = `${prevPosition}px`;
+    // }
 
     this.events.notify('thumbMove');
   }
@@ -163,30 +160,8 @@ class Thumb {
   }
 
   private onMouseDown(event: any) {
-    const thumb = this.element;
-    if (!thumb) {
-      throw 'Thumb not found';
-    }
-    const { orientation } = this.slider.state;
-    const coordinate = getCoordinate(event);
-    this.moveThumbAt(coordinate);
-    const onMouseMove = (event: any) => this.moveThumbAt(getCoordinate(event));
-    document.addEventListener('mousemove', onMouseMove);
-    document.addEventListener('mouseup', onMouseUp);
-
-    function getCoordinate(event: any) {
-      const coordinate = orientation === 'horizontal' ? event.clientX : event.clientY;
-      return coordinate;
-    }
-
-    function onMouseUp() {
-      document.removeEventListener('mousemove', onMouseMove);
-      document.removeEventListener('mouseup', onMouseUp);
-    }
-
-    thumb.ondragstart = function () {
-      return false;
-    };
+    const mouseDownEvent = new CustomEvent('thumbmousedown', { bubbles: true, detail: event });
+    this.element.dispatchEvent(mouseDownEvent);
   }
 }
 
