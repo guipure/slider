@@ -1,17 +1,16 @@
-const path = require('path')
-const webpack = require('webpack')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const HTMLWebpackPlugin = require('html-webpack-plugin')
-
+const path = require('path');
+const webpack = require('webpack');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const HTMLWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   entry: './src/index.ts',
   output: {
     filename: '[name].js',
-    path: path.resolve(__dirname, 'dist')
+    path: path.resolve(__dirname, 'dist'),
   },
   resolve: {
-    extensions: ['.js', '.ts', '.json']
+    extensions: ['.js', '.ts', '.json'],
   },
   module: {
     rules: [
@@ -24,14 +23,14 @@ module.exports = {
         use: [
           MiniCssExtractPlugin.loader,
           'css-loader',
-          'sass-loader'
-        ]
-      }
-    ]
+          'sass-loader',
+        ],
+      },
+    ],
   },
   plugins: [
     new MiniCssExtractPlugin({
-      filename: '[name].css'
+      filename: '[name].css',
     }),
     new webpack.ProvidePlugin({
       $: 'jquery',
@@ -40,7 +39,7 @@ module.exports = {
     }),
     new HTMLWebpackPlugin({
       filename: 'index.html',
-      template: './src/index.html'
-    })
-  ]
-}
+      template: './src/index.html',
+    }),
+  ],
+};

@@ -6,6 +6,6 @@
     "strict": true,
     "esModuleInterop": true
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "webpack.config.js"]
+  "include": ["src/**/*", "test/*", "webpack.config.js", "babel.config.js"],
+  "exclude": ["node_modules"]
 }
