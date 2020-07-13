@@ -1,9 +1,8 @@
 import { ViewOptions } from '../Presenter/Options';
-import Track from './Track';
-import Thumb from './Thumb';
-import EventManager from '../EventManager/EventManager';
+import { Track } from './Track';
+import { Thumb } from './Thumb';
+import { EventManager } from '../EventManager/EventManager';
 import { Scale } from './Scale';
-import Presenter from '../Presenter/Presenter';
 
 class View {
   public state: ViewOptions;
@@ -35,15 +34,17 @@ class View {
       this.element.remove();
       this.createSlider();
     }
-    
-    const {from, to, type, values} = this.state;
+
+    const {
+      from, to, type, values,
+    } = this.state;
 
     if (to < from && type !== 'single') {
       [this.state.to, this.state.from] = [from, to];
     }
 
     if (to === from && type !== 'single') {
-      const index = values.findIndex(val => val === to);
+      const index = values.findIndex((val) => val === to);
       if (index + 1 < values.length) {
         this.state.to = values[index + 1];
       } else if (index > 0) {
@@ -62,8 +63,8 @@ class View {
       return element.getBoundingClientRect()[prop] + element.getBoundingClientRect().width;
     };
 
-    const thumbsPositions: number[] = [calculatePosition(thumbs[0]), calculatePosition(thumbs[1])].sort((a, b) => a - b);
-    return thumbsPositions
+    const thumbsPositions: number[] = [calculatePosition(thumbs[0]), calculatePosition(thumbs[1])];
+    return thumbsPositions.sort((a, b) => a - b);
   }
 
   private createSlider(): void {
@@ -92,25 +93,25 @@ class View {
     }
 
     if (this.state.type === 'single') {
-      this.setState( {from: value});
+      this.setState({ from: value });
       return;
     }
-    
+
     const fromDistance = Math.abs(this.state.from - value);
     const toDistance = Math.abs(this.state.to - value);
 
     if (fromDistance < toDistance) {
-      this.setState( {from: value});
+      this.setState({ from: value });
     } else {
-      this.setState( {to: value});
+      this.setState({ to: value });
     }
   }
 
   private onScaleClick(event: any): void {
-    const value = event.detail.value;
+    const { value } = event.detail;
 
     if (this.state.type === 'single') {
-      this.setState( {from: value});
+      this.setState({ from: value });
       return;
     }
 
@@ -118,9 +119,9 @@ class View {
     const toDistance = Math.abs(this.state.to - value);
 
     if (fromDistance < toDistance) {
-      this.setState( {from: value});
+      this.setState({ from: value });
     } else {
-      this.setState( {to: value});
+      this.setState({ to: value });
     }
   }
 
@@ -131,7 +132,7 @@ class View {
 
     if (this.state.type === 'single') {
       if (fromDistance) {
-        this.setState( {from: value});
+        this.setState({ from: value });
         return;
       }
     }
@@ -140,12 +141,10 @@ class View {
 
     if (side === 'from') {
       if (this.state.to > value) {
-        this.setState( {from: value});
+        this.setState({ from: value });
       }
-    } else {
-      if (this.state.from < value) {
-        this.setState( {to: value});
-      }
+    } else if (this.state.from < value) {
+      this.setState({ to: value });
     }
   }
 
@@ -153,19 +152,19 @@ class View {
     const thumbsPositions = this.getThumbsPositions();
     const fromDistancePx = Math.abs(thumbsPositions[0] - coordinate);
     const toDistancePx = Math.abs(thumbsPositions[1] - coordinate);
- 
-    return (fromDistancePx < toDistancePx) ? 'from' : 'to'
+
+    return (fromDistancePx < toDistancePx) ? 'from' : 'to';
   }
 
   private onThumbMouseDown(event: any): void {
-    const isHorizontal = this.state.orientation === 'horizontal'
-    let axis: 'clientX' | 'clientY' = isHorizontal ? 'clientX' : 'clientY';
+    const isHorizontal = this.state.orientation === 'horizontal';
+    const axis: 'clientX' | 'clientY' = isHorizontal ? 'clientX' : 'clientY';
 
-    const side = this.isFromOrTo(event.detail[axis])
+    const side = this.isFromOrTo(event.detail[axis]);
     this.setFromTo(side, event.detail[axis]);
 
-    const onMouseMove = (event: any) => {
-      this.setFromTo(side, event[axis]);
+    const onMouseMove = (moveEvent: any) => {
+      this.setFromTo(side, moveEvent[axis]);
     };
 
     document.addEventListener('mousemove', onMouseMove);
@@ -215,7 +214,7 @@ class View {
     const pxValues = [];
     const pxStep = sliderLength / (values.length - 1);
     let pxValue = 0;
-    
+
     while (pxValues.length < values.length) {
       pxValues.push(pxValue);
       pxValue += pxStep;
@@ -225,4 +224,4 @@ class View {
   }
 }
 
-export default View;
+export { View };

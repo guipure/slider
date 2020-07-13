@@ -1,4 +1,5 @@
-import Presenter from './Presenter/Presenter';
+/* eslint-disable func-names */
+import { Presenter } from './Presenter/Presenter';
 import { Options } from './Presenter/Options';
 
 declare global {
@@ -8,7 +9,8 @@ declare global {
 }
 
 (function ($) {
-  $.fn.slider = function (options: Options): void {
-    new Presenter(this.get(0), options);
+  $.fn.slider = function (options: Options): Presenter {
+    const slider: Presenter = new Presenter(this.get(0), options);
+    return slider;
   };
 }(jQuery));

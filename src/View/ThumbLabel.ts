@@ -1,8 +1,8 @@
-import Thumb from './Thumb';
-import View from './View';
+import { Thumb } from './Thumb';
+import { View } from './View';
 
 class ThumbLabel {
-  private element: HTMLElement
+  private element: HTMLElement;
 
   constructor(private thumb: Thumb, private slider: View) {
     this.element = document.createElement('div');

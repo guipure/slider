@@ -1,12 +1,12 @@
-import Model from '../Model/Model';
-import View from '../View/View';
+import { Model } from '../Model/Model';
+import { View } from '../View/View';
 import { Options, ViewOptions, ModelOptions } from './Options';
 import { Settings } from '../View/Settings';
 
 class Presenter {
-  private view: View
+  private view: View;
 
-  private model: Model
+  private model: Model;
 
   private settings: Settings;
 
@@ -27,8 +27,8 @@ class Presenter {
     });
     this.view.events.subscribe('newViewState', (newState: ViewOptions) => {
       this.settings.updateFromTo(newState);
-    })
+    });
   }
 }
 
-export default Presenter;
+export { Presenter };

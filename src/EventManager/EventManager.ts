@@ -5,7 +5,7 @@ interface Callbacks {
 }
 
 class EventManager {
-  private callbacks: Callbacks = {}
+  private callbacks: Callbacks = {};
 
   public subscribe(eventType: string, callback: EventCallback): void {
     const eventCallbacks = this.callbacks[eventType];
@@ -28,4 +28,4 @@ class EventManager {
   }
 }
 
-export default EventManager;
+export { EventManager };

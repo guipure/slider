@@ -1,8 +1,8 @@
-import { ViewOptions } from '../Presenter/Options';
-import View from './View';
+import { View } from './View';
 
 class Track {
   private element: HTMLElement;
+
   private bar: HTMLElement;
 
   constructor(private slider: View) {
@@ -50,4 +50,4 @@ class Track {
   }
 }
 
-export default Track;
+export { Track };

@@ -1,19 +1,24 @@
-import View from './View';
+import { View } from './View';
 
 class Scale {
   private element: HTMLElement;
 
   constructor(private slider: View) {
-    this.element = document.createElement('div');
-    this.element.className = `scale_${slider.state.orientation}`;
-    this.element.addEventListener('click', this.onClick);
-    this.initScale();
+    this.element = this.createScale();
+    this.updateScale();
     this.slider.element.append(this.element);
-    this.initScale = this.initScale.bind(this);
-    slider.events.subscribe('newViewState', this.initScale);
+    this.updateScale = this.updateScale.bind(this);
+    slider.events.subscribe('newViewState', this.updateScale);
   }
 
-  private initScale(): void {
+  private createScale(): HTMLElement {
+    const element = document.createElement('div');
+    element.className = `scale_${this.slider.state.orientation}`;
+    element.addEventListener('click', this.onClick);
+    return element;
+  }
+
+  private updateScale(): void {
     if (this.slider.state.hide_scale) {
       this.element.style.display = 'none';
       return;

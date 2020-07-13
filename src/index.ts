@@ -1,7 +1,7 @@
 import './index.scss';
 import './plugin';
 
-$('.slider-wrapper').slider({
+$('.js-slider-wrapper').slider({
   orientation: 'horizontal',
   type: 'double',
   min: 1,
@@ -13,7 +13,7 @@ $('.slider-wrapper').slider({
   hide_scale: false,
 });
 
-$('.another').slider({
+$('.js-another').slider({
   orientation: 'vertical',
   type: 'double',
   min: 1,

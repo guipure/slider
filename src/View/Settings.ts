@@ -1,4 +1,4 @@
-import EventManager from '../EventManager/EventManager';
+import { EventManager } from '../EventManager/EventManager';
 import { Options } from '../Presenter/Options';
 
 class Settings {
@@ -12,6 +12,11 @@ class Settings {
     this.form.className = 'settings';
     anchor.append(this.form);
     this.createSettings();
+    this.initValues();
+  }
+
+  public updateFromTo(newSetting: any) {
+    this.state = { ...this.state, ...newSetting };
     this.initValues();
   }
 
@@ -100,32 +105,15 @@ class Settings {
           input.value = this.state.max.toString();
           break;
         case 'step':
-          const stepCheck = (num: number): number => (num > 0 ? num : 1);
-          input.onchange = () => this.setState({ step: stepCheck(Number(input.value)) });
+          input.onchange = () => this.setStep(Number(input.value));
           input.value = this.state.step.toString();
           break;
         case 'from':
-          const onChangeFrom = () => {
-            let from = Number(input.value);
-            if (from < this.state.min) {
-              from = this.state.min;
-            }
-            this.setState({ from });
-            input.value = from.toString();
-          };
-          input.onchange = onChangeFrom;
+          input.onchange = () => this.onChangeFrom(Number(input.value));
           input.value = this.state.from.toString();
           break;
         case 'to':
-          const onChangeTo = () => {
-            let to = Number(input.value);
-            if (to > this.state.max) {
-              to = this.state.max;
-            }
-            this.setState({ to });
-            input.value = to.toString();
-          };
-          input.onchange = onChangeTo;
+          input.onchange = () => this.onChangeTo(Number(input.value));
           input.value = this.state.to.toString();
           break;
         case 'orientation':
@@ -149,10 +137,10 @@ class Settings {
           }
           break;
         case 'hide_from_to':
-          alert('hide');
           input.onchange = () => this.setState({ hide_from_to: Boolean(input.value) });
           input.value = this.state.hide_from_to.toString();
           break;
+        // no default
       }
 
       selects.forEach((select: HTMLSelectElement) => {
@@ -164,7 +152,7 @@ class Settings {
           case 'hide_scale':
             select.onchange = () => this.setState({ hide_scale: select.value === 'true' });
             select.value = this.state.hide_scale.toString();
-            break;
+          // no default
         }
       });
     });
@@ -175,9 +163,23 @@ class Settings {
     this.events.notify('newSettings', this.state);
   }
 
-  public updateFromTo(newSetting: any) {
-    this.state = { ...this.state, ...newSetting };
-    this.initValues();
+  private setStep(num: number): void {
+    const step = num > 0 ? num : 1;
+    this.setState({ step });
+  }
+
+  private onChangeFrom(num: number): void {
+    const { min } = this.state;
+    const isValid = num >= min;
+    const from = isValid ? num : min;
+    this.setState({ from });
+  }
+
+  private onChangeTo(num: number): void {
+    const { max } = this.state;
+    const isValid = num <= max;
+    const to = isValid ? num : max;
+    this.setState({ to });
   }
 }
 

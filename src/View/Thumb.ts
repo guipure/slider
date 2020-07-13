@@ -1,7 +1,7 @@
 import { ViewOptions } from '../Presenter/Options';
-import View from './View';
+import { View } from './View';
 import { ThumbLabel } from './ThumbLabel';
-import EventManager from '../EventManager/EventManager';
+import { EventManager } from '../EventManager/EventManager';
 
 class Thumb {
   public element: HTMLElement;
@@ -38,15 +38,13 @@ class Thumb {
         this.showThumb();
       }
     }
-    
+
     if (this.element.classList.contains('thumb-first')) {
       if (this.getPosition() !== this.slider.state.from) {
         this.moveThumbAtValue(this.slider.state.from);
       }
-    } else {
-      if (this.getPosition() !== this.slider.state.to) {
-        this.moveThumbAtValue(this.slider.state.to);
-      }
+    } else if (this.getPosition() !== this.slider.state.to) {
+      this.moveThumbAtValue(this.slider.state.to);
     }
 
     this.events.notify('thumbUpdate');
@@ -116,7 +114,7 @@ class Thumb {
     }
 
     const sliderStart: number = this.slider.getSliderPosition()[thumbProp];
-    const prevPosition: number = this.element.getBoundingClientRect()[thumbProp] - sliderStart;
+    // const prevPosition: number = this.element.getBoundingClientRect()[thumbProp] - sliderStart;
     this.element.style[thumbProp] = `${this.fixCoordinate(coordinate - sliderStart) - thumbHalfWidth}px`;
 
     // if (this.hasCollision()) {
@@ -131,7 +129,7 @@ class Thumb {
   }
 
   private fixCoordinate(coordinate: number): number {
-    if (!this.slider.state.pxValues) throw 'Values not found';
+    if (!this.slider.state.pxValues) throw new Error('Values not found');
     const index = this.closestIndex(this.slider.state.pxValues, coordinate);
     return this.slider.state.pxValues[index];
   }
@@ -165,4 +163,4 @@ class Thumb {
   }
 }
 
-export default Thumb;
+export { Thumb };

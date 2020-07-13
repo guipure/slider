@@ -1,5 +1,5 @@
 import { ModelOptions } from '../Presenter/Options';
-import EventManager from '../EventManager/EventManager';
+import { EventManager } from '../EventManager/EventManager';
 
 class Model {
   public state: ModelOptions;
@@ -14,7 +14,7 @@ class Model {
     this.setState = this.setState.bind(this);
   }
 
-  public setState(newState: ModelOptions) {
+  public setState(newState: ModelOptions): void {
     this.state = { ...this.state, ...newState };
     this.state.values = this.calculateValues();
   }
@@ -27,7 +27,7 @@ class Model {
     }
 
     if (step <= 0) {
-      throw 'Step must be positive number';
+      throw new Error('Step must be positive number');
     }
   }
 
@@ -48,4 +48,4 @@ class Model {
   }
 }
 
-export default Model;
+export { Model };
