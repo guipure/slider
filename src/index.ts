@@ -4,7 +4,7 @@ import './plugin';
 $('.js-slider-wrapper').slider({
   orientation: 'horizontal',
   type: 'double',
-  min: 1,
+  min: 100,
   max: 10,
   step: 1,
   from: 3,

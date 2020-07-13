@@ -1,38 +1,49 @@
-import { ModelOptions } from '../Presenter/Options';
+import { ModelOptions, ModelState } from '../Presenter/Options';
 import { EventManager } from '../EventManager/EventManager';
 
 class Model {
-  public state: ModelOptions;
+  public state: ModelState;
 
   public events: EventManager;
 
-  constructor(private options: ModelOptions) {
+  constructor(options: ModelOptions) {
     this.events = new EventManager();
-    this.checkOptions();
-    this.state = { ...options };
-    this.state.values = this.calculateValues();
+    this.state = this.init(options);
+  }
+
+  public setState(options: ModelOptions): void {
+    const correctedOptions = this.correctOptions(options);
+    const values = this.calculateValues(correctedOptions);
+    this.state = { ...correctedOptions, values };
+  }
+
+  private init(options: ModelOptions): ModelState {
+    this.setState(options);
     this.setState = this.setState.bind(this);
+    return this.state;
   }
 
-  public setState(newState: ModelOptions): void {
-    this.state = { ...this.state, ...newState };
-    this.state.values = this.calculateValues();
-  }
-
-  private checkOptions(): void {
-    const { min, max, step } = this.options;
-
-    if (min > max) {
-      [this.options.max, this.options.min] = [min, max];
-    }
+  private correctOptions(options: ModelOptions): ModelOptions {
+    const { min, max, step } = options;
+    const correctedOptions: ModelOptions = { ...options };
 
     if (step <= 0) {
-      throw new Error('Step must be positive number');
+      correctedOptions.step = 1;
     }
+
+    if (min > max) {
+      [correctedOptions.min, correctedOptions.max] = [max, min];
+    }
+
+    if (min === max) {
+      correctedOptions.max = min + step;
+    }
+
+    return correctedOptions;
   }
 
-  private calculateValues(): number[] {
-    const { min, max, step } = this.state;
+  private calculateValues(options: ModelOptions): number[] {
+    const { min, max, step } = options;
     const values: number[] = [];
     let currVal = min;
 

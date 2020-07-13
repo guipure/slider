@@ -38,6 +38,7 @@
     "no-console": ["error", { "allow": ["info", "warn", "error"] }],
     "lines-between-class-members": ["error", "always", { "exceptAfterSingleLine": true }],
     "no-undef": "off",
-    "no-param-reassign": "off"
+    "no-param-reassign": "off",
+    "class-methods-use-this": "off"
   }
 }

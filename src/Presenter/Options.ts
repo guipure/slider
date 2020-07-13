@@ -25,7 +25,12 @@ interface ModelOptions {
   min: number,
   max: number,
   step: number,
-  values?: number[],
 }
 
-export { Options, ViewOptions, ModelOptions };
+interface ModelState extends ModelOptions {
+  values: number[],
+}
+
+export {
+  Options, ViewOptions, ModelOptions, ModelState,
+};
