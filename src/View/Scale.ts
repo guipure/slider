@@ -5,10 +5,13 @@ class Scale {
 
   constructor(private slider: View) {
     this.element = this.createScale();
-    this.updateScale();
+    this.init();
+  }
+
+  private init(): void {
+    this.update();
     this.slider.element.append(this.element);
-    this.updateScale = this.updateScale.bind(this);
-    slider.events.subscribe('newViewState', this.updateScale);
+    this.slider.events.subscribe('newViewState', this.update.bind(this));
   }
 
   private createScale(): HTMLElement {
@@ -18,20 +21,21 @@ class Scale {
     return element;
   }
 
-  private updateScale(): void {
+  private update(): void {
     if (this.slider.state.hide_scale) {
       this.element.style.display = 'none';
       return;
     }
+
     this.element.style.display = 'block';
-
-    const { values } = this.slider.state;
-    const { pxValues } = this.slider.state;
-
-    if (!values || !pxValues) throw Error('Values not found');
-
     this.element.innerHTML = '';
     this.element.className = `scale_${this.slider.state.orientation}`;
+
+    const { values, pxValues } = this.slider.state;
+    this.insertScaleValues(values, pxValues);
+  }
+
+  private calculateIncrement(values: number[]): number {
     let inc;
     const maxIndex = values.length - 1;
     const max = values[maxIndex];
@@ -43,6 +47,14 @@ class Scale {
     } else {
       inc = Math.round(values.length / 5);
     }
+
+    return inc;
+  }
+
+  private insertScaleValues(values: number[], pxValues: number[]): void {
+    const inc = this.calculateIncrement(values);
+    const maxIndex = values.length - 1;
+    const max = values[maxIndex];
 
     for (let index = 0; index < maxIndex; index += inc) {
       if (maxIndex - index < inc) break;
@@ -69,7 +81,7 @@ class Scale {
     return scaleValue;
   }
 
-  private onClick(event: Event) {
+  private onClick(event: Event): void {
     if (event.target instanceof HTMLElement) {
       const value: number = Number(event.target.innerHTML);
       const scaleEvent = new CustomEvent('scaleclick', { bubbles: true, detail: { event, value } });

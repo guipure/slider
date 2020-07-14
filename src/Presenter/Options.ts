@@ -15,10 +15,13 @@ interface ViewOptions {
   to: number,
   orientation: 'horizontal' | 'vertical',
   type: 'single' | 'double',
-  values?: number[],
-  pxValues?: number[],
   hide_from_to: boolean,
   hide_scale: boolean,
+}
+
+interface ViewState extends ViewOptions {
+  values: number[],
+  pxValues: number[],
 }
 
 interface ModelOptions {
@@ -32,5 +35,5 @@ interface ModelState extends ModelOptions {
 }
 
 export {
-  Options, ViewOptions, ModelOptions, ModelState,
+  Options, ViewOptions, ViewState, ModelOptions, ModelState,
 };
