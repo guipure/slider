@@ -16,7 +16,7 @@ class Scale {
 
   private createScale(): HTMLElement {
     const element = document.createElement('div');
-    element.className = `scale_${this.slider.state.orientation}`;
+    element.className = `scale scale_${this.slider.state.orientation}`;
     element.addEventListener('click', this.onClick);
     return element;
   }
@@ -29,7 +29,7 @@ class Scale {
 
     this.element.style.display = 'block';
     this.element.innerHTML = '';
-    this.element.className = `scale_${this.slider.state.orientation}`;
+    this.element.className = `scale scale_${this.slider.state.orientation}`;
 
     const { values, pxValues } = this.slider.state;
     this.insertScaleValues(values, pxValues);

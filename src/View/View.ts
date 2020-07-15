@@ -38,9 +38,27 @@ class View {
     this.events.notify('newViewState', this.state);
   }
 
+  public getThumbsPositions(): number[] {
+    const thumbs = this.element.querySelectorAll('.thumb');
+
+    const calculatePosition = (element: any): number => {
+      const prop: 'left' | 'top' = this.state.orientation === 'horizontal' ? 'left' : 'top';
+      return element.getBoundingClientRect()[prop] + element.getBoundingClientRect().width;
+    };
+
+    const thumbsPositions: number[] = [calculatePosition(thumbs[0]), calculatePosition(thumbs[1])];
+    return thumbsPositions.sort((a, b) => a - b);
+  }
+
+  public getSliderPosition() {
+    const prop: 'left' | 'top' = this.state.orientation === 'horizontal' ? 'left' : 'top';
+    return this.element.getBoundingClientRect()[prop];
+  }
+
   private init(options: ViewOptions, values: number[]): ViewState {
     const pxValues: number[] = this.createPxValues(options.orientation, values);
-    return { ...options, values, pxValues };
+    const correctedFromAndTo = this.correctFromAndTo(options as ViewState);
+    return { ...options, values, pxValues, ...correctedFromAndTo };
   }
 
   private createSlider(): HTMLElement {
@@ -200,23 +218,6 @@ class View {
     }
 
     return sliderPosition.height;
-  }
-
-  public getThumbsPositions(): number[] {
-    const thumbs = this.element.querySelectorAll('.thumb');
-
-    const calculatePosition = (element: any): number => {
-      const prop: 'left' | 'top' = this.state.orientation === 'horizontal' ? 'left' : 'top';
-      return element.getBoundingClientRect()[prop] + element.getBoundingClientRect().width;
-    };
-
-    const thumbsPositions: number[] = [calculatePosition(thumbs[0]), calculatePosition(thumbs[1])];
-    return thumbsPositions.sort((a, b) => a - b);
-  }
-
-  public getSliderPosition() {
-    const prop: 'left' | 'top' = this.state.orientation === 'horizontal' ? 'left' : 'top';
-    return this.element.getBoundingClientRect()[prop];
   }
 
   private getPxStep(orientation: Orientation, values: number[]): number {
