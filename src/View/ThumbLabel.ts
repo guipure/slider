@@ -1,9 +1,10 @@
 import { Thumb } from './Thumb';
+import { Orientation } from '../Presenter/Options';
 
 class ThumbLabel {
   private element: HTMLElement;
 
-  constructor(private thumb: Thumb, orientation: string, private hide_from_to: boolean) {
+  constructor(private thumb: Thumb, orientation: Orientation, private hide_from_to: boolean) {
     this.element = this.createLabel(orientation);
     this.init(thumb);
   }
@@ -16,7 +17,7 @@ class ThumbLabel {
     thumb.events.subscribe('thumbUpdate', this.update);
   }
 
-  private createLabel(orientation: string): HTMLElement {
+  private createLabel(orientation: Orientation): HTMLElement {
     const element = document.createElement('div');
     element.className = `thumb-label thumb-label_${orientation}`;
     return element;

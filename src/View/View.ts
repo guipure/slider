@@ -1,4 +1,4 @@
-import { ViewOptions, ViewState } from '../Presenter/Options';
+import { ViewOptions, ViewState, Orientation } from '../Presenter/Options';
 import { Track } from './Track';
 import { Thumb } from './Thumb';
 import { EventManager } from '../EventManager/EventManager';
@@ -184,7 +184,7 @@ class View {
     return diffArray.findIndex((x) => x === minDiff);
   }
 
-  private createPxValues(slider: HTMLElement, orientation: string, values: number[]): number[] {
+  private createPxValues(slider: HTMLElement, orientation: Orientation, values: number[]): number[] {
     const sliderPosition = slider.getBoundingClientRect();
     let sliderLength;
 

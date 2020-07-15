@@ -1,6 +1,9 @@
+type Orientation = 'horizontal' | 'vertical';
+type SliderType = 'single' | 'double';
+
 interface Options {
-  orientation: 'horizontal' | 'vertical',
-  type: 'single' | 'double',
+  orientation: Orientation,
+  type: SliderType,
   min: number,
   max: number,
   step: number,
@@ -13,8 +16,8 @@ interface Options {
 interface ViewOptions {
   from: number,
   to: number,
-  orientation: 'horizontal' | 'vertical',
-  type: 'single' | 'double',
+  orientation: Orientation,
+  type: SliderType,
   hide_from_to: boolean,
   hide_scale: boolean,
 }
@@ -35,5 +38,5 @@ interface ModelState extends ModelOptions {
 }
 
 export {
-  Options, ViewOptions, ViewState, ModelOptions, ModelState,
+  Options, ViewOptions, ViewState, ModelOptions, ModelState, Orientation, SliderType,
 };

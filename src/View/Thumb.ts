@@ -1,4 +1,4 @@
-import { ViewState } from '../Presenter/Options';
+import { ViewState, Orientation, SliderType } from '../Presenter/Options';
 import { View } from './View';
 import { ThumbLabel } from './ThumbLabel';
 import { EventManager } from '../EventManager/EventManager';
@@ -67,7 +67,7 @@ class Thumb {
     this.events.notify('thumbUpdate');
   }
 
-  private toggleThumb(type: 'single' | 'double'): void {
+  private toggleThumb(type: SliderType): void {
     if (this.element.classList.contains('thumb-second')) {
       if (type === 'single') {
         this.hideThumb();
@@ -118,7 +118,7 @@ class Thumb {
     this.element.dispatchEvent(mouseDownEvent);
   }
 
-  private getSide(orientation: string): 'left' | 'top' {
+  private getSide(orientation: Orientation): 'left' | 'top' {
     if (orientation === 'horizontal') {
       return 'left';
     }
