@@ -14,19 +14,19 @@ class View {
   constructor(private anchor: HTMLElement, options: ViewOptions, values: number[]) {
     this.events = new EventManager();
     this.element = this.createSlider();
-    this.state = this.init(this.element, options, values);
+    this.state = this.init(options, values);
     this.createSliderElements();
     this.setState = this.setState.bind(this);
   }
 
   public setState(newState: any) {
-    const prevOrientation = this.state.orientation;
-    const newOrientation = newState.orientation;
+    const prevOrientation: Orientation = this.state.orientation;
+    const newOrientation: Orientation = newState.orientation;
     const isOrientationChanged: boolean = newOrientation && prevOrientation !== newOrientation;
-    const updatedState = { ...this.state, ...newState };
+    const updatedState: ViewState = { ...this.state, ...newState };
     const correctedFromAndTo: { from: number, to: number } = this.correctFromAndTo(updatedState);
     const { orientation, values } = updatedState;
-    const pxValues = this.createPxValues(this.element, orientation, values);
+    const pxValues: number[] = this.createPxValues(orientation, values);
     this.state = { ...updatedState, ...correctedFromAndTo, pxValues };
 
     if (isOrientationChanged) {
@@ -38,30 +38,13 @@ class View {
     this.events.notify('newViewState', this.state);
   }
 
-  public getThumbsPositions(): number[] {
-    const thumbs = this.element.querySelectorAll('.thumb');
-
-    const calculatePosition = (element: any): number => {
-      const prop: 'left' | 'top' = this.state.orientation === 'horizontal' ? 'left' : 'top';
-      return element.getBoundingClientRect()[prop] + element.getBoundingClientRect().width;
-    };
-
-    const thumbsPositions: number[] = [calculatePosition(thumbs[0]), calculatePosition(thumbs[1])];
-    return thumbsPositions.sort((a, b) => a - b);
-  }
-
-  public getSliderPosition() {
-    const prop: 'left' | 'top' = this.state.orientation === 'horizontal' ? 'left' : 'top';
-    return this.element.getBoundingClientRect()[prop];
-  }
-
-  private init(anchor: HTMLElement, options: ViewOptions, values: number[]): ViewState {
-    const pxValues = this.createPxValues(anchor, options.orientation, values);
+  private init(options: ViewOptions, values: number[]): ViewState {
+    const pxValues: number[] = this.createPxValues(options.orientation, values);
     return { ...options, values, pxValues };
   }
 
   private createSlider(): HTMLElement {
-    const element = document.createElement('div');
+    const element: HTMLElement = document.createElement('div');
     element.className = 'slider';
     element.addEventListener('trackclick', this.onTrackClick.bind(this));
     element.addEventListener('scaleclick', this.onScaleClick.bind(this));
@@ -71,10 +54,10 @@ class View {
   }
 
   private createSliderElements(): void {
-    const thumb = new Thumb(this);
-    const otherThumb = new Thumb(this);
-    const track = new Track(this);
-    const scale = new Scale(this);
+    const thumb: Thumb = new Thumb(this);
+    const otherThumb: Thumb = new Thumb(this);
+    const track: Track = new Track(this);
+    const scale: Scale = new Scale(this);
   }
 
   private correctFromAndTo(state: ViewState): { from: number, to: number } {
@@ -89,7 +72,7 @@ class View {
     }
 
     if (to === from && type !== 'single') {
-      const index = values.findIndex((val) => val === to);
+      const index: number = values.findIndex((val) => val === to);
       if (index + 1 < values.length) {
         correctedTo = values[index + 1];
       } else if (index > 0) {
@@ -118,9 +101,9 @@ class View {
   }
 
   private setFromTo(coordinate: number, side?: 'from' | 'to', isValue?: boolean): void {
-    const value = isValue ? coordinate : this.convertPxToValue(coordinate);
-    const fromDistance = Math.abs(this.state.from - value);
-    const toDistance = Math.abs(this.state.to - value);
+    const value: number = isValue ? coordinate : this.convertPxToValue(coordinate);
+    const fromDistance: number = Math.abs(this.state.from - value);
+    const toDistance: number = Math.abs(this.state.to - value);
 
     if (this.state.type === 'single') {
       if (fromDistance) {
@@ -145,15 +128,15 @@ class View {
   }
 
   private isFromOrTo(coordinate: number): 'from' | 'to' {
-    const thumbsPositions = this.getThumbsPositions();
-    const fromDistancePx = Math.abs(thumbsPositions[0] - coordinate);
-    const toDistancePx = Math.abs(thumbsPositions[1] - coordinate);
+    const thumbsPositions: number[] = this.getThumbsPositions();
+    const fromDistancePx: number = Math.abs(thumbsPositions[0] - coordinate);
+    const toDistancePx: number = Math.abs(thumbsPositions[1] - coordinate);
 
     return (fromDistancePx < toDistancePx) ? 'from' : 'to';
   }
 
   private onThumbMouseDown(event: any): void {
-    const isHorizontal = this.state.orientation === 'horizontal';
+    const isHorizontal: boolean = this.state.orientation === 'horizontal';
     const axis: 'clientX' | 'clientY' = isHorizontal ? 'clientX' : 'clientY';
 
     const side = this.isFromOrTo(event.detail[axis]);
@@ -173,46 +156,33 @@ class View {
   }
 
   private convertPxToValue(coordinate: number): number {
-    const sliderStart = this.getSliderPosition();
-    const index = this.closestIndex(this.state.pxValues, coordinate - sliderStart);
-    return this.state.values[index];
-  }
+    const { orientation, values } = this.state;
+    const pxStep: number = this.getPxStep(orientation, values);
+    const min: number = values[0];
+    const step: number = values[1] - min;
+    const max: number = values[values.length - 1];
+    const sliderStart: number = this.getSliderPosition();
+    const px: number = coordinate - sliderStart;
 
-  private closestIndex(array: number[], value: number) {
-    const diffArray = array.map((x) => Math.abs(x - value));
-    const minDiff = this.getMin(diffArray);
-    return diffArray.findIndex((x) => x === minDiff);
-  }
-
-  private getMin(arr: number[]) {
-    let min = arr[0];
-    const { length } = arr;
-
-    for (let index = 1; index < length; index++) {
-      if (arr[index] > min) break;
-      min = arr[index];
+    if (px > this.getSliderSize(orientation)) {
+      return max;
     }
 
-    return min;
+    if (px < 0) {
+      return min;
+    }
+
+    const value = Math.round(px / pxStep) * step + min;
+    return value;
   }
 
   private createPxValues(
-    slider: HTMLElement,
     orientation: Orientation,
     values: number[],
   ): number[] {
-    const sliderPosition = slider.getBoundingClientRect();
-    let sliderLength;
-
-    if (orientation === 'horizontal') {
-      sliderLength = sliderPosition.width;
-    } else {
-      sliderLength = sliderPosition.height;
-    }
-
-    const pxValues = [];
-    const pxStep = sliderLength / (values.length - 1);
-    let pxValue = 0;
+    const pxValues: number[] = [];
+    const pxStep: number = this.getPxStep(orientation, values);
+    let pxValue: number = 0;
 
     while (pxValues.length < values.length) {
       pxValues.push(pxValue);
@@ -220,6 +190,37 @@ class View {
     }
 
     return pxValues;
+  }
+
+  private getSliderSize(orientation: Orientation): number {
+    const sliderPosition: DOMRect = this.element.getBoundingClientRect();
+
+    if (orientation === 'horizontal') {
+      return sliderPosition.width;
+    }
+
+    return sliderPosition.height;
+  }
+
+  public getThumbsPositions(): number[] {
+    const thumbs = this.element.querySelectorAll('.thumb');
+
+    const calculatePosition = (element: any): number => {
+      const prop: 'left' | 'top' = this.state.orientation === 'horizontal' ? 'left' : 'top';
+      return element.getBoundingClientRect()[prop] + element.getBoundingClientRect().width;
+    };
+
+    const thumbsPositions: number[] = [calculatePosition(thumbs[0]), calculatePosition(thumbs[1])];
+    return thumbsPositions.sort((a, b) => a - b);
+  }
+
+  public getSliderPosition() {
+    const prop: 'left' | 'top' = this.state.orientation === 'horizontal' ? 'left' : 'top';
+    return this.element.getBoundingClientRect()[prop];
+  }
+
+  private getPxStep(orientation: Orientation, values: number[]): number {
+    return this.getSliderSize(orientation) / (values.length - 1);
   }
 }
 
