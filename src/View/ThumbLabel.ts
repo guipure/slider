@@ -12,9 +12,7 @@ class ThumbLabel {
   private init(thumb: Thumb): void {
     this.update();
     thumb.element.append(this.element);
-    this.update = this.update.bind(this);
-    thumb.events.subscribe('thumbMove', this.update);
-    thumb.events.subscribe('thumbUpdate', this.update);
+    thumb.events.subscribe('thumbMove', this.update.bind(this));
   }
 
   private createLabel(orientation: Orientation): HTMLElement {
@@ -24,7 +22,7 @@ class ThumbLabel {
   }
 
   private update() {
-    this.element.innerHTML = this.thumb.getCurrentValue().toString();
+    this.element.innerHTML = this.thumb.currentValue.toString();
 
     if (this.hide_from_to) {
       this.element.style.display = 'none';

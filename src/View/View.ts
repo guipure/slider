@@ -180,11 +180,27 @@ class View {
 
   private closestIndex(array: number[], value: number) {
     const diffArray = array.map((x) => Math.abs(x - value));
-    const minDiff = Math.min(...diffArray);
+    const minDiff = this.getMin(diffArray);
     return diffArray.findIndex((x) => x === minDiff);
   }
 
-  private createPxValues(slider: HTMLElement, orientation: Orientation, values: number[]): number[] {
+  private getMin(arr: number[]) {
+    let min = arr[0];
+    const { length } = arr;
+
+    for (let index = 1; index < length; index++) {
+      if (arr[index] > min) break;
+      min = arr[index];
+    }
+
+    return min;
+  }
+
+  private createPxValues(
+    slider: HTMLElement,
+    orientation: Orientation,
+    values: number[],
+  ): number[] {
     const sliderPosition = slider.getBoundingClientRect();
     let sliderLength;
 
