@@ -29,7 +29,7 @@ afterEach(() => {
 
 describe('View', () => {
   test('should create a slider with given options', () => {
-    const options = standardOptions;
+    const options = { ...standardOptions };
     const slider: View = createSlider(options);
     const {
       from, to, orientation, type, hide_from_to, hide_scale
@@ -44,7 +44,7 @@ describe('View', () => {
   });
 
   test('should create slider element', () => {
-    const options = standardOptions;
+    const options = { ...standardOptions };
     const slider: View = createSlider(options);
     const sliderClass = slider.element.className;
 
@@ -53,7 +53,7 @@ describe('View', () => {
   });
 
   test('should create two thumbs with standard options', () => {
-    const options = standardOptions;
+    const options = { ...standardOptions };
     const slider: View = createSlider(options);
     const thumbs = slider.element.querySelectorAll('.thumb');
 
@@ -63,7 +63,7 @@ describe('View', () => {
   });
 
   test('with standard options should create two thumb labels', () => {
-    const options = standardOptions;
+    const options = { ...standardOptions };
     const slider: View = createSlider(options);
     const thumbLabels = slider.element.querySelectorAll('.thumb-label');
 
@@ -73,7 +73,7 @@ describe('View', () => {
   });
 
   test('with hide_from_to option should hide two thumb labels', () => {
-    const options = standardOptions;
+    const options = { ...standardOptions };
     options.hide_from_to = true;
     const slider: View = createSlider(options);
     const thumbLabels = slider.element.querySelectorAll('.thumb-label');
@@ -84,7 +84,7 @@ describe('View', () => {
   });
 
   test('should create a track', () => {
-    const options = standardOptions;
+    const options = { ...standardOptions };
     const slider: View = createSlider(options);
     const track = slider.element.querySelector('.track');
 
@@ -93,7 +93,7 @@ describe('View', () => {
   });
 
   test('should create a bar', () => {
-    const options = standardOptions;
+    const options = { ...standardOptions };
     const slider: View = createSlider(options);
     const bar = slider.element.querySelector('.bar');
 
@@ -102,7 +102,7 @@ describe('View', () => {
   });
 
   test('with standard options should create a scale', () => {
-    const options = standardOptions;
+    const options = { ...standardOptions };
     const slider: View = createSlider(options);
     const scale = slider.element.querySelector('.scale');
 
@@ -111,7 +111,7 @@ describe('View', () => {
   });
 
   test('with hide_scale option should hide a scale', () => {
-    const options = standardOptions;
+    const options = { ...standardOptions };
     options.hide_scale = true;
     const slider: View = createSlider(options);
     const scale = slider.element.querySelector('.scale');
@@ -120,7 +120,7 @@ describe('View', () => {
   });
 
   test('should swap from and to when from > to', () => {
-    const options = standardOptions;
+    const options = { ...standardOptions };
     options.from = 6;
     options.to = 2;
     const slider: View = createSlider(options);
@@ -130,11 +130,190 @@ describe('View', () => {
   });
 
   test('from and to should not be equal', () => {
-    const options = standardOptions;
+    const options = { ...standardOptions };
     options.from = 3;
     options.to = 3;
     const slider: View = createSlider(options);
 
-    expect(slider.state.from).toBe(slider.state.to);
+    expect(slider.state.from).not.toBe(slider.state.to);
+  });
+
+  test('setState should change the orientation', () => {
+    const options = { ...standardOptions };
+    const slider: View = createSlider(options);
+
+    slider.setState({ orientation: 'vertical' });
+    expect(slider.state.orientation).toBe('vertical');
+
+    slider.setState({ orientation: 'vertical' });
+    expect(slider.state.orientation).toBe('vertical');
+
+    slider.setState({ orientation: 'horizontal' });
+    expect(slider.state.orientation).toBe('horizontal');
+
+    slider.setState({ orientation: 'vertical' });
+    expect(slider.state.orientation).toBe('vertical');
+  });
+
+  test('setState should change the type', () => {
+    const options = { ...standardOptions };
+    const slider: View = createSlider(options);
+
+    slider.setState({ type: 'single' });
+    expect(slider.state.type).toBe('single');
+
+    slider.setState({ type: 'single' });
+    expect(slider.state.type).toBe('single');
+
+    slider.setState({ type: 'double' });
+    expect(slider.state.type).toBe('double');
+
+    slider.setState({ type: 'single' });
+    expect(slider.state.type).toBe('single');
+  });
+
+  test('setState should change the hide_from_to option', () => {
+    const options = { ...standardOptions };
+    const slider: View = createSlider(options);
+    const thumbLabels = slider.element.querySelectorAll('.thumb-label');
+
+    slider.setState({ hide_from_to: true });
+    expect(slider.state.hide_from_to).toBe(true);
+    expect(thumbLabels[0]).not.toBeVisible();
+    expect(thumbLabels[1]).not.toBeVisible();
+
+    slider.setState({ hide_from_to: true });
+    expect(slider.state.hide_from_to).toBe(true);
+    expect(thumbLabels[0]).not.toBeVisible();
+    expect(thumbLabels[1]).not.toBeVisible();
+
+    slider.setState({ hide_from_to: false });
+    expect(slider.state.hide_from_to).toBe(false);
+    expect(thumbLabels[0]).toBeVisible();
+    expect(thumbLabels[1]).toBeVisible();
+
+    slider.setState({ hide_from_to: true });
+    expect(slider.state.hide_from_to).toBe(true);
+    expect(thumbLabels[0]).not.toBeVisible();
+    expect(thumbLabels[1]).not.toBeVisible();
+  });
+
+  test('setState should change the hide_scale option', () => {
+    const options = { ...standardOptions };
+    const slider: View = createSlider(options);
+    const scale = slider.element.querySelector('.scale');
+
+    slider.setState({ hide_scale: true });
+    expect(slider.state.hide_scale).toBe(true);
+    expect(scale).not.toBeVisible();
+
+    slider.setState({ hide_scale: true });
+    expect(slider.state.hide_scale).toBe(true);
+    expect(scale).not.toBeVisible();
+
+    slider.setState({ hide_scale: false });
+    expect(slider.state.hide_scale).toBe(false);
+    expect(scale).toBeVisible();
+
+    slider.setState({ hide_scale: true });
+    expect(slider.state.hide_scale).toBe(true);
+    expect(scale).not.toBeVisible();
+  });
+
+  test('setState should change the from option', () => {
+    const options = { ...standardOptions };
+    const slider: View = createSlider(options);
+
+    slider.setState({ from: 0 });
+    expect(slider.state.from).toBe(0);
+
+    slider.setState({ from: -2 });
+    expect(slider.state.from).toBe(-2);
+
+    slider.setState({ from: 5 });
+    expect(slider.state.from).toBe(5);
+  });
+
+  test('setState should change the to option', () => {
+    const options = { ...standardOptions };
+    const slider: View = createSlider(options);
+
+    slider.setState({ to: 0 });
+    expect(slider.state.to).toBe(0);
+
+    slider.setState({ to: 2 });
+    expect(slider.state.to).toBe(2);
+
+    slider.setState({ to: 5 });
+    expect(slider.state.to).toBe(5);
+  });
+
+  test('setState should swap from and to when from > to', () => {
+    const options = { ...standardOptions };
+    const slider: View = createSlider(options);
+
+    slider.setState({ from: 2, to: 0 });
+    expect(slider.state.from).toBe(0);
+    expect(slider.state.to).toBe(2);
+
+    slider.setState({ from: -1, to: -2 });
+    expect(slider.state.from).toBe(-2);
+    expect(slider.state.to).toBe(-1);
+
+    slider.setState({ from: 5, to: 4 });
+    expect(slider.state.from).toBe(4);
+    expect(slider.state.to).toBe(5);
+  });
+
+  test('setState should change from or to when from = to != boundary values', () => {
+    const options = { ...standardOptions };
+    const slider: View = createSlider(options);
+
+    slider.setState({ from: 2, to: 2 });
+    expect(slider.state.from).toBe(2);
+    expect(slider.state.to).toBe(3);
+  });
+
+  test('setState should increase to when from = to = min', () => {
+    const options = { ...standardOptions };
+    const slider: View = createSlider(options);
+
+    slider.setState({ from: -2, to: -2 });
+    expect(slider.state.from).toBe(-2);
+    expect(slider.state.to).toBe(-1);
+  });
+
+  test('setState should reduce from when from = to = max', () => {
+    const options = { ...standardOptions };
+    const slider: View = createSlider(options);
+
+    slider.setState({ from: 8, to: 8 });
+    expect(slider.state.from).toBe(7);
+    expect(slider.state.to).toBe(8);
+  });
+
+  test('should convert values [0, 1, 2] to pxValues [0, 100, 200] if anchor width = 200px', () => {
+    const options = { ...standardOptions };
+    const anchor: HTMLElement = document.createElement('div');
+    anchor.className = 'anchor';
+    document.body.append(anchor);
+    const values: number[] = [0, 1, 2];
+    const slider: View = new View(anchor, options, values);
+    slider.element.getBoundingClientRect = jest.fn(() => ({
+      x: 0,
+      y: 0,
+      width: 200,
+      height: 50,
+      top: 0,
+      right: 200,
+      bottom: 50,
+      left: 0,
+      toJSON: () => null,
+    }));
+    slider.setState({ values });
+    expect(slider.state.pxValues).toStrictEqual([0, 100, 200]);
+
+    slider.setState({ values: [-2, 0, 2, 4, 6] });
+    expect(slider.state.pxValues).toStrictEqual([0, 50, 100, 150, 200]);
   });
 });

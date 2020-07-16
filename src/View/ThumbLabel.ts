@@ -13,6 +13,7 @@ class ThumbLabel {
     this.update();
     thumb.element.append(this.element);
     thumb.events.subscribe('thumbMove', this.update.bind(this));
+    thumb.events.subscribe('changedHideFromTo', this.setHideFromTo.bind(this));
   }
 
   private createLabel(orientation: Orientation): HTMLElement {
@@ -21,7 +22,14 @@ class ThumbLabel {
     return element;
   }
 
-  private update() {
+  private setHideFromTo(state: { hide_from_to: boolean }): void {
+    if (state.hide_from_to !== this.hide_from_to) {
+      this.hide_from_to = state.hide_from_to;
+      this.update();
+    }
+  }
+
+  private update(): void {
     this.element.innerHTML = this.thumb.currentValue.toString();
 
     if (this.hide_from_to) {

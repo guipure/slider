@@ -57,7 +57,7 @@ class View {
 
   private init(options: ViewOptions, values: number[]): ViewState {
     const pxValues: number[] = this.createPxValues(options.orientation, values);
-    const correctedFromAndTo = this.correctFromAndTo(options as ViewState);
+    const correctedFromAndTo = this.correctFromAndTo({ ...options, values } as ViewState);
     return { ...options, values, pxValues, ...correctedFromAndTo };
   }
 

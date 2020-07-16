@@ -25,6 +25,7 @@ class Thumb {
   private update(newState: ViewState): void {
     this.toggleThumb(newState.type);
     this.placeThumb(newState.from, newState.to);
+    this.events.notify('changedHideFromTo', { hide_from_to: newState.hide_from_to });
   }
 
   private createThumb(): HTMLElement {
