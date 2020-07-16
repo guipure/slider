@@ -82,11 +82,12 @@ class Scale {
   }
 
   private onClick(event: Event): void {
-    if (event.target instanceof HTMLElement) {
-      const value: number = Number(event.target.innerHTML);
-      const scaleEvent = new CustomEvent('scaleclick', { bubbles: true, detail: { event, value } });
-      event.target.dispatchEvent(scaleEvent);
-    }
+    const { target } = event;
+    if (!(target instanceof HTMLElement)) return;
+    if (target.className !== 'scale__value') return;
+    const value: number = Number(target.innerHTML);
+    const scaleEvent = new CustomEvent('scaleclick', { bubbles: true, detail: { event, value } });
+    target.dispatchEvent(scaleEvent);
   }
 }
 

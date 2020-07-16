@@ -8,14 +8,14 @@ const defaultOptions: ModelOptions = {
 };
 
 describe('Model', () => {
-  test('should be initialized', () => {
+  test('must be initialized', () => {
     const model: Model = new Model(defaultOptions);
     expect(model.state.min).toBe(defaultOptions.min);
     expect(model.state.max).toBe(defaultOptions.max);
     expect(model.state.step).toBe(defaultOptions.step);
   });
 
-  test('should swap min=10 and max=9', () => {
+  test('must swap min=10 and max=9', () => {
     const badOptions: ModelOptions = {
       min: 10,
       max: 9,
@@ -26,7 +26,7 @@ describe('Model', () => {
     expect(model.state.max).toBe(badOptions.min);
   });
 
-  test('should swap min=10 and max=-11', () => {
+  test('must swap min=10 and max=-11', () => {
     const badOptions: ModelOptions = {
       min: 10,
       max: -11,
@@ -37,7 +37,7 @@ describe('Model', () => {
     expect(model.state.max).toBe(badOptions.min);
   });
 
-  test('should swap min=-10 and max=-11', () => {
+  test('must swap min=-10 and max=-11', () => {
     const badOptions: ModelOptions = {
       min: -10,
       max: -11,
@@ -48,7 +48,7 @@ describe('Model', () => {
     expect(model.state.max).toBe(badOptions.min);
   });
 
-  test('should correct max=min=10 and increase max by step', () => {
+  test('must correct max=min=10 and increase max by step', () => {
     const badOptions: ModelOptions = {
       min: 10,
       max: 10,
@@ -59,7 +59,7 @@ describe('Model', () => {
     expect(model.state.max).toBe(badOptions.min + model.state.step);
   });
 
-  test('should correct a zero step', () => {
+  test('must correct a zero step', () => {
     const badOptions: ModelOptions = {
       min: 10,
       max: 10,
@@ -69,7 +69,7 @@ describe('Model', () => {
     expect(model.state.step).toBe(1);
   });
 
-  test('should correct a step equals -5', () => {
+  test('must correct a step equals -5', () => {
     const badOptions: ModelOptions = {
       min: 10,
       max: 10,
@@ -79,7 +79,7 @@ describe('Model', () => {
     expect(model.state.step).toBe(1);
   });
 
-  test('should correct a step equals -100', () => {
+  test('must correct a step equals -100', () => {
     const badOptions: ModelOptions = {
       min: 10,
       max: 10,
@@ -89,7 +89,7 @@ describe('Model', () => {
     expect(model.state.step).toBe(1);
   });
 
-  test('should correct a step equals -0.01', () => {
+  test('must correct a step equals -0.01', () => {
     const badOptions: ModelOptions = {
       min: 10,
       max: 10,
@@ -99,7 +99,7 @@ describe('Model', () => {
     expect(model.state.step).toBe(1);
   });
 
-  test('should create a correct values from -3 to 5 with step=1', () => {
+  test('must create a correct values from -3 to 5 with step=1', () => {
     const options: ModelOptions = {
       min: -3,
       max: 5,
@@ -110,7 +110,7 @@ describe('Model', () => {
     expect(model.state.values).toEqual(correctValues);
   });
 
-  test('should create a correct values from -1 to 2 with step=0.5', () => {
+  test('must create a correct values from -1 to 2 with step=0.5', () => {
     const options: ModelOptions = {
       min: -1,
       max: 2,

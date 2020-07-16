@@ -28,7 +28,7 @@ afterEach(() => {
 });
 
 describe('View', () => {
-  test('should create a slider with given options', () => {
+  test('must create a slider with given options', () => {
     const options = { ...standardOptions };
     const slider: View = createSlider(options);
     const {
@@ -43,7 +43,7 @@ describe('View', () => {
     expect(hide_scale).toBe(options.hide_scale);
   });
 
-  test('should create slider element', () => {
+  test('must create slider element', () => {
     const options = { ...standardOptions };
     const slider: View = createSlider(options);
     const sliderClass = slider.element.className;
@@ -52,7 +52,7 @@ describe('View', () => {
     expect(sliderClass).toBe('slider');
   });
 
-  test('should create two thumbs with standard options', () => {
+  test('must create two thumbs with standard options', () => {
     const options = { ...standardOptions };
     const slider: View = createSlider(options);
     const thumbs = slider.element.querySelectorAll('.thumb');
@@ -62,7 +62,7 @@ describe('View', () => {
     expect(thumbs[1]).toBeVisible();
   });
 
-  test('with standard options should create two thumb labels', () => {
+  test('with standard options must create two thumb labels', () => {
     const options = { ...standardOptions };
     const slider: View = createSlider(options);
     const thumbLabels = slider.element.querySelectorAll('.thumb-label');
@@ -72,7 +72,7 @@ describe('View', () => {
     expect(thumbLabels[1]).toBeVisible();
   });
 
-  test('with hide_from_to option should hide two thumb labels', () => {
+  test('with hide_from_to option must hide two thumb labels', () => {
     const options = { ...standardOptions };
     options.hide_from_to = true;
     const slider: View = createSlider(options);
@@ -83,7 +83,7 @@ describe('View', () => {
     expect(thumbLabels[1]).not.toBeVisible();
   });
 
-  test('should create a track', () => {
+  test('must create a track', () => {
     const options = { ...standardOptions };
     const slider: View = createSlider(options);
     const track = slider.element.querySelector('.track');
@@ -92,7 +92,7 @@ describe('View', () => {
     expect(track).toBeVisible();
   });
 
-  test('should create a bar', () => {
+  test('must create a bar', () => {
     const options = { ...standardOptions };
     const slider: View = createSlider(options);
     const bar = slider.element.querySelector('.bar');
@@ -101,7 +101,7 @@ describe('View', () => {
     expect(bar).toBeVisible();
   });
 
-  test('with standard options should create a scale', () => {
+  test('with standard options must create a scale', () => {
     const options = { ...standardOptions };
     const slider: View = createSlider(options);
     const scale = slider.element.querySelector('.scale');
@@ -110,7 +110,7 @@ describe('View', () => {
     expect(scale).toBeVisible();
   });
 
-  test('with hide_scale option should hide a scale', () => {
+  test('with hide_scale option must hide a scale', () => {
     const options = { ...standardOptions };
     options.hide_scale = true;
     const slider: View = createSlider(options);
@@ -119,7 +119,7 @@ describe('View', () => {
     expect(scale).not.toBeVisible();
   });
 
-  test('should swap from and to when from > to', () => {
+  test('must swap from and to when from > to', () => {
     const options = { ...standardOptions };
     options.from = 6;
     options.to = 2;
@@ -129,7 +129,7 @@ describe('View', () => {
     expect(slider.state.to).toBe(6);
   });
 
-  test('from and to should not be equal', () => {
+  test('from and to must not be equal', () => {
     const options = { ...standardOptions };
     options.from = 3;
     options.to = 3;
@@ -138,7 +138,7 @@ describe('View', () => {
     expect(slider.state.from).not.toBe(slider.state.to);
   });
 
-  test('setState should change the orientation', () => {
+  test('setState must change the orientation', () => {
     const options = { ...standardOptions };
     const slider: View = createSlider(options);
 
@@ -155,7 +155,7 @@ describe('View', () => {
     expect(slider.state.orientation).toBe('vertical');
   });
 
-  test('setState should change the type', () => {
+  test('setState must change the type', () => {
     const options = { ...standardOptions };
     const slider: View = createSlider(options);
 
@@ -172,7 +172,7 @@ describe('View', () => {
     expect(slider.state.type).toBe('single');
   });
 
-  test('setState should change the hide_from_to option', () => {
+  test('setState must change the hide_from_to option', () => {
     const options = { ...standardOptions };
     const slider: View = createSlider(options);
     const thumbLabels = slider.element.querySelectorAll('.thumb-label');
@@ -198,7 +198,7 @@ describe('View', () => {
     expect(thumbLabels[1]).not.toBeVisible();
   });
 
-  test('setState should change the hide_scale option', () => {
+  test('setState must change the hide_scale option', () => {
     const options = { ...standardOptions };
     const slider: View = createSlider(options);
     const scale = slider.element.querySelector('.scale');
@@ -220,7 +220,7 @@ describe('View', () => {
     expect(scale).not.toBeVisible();
   });
 
-  test('setState should change the from option', () => {
+  test('setState must change the from option', () => {
     const options = { ...standardOptions };
     const slider: View = createSlider(options);
 
@@ -234,7 +234,7 @@ describe('View', () => {
     expect(slider.state.from).toBe(5);
   });
 
-  test('setState should change the to option', () => {
+  test('setState must change the to option', () => {
     const options = { ...standardOptions };
     const slider: View = createSlider(options);
 
@@ -248,7 +248,7 @@ describe('View', () => {
     expect(slider.state.to).toBe(5);
   });
 
-  test('setState should swap from and to when from > to', () => {
+  test('setState must swap from and to when from > to', () => {
     const options = { ...standardOptions };
     const slider: View = createSlider(options);
 
@@ -265,7 +265,7 @@ describe('View', () => {
     expect(slider.state.to).toBe(5);
   });
 
-  test('setState should change from or to when from = to != boundary values', () => {
+  test('setState must change from or to when from = to != boundary values', () => {
     const options = { ...standardOptions };
     const slider: View = createSlider(options);
 
@@ -274,7 +274,7 @@ describe('View', () => {
     expect(slider.state.to).toBe(3);
   });
 
-  test('setState should increase to when from = to = min', () => {
+  test('setState must increase to when from = to = min', () => {
     const options = { ...standardOptions };
     const slider: View = createSlider(options);
 
@@ -283,7 +283,7 @@ describe('View', () => {
     expect(slider.state.to).toBe(-1);
   });
 
-  test('setState should reduce from when from = to = max', () => {
+  test('setState must reduce from when from = to = max', () => {
     const options = { ...standardOptions };
     const slider: View = createSlider(options);
 
@@ -292,7 +292,7 @@ describe('View', () => {
     expect(slider.state.to).toBe(8);
   });
 
-  test('should convert values [0, 1, 2] to pxValues [0, 100, 200] if anchor width = 200px', () => {
+  test('must convert values [0, 1, 2] to pxValues [0, 100, 200] if anchor width = 200px', () => {
     const options = { ...standardOptions };
     const anchor: HTMLElement = document.createElement('div');
     anchor.className = 'anchor';
