@@ -182,7 +182,7 @@ class Settings {
   }
 
   private setStep(num: number): void {
-    const step = num > 0 ? num : 1;
+    const step = num > 1 ? Math.round(num) : 1;
     this.setState({ step });
   }
 

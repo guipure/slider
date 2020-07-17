@@ -27,7 +27,9 @@ class Model {
     const { min, max, step } = options;
     const correctedOptions: ModelOptions = { ...options };
 
-    if (step <= 0) {
+    correctedOptions.step = Math.round(step);
+
+    if (step < 1) {
       correctedOptions.step = 1;
     }
 
