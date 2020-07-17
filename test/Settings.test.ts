@@ -62,10 +62,10 @@ describe('Thumb', () => {
 
   test('must change the step', () => {
     const stepInput = anchor.querySelector('input[name=step]') as HTMLInputElement;
-    stepInput.value = '0.5';
+    stepInput.value = '5';
     stepInput.dispatchEvent(new InputEvent('change'));
 
-    expect(settings.state.step).toBe(0.5);
+    expect(settings.state.step).toBe(5);
   });
 
   test('must not change the step to zero or less', () => {

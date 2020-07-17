@@ -109,15 +109,4 @@ describe('Model', () => {
     const model = new Model(options);
     expect(model.state.values).toEqual(correctValues);
   });
-
-  test('must create a correct values from -1 to 2 with step=0.5', () => {
-    const options: ModelOptions = {
-      min: -1,
-      max: 2,
-      step: 0.5,
-    };
-    const correctValues = [-1, -0.5, 0, 0.5, 1, 1.5, 2];
-    const model = new Model(options);
-    expect(model.state.values).toEqual(correctValues);
-  });
 });
