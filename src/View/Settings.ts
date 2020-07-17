@@ -8,9 +8,7 @@ class Settings {
 
   constructor(private anchor: HTMLElement, public state: Options) {
     this.events = new EventManager();
-    this.form = document.createElement('form');
-    this.form.className = 'settings';
-    anchor.append(this.form);
+    this.form = this.createFrom();
     this.createSettings();
     this.initValues();
   }
@@ -18,6 +16,13 @@ class Settings {
   public updateFromTo(newSetting: any) {
     this.state = { ...this.state, ...newSetting };
     this.initValues();
+  }
+
+  private createFrom(): HTMLFormElement {
+    const form = document.createElement('form');
+    form.className = 'settings';
+    this.anchor.append(form);
+    return form;
   }
 
   private createSettings() {
@@ -136,10 +141,6 @@ class Settings {
             input.checked = true;
           }
           break;
-        case 'hide_from_to':
-          input.onchange = () => this.setState({ hide_from_to: Boolean(input.value) });
-          input.value = this.state.hide_from_to.toString();
-          break;
         // no default
       }
 
@@ -159,8 +160,25 @@ class Settings {
   }
 
   private setState(newSetting: any) {
+    newSetting = this.checkMinMax(newSetting);
     this.state = { ...this.state, ...newSetting };
     this.events.notify('newSettings', this.state);
+  }
+
+  private checkMinMax(setting: any) {
+    const { max, min } = setting;
+
+    if (max) {
+      if (max < this.state.min) {
+        return { min: max };
+      }
+    } else if (min) {
+      if (min > this.state.max) {
+        return { max: min };
+      }
+    }
+
+    return setting;
   }
 
   private setStep(num: number): void {

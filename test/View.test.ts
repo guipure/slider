@@ -32,7 +32,7 @@ describe('View', () => {
     const options = { ...standardOptions };
     const slider: View = createSlider(options);
     const {
-      from, to, orientation, type, hide_from_to, hide_scale
+      from, to, orientation, type, hide_from_to, hide_scale,
     } = slider.state;
 
     expect(from).toBe(options.from);
