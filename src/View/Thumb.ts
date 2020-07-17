@@ -80,7 +80,7 @@ class Thumb {
   }
 
   private showThumb(): void {
-    this.element.style.display = 'block';
+    this.element.style.display = 'flex';
   }
 
   private hideThumb(): void {

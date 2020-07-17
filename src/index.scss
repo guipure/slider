@@ -45,7 +45,7 @@
 
 .thumb {
   position: absolute;
-  display: inline-block;
+  display: flex;
   height: 20px;
   width: 20px;
   background-color: dodgerblue;
@@ -54,20 +54,31 @@
   z-index: 2;
 }
 
+.thumb-horizontal {
+  justify-content: center;
+}
+
+.thumb-vertical {
+  justify-content: flex-end;
+}
+
 .thumb-label {
   position: relative;
   user-select: none;
-  width: 50px;
   text-align: center;
+  white-space: nowrap;
+  background-color: burlywood;
+  padding: 0 2px;
+  border-radius: 3px;
+  font-weight: bold;
 }
 
 .thumb-label_horizontal {
-  top: -20px;
-  left: -15px;
+  top: -22px;
 }
 
 .thumb-label_vertical {
-  left: -50px;
+  left: -25px;
 }
 
 .scale_horizontal {
