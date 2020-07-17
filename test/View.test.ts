@@ -316,4 +316,16 @@ describe('View', () => {
     slider.setState({ values: [-2, 0, 2, 4, 6] });
     expect(slider.state.pxValues).toStrictEqual([0, 50, 100, 150, 200]);
   });
+
+  test('thumb move must call getThumbsPosition method', () => {
+    const options = { ...standardOptions };
+    const slider: View = createSlider(options);
+    const spy = jest.spyOn(slider, 'getThumbsPositions');
+    const thumb = slider.element.querySelector('.thumb') as HTMLElement;
+    thumb.dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
+    document.dispatchEvent(new MouseEvent('mousemove'));
+    document.dispatchEvent(new MouseEvent('mouseup'));
+
+    expect(spy).toBeCalled();
+  });
 });

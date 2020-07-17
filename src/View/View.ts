@@ -64,7 +64,7 @@ class View {
   private createSlider(): HTMLElement {
     const element: HTMLElement = document.createElement('div');
     element.className = 'slider';
-    element.addEventListener('trackclick', this.onTrackClick.bind(this));
+    element.addEventListener('click', this.onTrackClick.bind(this));
     element.addEventListener('scaleclick', this.onScaleClick.bind(this));
     element.addEventListener('mousedown', this.onThumbMouseDown.bind(this));
     this.anchor.prepend(element);
@@ -102,12 +102,14 @@ class View {
   }
 
   private onTrackClick(event: any): void {
+    const target = event.target as HTMLElement;
+    if (!/track | bar/.test(target.className)) return;
     let coordinate: number;
 
     if (this.state.orientation === 'horizontal') {
-      coordinate = event.detail.clientX;
+      coordinate = event.clientX;
     } else {
-      coordinate = event.detail.clientY;
+      coordinate = event.clientY;
     }
 
     this.setFromTo(coordinate);

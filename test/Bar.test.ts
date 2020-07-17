@@ -32,16 +32,4 @@ describe('Bar', () => {
 
     expect(bar).toBeVisible();
   });
-
-  test('must dispatch an event when clicked', () => {
-    const checkBarClick = jest.fn();
-    slider.addEventListener('trackclick', checkBarClick);
-    const bar = slider.querySelector('.bar') as HTMLElement;
-    bar.click();
-
-    expect(checkBarClick.mock.calls.length).toBe(1);
-
-    bar.click();
-    expect(checkBarClick.mock.calls.length).toBe(2);
-  });
 });
