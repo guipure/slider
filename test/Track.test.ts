@@ -44,4 +44,17 @@ describe('Track', () => {
     track.click();
     expect(checkTrackClick.mock.calls.length).toBe(2);
   });
+
+  test('vertical track must also dispatch an event when clicked', () => {
+    view.setState({ orientation: 'vertical' });
+    const checkTrackClick = jest.fn();
+    slider.addEventListener('trackclick', checkTrackClick);
+    const track = slider.querySelector('.track') as HTMLElement;
+    track.click();
+
+    expect(checkTrackClick.mock.calls.length).toBe(1);
+
+    track.click();
+    expect(checkTrackClick.mock.calls.length).toBe(2);
+  });
 });

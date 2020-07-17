@@ -2,7 +2,7 @@ import '@testing-library/jest-dom';
 import { View } from '../src/View/View';
 import { ViewOptions } from '../src/Presenter/Options';
 
-describe('Bar', () => {
+describe('Thumb', () => {
   let view: View;
   let slider: HTMLElement;
 
@@ -28,20 +28,17 @@ describe('Bar', () => {
   });
 
   test('must be visible', () => {
-    const bar = slider.querySelector('.bar') as HTMLElement;
+    const thumbs = slider.querySelectorAll('.thumb');
 
-    expect(bar).toBeVisible();
+    expect(thumbs[0]).toBeVisible();
+    expect(thumbs[1]).toBeVisible();
   });
 
-  test('must dispatch an event when clicked', () => {
-    const checkBarClick = jest.fn();
-    slider.addEventListener('trackclick', checkBarClick);
-    const bar = slider.querySelector('.bar') as HTMLElement;
-    bar.click();
+  test('if type=single only one thumb must be visible', () => {
+    view.setState({ type: 'single' });
+    const thumbs = slider.querySelectorAll('.thumb');
 
-    expect(checkBarClick.mock.calls.length).toBe(1);
-
-    bar.click();
-    expect(checkBarClick.mock.calls.length).toBe(2);
+    expect(thumbs[0]).toBeVisible();
+    expect(thumbs[1]).not.toBeVisible();
   });
 });

@@ -66,7 +66,7 @@ class View {
     element.className = 'slider';
     element.addEventListener('trackclick', this.onTrackClick.bind(this));
     element.addEventListener('scaleclick', this.onScaleClick.bind(this));
-    element.addEventListener('thumbmousedown', this.onThumbMouseDown.bind(this));
+    element.addEventListener('mousedown', this.onThumbMouseDown.bind(this));
     this.anchor.prepend(element);
     return element;
   }
@@ -153,14 +153,16 @@ class View {
     return (fromDistancePx < toDistancePx) ? 'from' : 'to';
   }
 
-  private onThumbMouseDown(event: any): void {
+  private onThumbMouseDown(event: MouseEvent): void {
+    const target = event.target as HTMLElement;
+    if (!/thumb/.test(target.className)) return;
     const isHorizontal: boolean = this.state.orientation === 'horizontal';
     const axis: 'clientX' | 'clientY' = isHorizontal ? 'clientX' : 'clientY';
 
-    const side = this.isFromOrTo(event.detail[axis]);
-    this.setFromTo(event.detail[axis], side);
+    const side = this.isFromOrTo(event[axis]);
+    this.setFromTo(event[axis], side);
 
-    const onMouseMove = (moveEvent: any) => {
+    const onMouseMove = (moveEvent: MouseEvent) => {
       this.setFromTo(moveEvent[axis], side);
     };
 

@@ -33,7 +33,6 @@ class Thumb {
     const doesOtherThumbExist = !!this.slider.element.querySelector('.thumb');
     const thumbNumber: 'first' | 'second' = doesOtherThumbExist ? 'second' : 'first';
     thumb.className = `thumb thumb-${this.slider.state.orientation} thumb-${thumbNumber}`;
-    thumb.addEventListener('mousedown', this.onMouseDown.bind(this));
     thumb.ondragstart = function () {
       return false;
     };
@@ -86,11 +85,6 @@ class Thumb {
 
   private hideThumb(): void {
     this.element.style.display = 'none';
-  }
-
-  private onMouseDown(event: any) {
-    const mouseDownEvent = new CustomEvent('thumbmousedown', { bubbles: true, detail: event });
-    this.element.dispatchEvent(mouseDownEvent);
   }
 
   private getSide(orientation: Orientation): 'left' | 'top' {
