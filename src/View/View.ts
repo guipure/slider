@@ -43,7 +43,7 @@ class View {
 
     const calculatePosition = (element: any): number => {
       const prop: 'left' | 'top' = this.state.orientation === 'horizontal' ? 'left' : 'top';
-      return element.getBoundingClientRect()[prop] + element.getBoundingClientRect().width;
+      return element.getBoundingClientRect()[prop] + element.getBoundingClientRect().width / 2;
     };
 
     const thumbsPositions: number[] = [calculatePosition(thumbs[0]), calculatePosition(thumbs[1])];

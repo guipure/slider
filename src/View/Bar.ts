@@ -31,7 +31,7 @@ class Bar {
       bar.style[side] = '0px';
       bar.style[dimension] = `${thumbsPositions[1] - sliderPosition}px`;
     } else {
-      bar.style[side] = `${thumbsPositions[0] - sliderPosition - 10}px`;
+      bar.style[side] = `${thumbsPositions[0] - sliderPosition}px`;
       bar.style[dimension] = `${thumbsPositions[1] - thumbsPositions[0]}px`;
     }
   }
