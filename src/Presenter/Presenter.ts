@@ -42,9 +42,13 @@ class Presenter {
   }
 
   private handleNewValues(modelState: ModelOptions): void {
-    const { min, max, step, from, to } = modelState;
+    const {
+      min, max, step, from, to,
+    } = modelState;
     const values: Values = { min, max, step };
-    this.view.setState({ ...this.view.state, values, from, to });
+    this.view.setState({
+      ...this.view.state, values, from, to,
+    });
   }
 
   private subscribeOnNewSettings(): void {

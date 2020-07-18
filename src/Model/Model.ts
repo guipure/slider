@@ -79,7 +79,7 @@ class Model {
 
       return Math.round((num - min) / step) * step + min;
     }
-    console.log(isDouble)
+
     if (correctedTo < correctedFrom && isDouble) {
       [correctedTo, correctedFrom] = [correctedFrom, correctedTo];
     }

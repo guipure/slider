@@ -58,6 +58,10 @@ class ThumbLabel {
     const secondLabelStart = secondLabel.getBoundingClientRect()[start];
     const secondLabelEnd = secondLabel.getBoundingClientRect()[end];
 
+    if (firstLabelStart === secondLabelStart && firstLabelEnd === secondLabelEnd) {
+      return false;
+    }
+
     if (firstLabelStart <= secondLabelEnd && secondLabelStart <= firstLabelEnd) {
       return true;
     }
