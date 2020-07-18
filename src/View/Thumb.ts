@@ -74,9 +74,15 @@ class Thumb {
   }
 
   private valueToPx(value: number): number {
-    const { values, pxValues } = this.slider.state;
-    const index = values.findIndex((x) => x === value);
-    return pxValues[index];
+    const { values, pxMax, pxStep } = this.slider.state;
+    const { min, max, step } = values;
+
+    if (value === max) {
+      return pxMax;
+    }
+
+    const pxValue = Math.round((value - min) / step) * pxStep;
+    return pxValue;
   }
 
   private showThumb(): void {

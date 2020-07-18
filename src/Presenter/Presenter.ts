@@ -5,6 +5,7 @@ import {
   ViewOptions,
   ViewState,
   ModelOptions,
+  Values,
 } from './Options';
 import { Settings } from '../View/Settings';
 
@@ -20,7 +21,9 @@ class Presenter {
     const viewOptions: ViewOptions = options as ViewOptions;
 
     this.model = new Model(modelOptions);
-    this.view = new View(anchor, viewOptions, this.model.state.values);
+    const { min, max, step } = this.model.state;
+    const values = { min, max, step };
+    this.view = new View(anchor, viewOptions, values);
     this.settings = new Settings(anchor, options);
     this.subscribe();
   }
@@ -32,10 +35,12 @@ class Presenter {
   }
 
   private subscribeOnNewValues(): void {
-    this.model.events.subscribe('values', this.handleNewValues.bind(this));
+    this.model.events.subscribe('newModelState', this.handleNewValues.bind(this));
   }
 
-  private handleNewValues(values: number[]): void {
+  private handleNewValues(modelState: ModelOptions): void {
+    const { min, max, step } = modelState;
+    const values: Values = { min, max, step };
     this.view.setState({ ...this.view.state, values });
   }
 

@@ -22,9 +22,16 @@ interface ViewOptions {
   hide_scale: boolean,
 }
 
+interface Values {
+  min: number,
+  max: number,
+  step: number,
+}
+
 interface ViewState extends ViewOptions {
-  values: number[],
-  pxValues: number[],
+  values: Values,
+  pxStep: number,
+  pxMax: number,
 }
 
 interface ModelOptions {
@@ -33,10 +40,6 @@ interface ModelOptions {
   step: number,
 }
 
-interface ModelState extends ModelOptions {
-  values: number[],
-}
-
 export {
-  Options, ViewOptions, ViewState, ModelOptions, ModelState, Orientation, SliderType,
+  Options, ViewOptions, ViewState, Values, ModelOptions, Orientation, SliderType,
 };

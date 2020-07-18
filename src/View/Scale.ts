@@ -31,37 +31,38 @@ class Scale {
     this.element.innerHTML = '';
     this.element.className = `scale scale_${this.slider.state.orientation}`;
 
-    const { values, pxValues } = this.slider.state;
-    this.insertScaleValues(values, pxValues);
+    this.insertScaleValues();
   }
 
-  private calculateIncrement(values: number[]): number {
+  private calculateIncrement(valueMax: number, valueStep: number): number {
     let inc;
-    const maxIndex = values.length - 1;
-    const max = values[maxIndex];
+    const { pxMax, pxStep } = this.slider.state;
+    const quantity = Math.ceil(pxMax / pxStep);
 
-    if (values.length <= 10) {
-      inc = 1;
-    } else if (max < 1000) {
-      inc = Math.round(values.length / 7);
+    if (quantity <= 10) {
+      inc = valueStep;
+    } else if (valueMax < 1000) {
+      inc = Math.round(quantity / 7) * valueStep;
     } else {
-      inc = Math.round(values.length / 5);
+      inc = Math.round(quantity / 5) * valueStep;
     }
 
     return inc;
   }
 
-  private insertScaleValues(values: number[], pxValues: number[]): void {
-    const inc = this.calculateIncrement(values);
-    const maxIndex = values.length - 1;
-    const max = values[maxIndex];
+  private insertScaleValues(): void {
+    const { pxMax, pxStep, values } = this.slider.state;
+    const { min, max, step } = values;
+    const inc = this.calculateIncrement(max, step);
 
-    for (let index = 0; index < maxIndex; index += inc) {
-      if (maxIndex - index < inc) break;
-      this.element.append(this.createScaleValue(values[index], pxValues[index]));
+    let pxCurrent = 0;
+
+    for (let current = min; current <= max - inc; current += inc) {
+      this.element.append(this.createScaleValue(current, pxCurrent));
+      pxCurrent += (inc / step) * pxStep;
     }
 
-    this.element.append(this.createScaleValue(max, pxValues[maxIndex]));
+    this.element.append(this.createScaleValue(max, pxMax));
   }
 
   private createScaleValue(value: number, position: number): HTMLElement {

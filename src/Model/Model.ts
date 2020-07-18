@@ -1,8 +1,8 @@
-import { ModelOptions, ModelState } from '../Presenter/Options';
+import { ModelOptions } from '../Presenter/Options';
 import { EventManager } from '../EventManager/EventManager';
 
 class Model {
-  public state: ModelState;
+  public state: ModelOptions;
 
   public events: EventManager;
 
@@ -13,11 +13,11 @@ class Model {
 
   public setState(options: ModelOptions): void {
     const correctedOptions = this.correctOptions(options);
-    const values = this.calculateValues(correctedOptions);
-    this.state = { ...correctedOptions, values };
+    this.state = { ...correctedOptions };
+    this.events.notify('newModelState', this.state);
   }
 
-  private init(options: ModelOptions): ModelState {
+  private init(options: ModelOptions): ModelOptions {
     this.setState(options);
     this.setState = this.setState.bind(this);
     return this.state;
@@ -42,22 +42,6 @@ class Model {
     }
 
     return correctedOptions;
-  }
-
-  private calculateValues(options: ModelOptions): number[] {
-    const { min, max, step } = options;
-    const values: number[] = [];
-    let currVal = min;
-
-    while (currVal < max) {
-      values.push(currVal);
-      currVal += step;
-    }
-
-    values.push(max);
-    this.events.notify('values', values);
-
-    return values;
   }
 }
 

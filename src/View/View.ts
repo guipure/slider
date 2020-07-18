@@ -1,4 +1,4 @@
-import { ViewOptions, ViewState, Orientation } from '../Presenter/Options';
+import { ViewOptions, ViewState, Values, Orientation } from '../Presenter/Options';
 import { Track } from './Track';
 import { Thumb } from './Thumb';
 import { EventManager } from '../EventManager/EventManager';
@@ -11,7 +11,7 @@ class View {
 
   public element: HTMLElement = document.body;
 
-  constructor(private anchor: HTMLElement, options: ViewOptions, values: number[]) {
+  constructor(private anchor: HTMLElement, options: ViewOptions, values: Values) {
     this.events = new EventManager();
     this.element = this.createSlider();
     this.state = this.init(options, values);
@@ -26,8 +26,11 @@ class View {
     const updatedState: ViewState = { ...this.state, ...newState };
     const correctedFromAndTo: { from: number, to: number } = this.correctFromAndTo(updatedState);
     const { orientation, values } = updatedState;
-    const pxValues: number[] = this.createPxValues(orientation, values);
-    this.state = { ...updatedState, ...correctedFromAndTo, pxValues };
+    const pxStep: number = this.getPxStep(orientation, values);
+    const pxMax: number = this.getSliderSize(orientation);
+    this.state = {
+      ...updatedState, ...correctedFromAndTo, pxStep, pxMax,
+    };
 
     if (isOrientationChanged) {
       this.element.remove();
@@ -55,10 +58,13 @@ class View {
     return this.element.getBoundingClientRect()[prop];
   }
 
-  private init(options: ViewOptions, values: number[]): ViewState {
-    const pxValues: number[] = this.createPxValues(options.orientation, values);
+  private init(options: ViewOptions, values: Values): ViewState {
+    const pxStep: number = this.getPxStep(options.orientation, values);
+    const pxMax: number = this.getSliderSize(options.orientation);
     const correctedFromAndTo = this.correctFromAndTo({ ...options, values } as ViewState);
-    return { ...options, values, pxValues, ...correctedFromAndTo };
+    return {
+      ...options, values, ...correctedFromAndTo, pxStep, pxMax,
+    };
   }
 
   private createSlider(): HTMLElement {
@@ -82,19 +88,38 @@ class View {
     const {
       from, to, type, values,
     } = state;
-    let correctedFrom: number = from;
-    let correctedTo: number = to;
+    const { min, max, step } = values;
+    const diff = min - Math.round(min / step) * step;
+    let correctedFrom: number = Math.round(from / step) * step + diff;
+    let correctedTo: number = Math.round(to / step) * step + diff;
 
-    if (to < from && type !== 'single') {
-      [correctedTo, correctedFrom] = [from, to];
+    if (correctedTo < correctedFrom && type !== 'single') {
+      [correctedTo, correctedFrom] = [correctedFrom, correctedTo];
     }
 
-    if (to === from && type !== 'single') {
-      const index: number = values.findIndex((val) => val === to);
-      if (index + 1 < values.length) {
-        correctedTo = values[index + 1];
-      } else if (index > 0) {
-        correctedFrom = values[index - 1];
+    if (correctedTo === correctedFrom && type !== 'single') {
+      if (correctedTo === max) {
+        correctedFrom = max - step;
+      } else if (correctedFrom === min) {
+        correctedTo = min + step;
+      } else {
+        correctedTo = correctedFrom + step;
+      }
+    }
+
+    if (correctedTo > max) {
+      correctedTo = max;
+      if (correctedFrom >= max) {
+        correctedFrom = max - step;
+        return { from: correctedFrom, to: correctedTo };
+      }
+    }
+
+    if (correctedFrom < min) {
+      correctedFrom = min;
+      if (correctedTo <= min) {
+        correctedFrom = min + step;
+        return { from: correctedFrom, to: correctedTo };
       }
     }
 
@@ -180,9 +205,7 @@ class View {
   private convertPxToValue(coordinate: number): number {
     const { orientation, values } = this.state;
     const pxStep: number = this.getPxStep(orientation, values);
-    const min: number = values[0];
-    const step: number = values[1] - min;
-    const max: number = values[values.length - 1];
+    const { min, max, step } = values;
     const sliderStart: number = this.getSliderPosition();
     const px: number = coordinate - sliderStart;
 
@@ -198,22 +221,6 @@ class View {
     return value;
   }
 
-  private createPxValues(
-    orientation: Orientation,
-    values: number[],
-  ): number[] {
-    const pxValues: number[] = [];
-    const pxStep: number = this.getPxStep(orientation, values);
-    let pxValue: number = 0;
-
-    while (pxValues.length < values.length) {
-      pxValues.push(pxValue);
-      pxValue += pxStep;
-    }
-
-    return pxValues;
-  }
-
   private getSliderSize(orientation: Orientation): number {
     const sliderPosition: DOMRect = this.element.getBoundingClientRect();
 
@@ -224,8 +231,10 @@ class View {
     return sliderPosition.height;
   }
 
-  private getPxStep(orientation: Orientation, values: number[]): number {
-    return this.getSliderSize(orientation) / (values.length - 1);
+  private getPxStep(orientation: Orientation, values: Values): number {
+    const { min, max, step } = values;
+    const quantity = Math.ceil((max - min) / step);
+    return this.getSliderSize(orientation) / quantity;
   }
 }
 
