@@ -40,6 +40,7 @@ interface ModelOptions {
   step: number,
   from: number,
   to: number,
+  type: SliderType,
 }
 
 export {

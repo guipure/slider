@@ -62,6 +62,7 @@ class Model {
     const {
       min, max, step, from, to,
     } = options;
+    const isDouble = options.type === 'double';
 
     let lastStep: number = (max - min) % step;
     if (lastStep === 0) {
@@ -78,12 +79,12 @@ class Model {
 
       return Math.round((num - min) / step) * step + min;
     }
-
-    if (correctedTo < correctedFrom) {
+    console.log(isDouble)
+    if (correctedTo < correctedFrom && isDouble) {
       [correctedTo, correctedFrom] = [correctedFrom, correctedTo];
     }
 
-    if (correctedTo === correctedFrom) {
+    if (correctedTo === correctedFrom && isDouble) {
       if (correctedTo === max) {
         correctedFrom = max - lastStep;
       } else if (correctedFrom === min) {
@@ -95,7 +96,7 @@ class Model {
 
     if (correctedFrom >= max - lastStep / 2) {
       correctedFrom = max;
-      if (correctedTo >= max - lastStep / 2) {
+      if (correctedTo >= max - lastStep / 2 && isDouble) {
         correctedFrom = max - lastStep;
         correctedTo = max;
         return { from: correctedFrom, to: correctedTo };
