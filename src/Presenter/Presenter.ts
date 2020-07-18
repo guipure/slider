@@ -21,9 +21,11 @@ class Presenter {
     const viewOptions: ViewOptions = options as ViewOptions;
 
     this.model = new Model(modelOptions);
-    const { min, max, step } = this.model.state;
+    const {
+      min, max, step, from, to,
+    } = this.model.state;
     const values = { min, max, step };
-    this.view = new View(anchor, viewOptions, values);
+    this.view = new View(anchor, viewOptions, values, from, to);
     this.settings = new Settings(anchor, options);
     this.subscribe();
   }
@@ -32,6 +34,7 @@ class Presenter {
     this.subscribeOnNewValues();
     this.subscribeOnNewSettings();
     this.subscribeOnNewViewState();
+    this.subscribeOnNewFromTo();
   }
 
   private subscribeOnNewValues(): void {
@@ -39,9 +42,9 @@ class Presenter {
   }
 
   private handleNewValues(modelState: ModelOptions): void {
-    const { min, max, step } = modelState;
+    const { min, max, step, from, to } = modelState;
     const values: Values = { min, max, step };
-    this.view.setState({ ...this.view.state, values });
+    this.view.setState({ ...this.view.state, values, from, to });
   }
 
   private subscribeOnNewSettings(): void {
@@ -59,6 +62,16 @@ class Presenter {
 
   private handleNewViewState(state: ViewState): void {
     this.settings.updateFromTo(state);
+  }
+
+  private subscribeOnNewFromTo(): void {
+    this.view.events.subscribe('newFromTo', this.handleNewFromTo.bind(this));
+  }
+
+  private handleNewFromTo(newFromTo: any): void {
+    const modelState: ModelOptions = this.model.state;
+    const newModelState: ModelOptions = { ...modelState, ...newFromTo };
+    this.model.setState(newModelState);
   }
 }
 

@@ -11,10 +11,10 @@ class View {
 
   public element: HTMLElement = document.body;
 
-  constructor(private anchor: HTMLElement, options: ViewOptions, values: Values) {
+  constructor(private anchor: HTMLElement, options: ViewOptions, values: Values, from: number, to: number) {
     this.events = new EventManager();
     this.element = this.createSlider();
-    this.state = this.init(options, values);
+    this.state = this.init(options, values, from, to);
     this.createSliderElements();
     this.setState = this.setState.bind(this);
   }
@@ -24,12 +24,11 @@ class View {
     const newOrientation: Orientation = newState.orientation;
     const isOrientationChanged: boolean = newOrientation && prevOrientation !== newOrientation;
     const updatedState: ViewState = { ...this.state, ...newState };
-    const correctedFromAndTo: { from: number, to: number } = this.correctFromAndTo(updatedState);
     const { orientation, values } = updatedState;
     const pxStep: number = this.getPxStep(orientation, values);
     const pxMax: number = this.getSliderSize(orientation);
     this.state = {
-      ...updatedState, ...correctedFromAndTo, pxStep, pxMax,
+      ...updatedState, pxStep, pxMax,
     };
 
     if (isOrientationChanged) {
@@ -58,12 +57,11 @@ class View {
     return this.element.getBoundingClientRect()[prop];
   }
 
-  private init(options: ViewOptions, values: Values): ViewState {
+  private init(options: ViewOptions, values: Values, from: number, to: number): ViewState {
     const pxStep: number = this.getPxStep(options.orientation, values);
     const pxMax: number = this.getSliderSize(options.orientation);
-    const correctedFromAndTo = this.correctFromAndTo({ ...options, values } as ViewState);
     return {
-      ...options, values, ...correctedFromAndTo, pxStep, pxMax,
+      ...options, values, from, to, pxStep, pxMax,
     };
   }
 
@@ -82,48 +80,6 @@ class View {
     const otherThumb: Thumb = new Thumb(this);
     const track: Track = new Track(this);
     const scale: Scale = new Scale(this);
-  }
-
-  private correctFromAndTo(state: ViewState): { from: number, to: number } {
-    const {
-      from, to, type, values,
-    } = state;
-    const { min, max, step } = values;
-    const diff = min - Math.round(min / step) * step;
-    let correctedFrom: number = Math.round(from / step) * step + diff;
-    let correctedTo: number = Math.round(to / step) * step + diff;
-
-    if (correctedTo < correctedFrom && type !== 'single') {
-      [correctedTo, correctedFrom] = [correctedFrom, correctedTo];
-    }
-
-    if (correctedTo === correctedFrom && type !== 'single') {
-      if (correctedTo === max) {
-        correctedFrom = max - step;
-      } else if (correctedFrom === min) {
-        correctedTo = min + step;
-      } else {
-        correctedTo = correctedFrom + step;
-      }
-    }
-
-    if (correctedTo > max) {
-      correctedTo = max;
-      if (correctedFrom >= max) {
-        correctedFrom = max - step;
-        return { from: correctedFrom, to: correctedTo };
-      }
-    }
-
-    if (correctedFrom < min) {
-      correctedFrom = min;
-      if (correctedTo <= min) {
-        correctedFrom = min + step;
-        return { from: correctedFrom, to: correctedTo };
-      }
-    }
-
-    return { from: correctedFrom, to: correctedTo };
   }
 
   private onTrackClick(event: any): void {
@@ -153,6 +109,7 @@ class View {
     if (this.state.type === 'single') {
       if (fromDistance) {
         this.setState({ from: value });
+        this.events.notify('newFromTo', { from: value });
         return;
       }
     }
@@ -166,9 +123,11 @@ class View {
     if (side === 'from') {
       if (this.state.to > value) {
         this.setState({ from: value });
+        this.events.notify('newFromTo', { from: value });
       }
     } else if (this.state.from < value) {
       this.setState({ to: value });
+      this.events.notify('newFromTo', { to: value });
     }
   }
 

@@ -54,12 +54,14 @@ class Scale {
     const { pxMax, pxStep, values } = this.slider.state;
     const { min, max, step } = values;
     const inc = this.calculateIncrement(max, step);
+    const pxInc = (inc / step) * pxStep;
 
     let pxCurrent = 0;
 
-    for (let current = min; current <= max - inc; current += inc) {
+    for (let current = min; current < max; current += inc) {
+      if (pxCurrent > pxMax - pxInc) break;
       this.element.append(this.createScaleValue(current, pxCurrent));
-      pxCurrent += (inc / step) * pxStep;
+      pxCurrent += pxInc;
     }
 
     this.element.append(this.createScaleValue(max, pxMax));
