@@ -31,7 +31,6 @@ class Model {
     const correctedMinMax = this.correctMinMax(min, max, correctedStep.step);
     const currentOptions = { ...options, ...correctedMinMax, ...correctedStep };
     const correctedFromTo = this.correctFromAndTo(currentOptions);
-
     return { ...currentOptions, ...correctedFromTo };
   }
 
@@ -63,8 +62,22 @@ class Model {
     const {
       min, max, step, from, to,
     } = options;
-    let correctedFrom: number = Math.round((from - min) / step) * step + min;
-    let correctedTo: number = Math.round((to - min) / step) * step + min;
+
+    let lastStep: number = (max - min) % step;
+    if (lastStep === 0) {
+      lastStep = step;
+    }
+
+    let correctedFrom: number = correct(from);
+    let correctedTo: number = correct(to);
+
+    function correct(num: number): number {
+      if (num >= max - lastStep / 2) {
+        return max;
+      }
+
+      return Math.round((num - min) / step) * step + min;
+    }
 
     if (correctedTo < correctedFrom) {
       [correctedTo, correctedFrom] = [correctedFrom, correctedTo];
@@ -72,7 +85,7 @@ class Model {
 
     if (correctedTo === correctedFrom) {
       if (correctedTo === max) {
-        correctedFrom = max - step;
+        correctedFrom = max - lastStep;
       } else if (correctedFrom === min) {
         correctedTo = min + step;
       } else {
@@ -80,10 +93,11 @@ class Model {
       }
     }
 
-    if (correctedTo > max) {
-      correctedTo = max;
-      if (correctedFrom >= max) {
-        correctedFrom = max - step;
+    if (correctedFrom >= max - lastStep / 2) {
+      correctedFrom = max;
+      if (correctedTo >= max - lastStep / 2) {
+        correctedFrom = max - lastStep;
+        correctedTo = max;
         return { from: correctedFrom, to: correctedTo };
       }
     }

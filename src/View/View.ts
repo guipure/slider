@@ -103,8 +103,9 @@ class View {
 
   private setFromTo(coordinate: number, side?: 'from' | 'to', isValue?: boolean): void {
     const value: number = isValue ? coordinate : this.convertPxToValue(coordinate);
-    const fromDistance: number = Math.abs(this.state.from - value);
-    const toDistance: number = Math.abs(this.state.to - value);
+    const { from, to } = this.state;
+    const fromDistance: number = Math.abs(from - value);
+    const toDistance: number = Math.abs(to - value);
 
     if (this.state.type === 'single') {
       if (fromDistance) {
@@ -121,11 +122,11 @@ class View {
     }
 
     if (side === 'from') {
-      if (this.state.to > value) {
+      if (to > value) {
         this.setState({ from: value });
         this.events.notify('newFromTo', { from: value });
       }
-    } else if (this.state.from < value) {
+    } else if (from < value) {
       this.setState({ to: value });
       this.events.notify('newFromTo', { to: value });
     }
