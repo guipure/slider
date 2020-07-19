@@ -28,11 +28,14 @@ class Bar {
     const sliderPosition = this.slider.getSliderPosition();
 
     if (this.slider.state.type === 'single') {
+      const length: number = Math.abs(thumbsPositions[1] - sliderPosition);
       bar.style[side] = '0px';
-      bar.style[dimension] = `${thumbsPositions[1] - sliderPosition}px`;
+      bar.style[dimension] = `${length}px`;
     } else {
-      bar.style[side] = `${thumbsPositions[0] - sliderPosition}px`;
-      bar.style[dimension] = `${thumbsPositions[1] - thumbsPositions[0]}px`;
+      const start = Math.abs(thumbsPositions[0] - sliderPosition);
+      const length: number = Math.abs(thumbsPositions[1] - thumbsPositions[0]);
+      bar.style[side] = `${start}px`;
+      bar.style[dimension] = `${length}px`;
     }
   }
 }

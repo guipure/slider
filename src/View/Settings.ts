@@ -75,21 +75,29 @@ class Settings {
         <input class="settings__input" type="radio" name="type" value="double">
       </label>
     </label>
-
+    
     <label class="settings__label">
       <p class="settings__name">hide_from_to</p>
-      <select name="hide_from_to">
-        <option value="true">true</option>
-        <option value="false">false</option>
-      </select>
+      <label>
+        true
+        <input class="settings__input" type="radio" name="hide_from_to" value="true">
+      </label>
+      <label>
+        false
+        <input class="settings__input" type="radio" name="hide_from_to" value="false">
+      </label>
     </label>
-
+    
     <label class="settings__label">
       <p class="settings__name">hide_scale</p>
-      <select name="hide_scale">
-        <option value="true">true</option>
-        <option value="false">false</option>
-      </select>
+      <label>
+        true
+        <input class="settings__input" type="radio" name="hide_scale" value="true">
+      </label>
+      <label>
+        false
+        <input class="settings__input" type="radio" name="hide_scale" value="false">
+      </label>
     </label>
     `;
 
@@ -141,21 +149,28 @@ class Settings {
             input.checked = true;
           }
           break;
+        case 'hide_from_to':
+          input.onchange = () => this.setState({ hide_from_to: input.value === 'true' });
+          if (input.value === 'true') {
+            if (this.state.hide_from_to === true) {
+              input.checked = true;
+            }
+          } else if (this.state.hide_from_to === false) {
+            input.checked = true;
+          }
+          break;
+        case 'hide_scale':
+          input.onchange = () => this.setState({ hide_scale: input.value === 'true' });
+          if (input.value === 'true') {
+            if (this.state.hide_scale === true) {
+              input.checked = true;
+            }
+          } else if (this.state.hide_scale === false) {
+            input.checked = true;
+          }
+          break;
         // no default
       }
-
-      selects.forEach((select: HTMLSelectElement) => {
-        switch (select.name) {
-          case 'hide_from_to':
-            select.onchange = () => this.setState({ hide_from_to: select.value === 'true' });
-            select.value = this.state.hide_from_to.toString();
-            break;
-          case 'hide_scale':
-            select.onchange = () => this.setState({ hide_scale: select.value === 'true' });
-            select.value = this.state.hide_scale.toString();
-          // no default
-        }
-      });
     });
   }
 

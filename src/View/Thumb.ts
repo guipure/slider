@@ -66,9 +66,10 @@ class Thumb {
   }
 
   private moveThumbAtValue(value: number): void {
+    const { orientation } = this.slider.state;
     const coordinate = this.valueToPx(value);
-    const thumbHalfWidth: number = this.element.getBoundingClientRect().width / 2;
-    const side: 'left' | 'top' = this.getSide(this.slider.state.orientation);
+    const thumbHalfWidth: number = Number.parseInt(getComputedStyle(this.element).width, 10) / 2;
+    const side: 'left' | 'top' = this.getSide(orientation);
     this.element.style[side] = `${coordinate - thumbHalfWidth}px`;
     this.events.notify('thumbMove');
   }

@@ -1,19 +1,23 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap');
+
 * {
   padding: 0;
   margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
+  box-sizing: border-box;
 }
 
 .slider {
   position: relative;
   height: 100%;
+  top: 30px;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .track {
   position: absolute;
-  background-color: #ddd;
   border-radius: 20px;
   cursor: pointer;
+  border: #bbb 1px solid;
 }
 
 .track-horizontal {
@@ -29,18 +33,19 @@
 }
 
 .bar {
-  background-color: dodgerblue;
-  opacity: 0.5;
+  background-color: rgba(220, 20, 60, 0.431);
   position: relative;
   border-radius: 20px;
 }
 
 .bar-horizontal {
   height: 10px;
+  top: -1px;
 }
 
 .bar-vertical {
   width: 10px;
+  left: -1px;
 }
 
 .thumb {
@@ -48,10 +53,15 @@
   display: flex;
   height: 20px;
   width: 20px;
-  background-color: dodgerblue;
+  background-color: crimson;
   cursor: pointer;
   border-radius: 50%;
   z-index: 2;
+  transition: transform 0.25s;
+}
+
+.thumb_large {
+  transform: scale(1.2);
 }
 
 .thumb-horizontal {
@@ -67,10 +77,12 @@
   user-select: none;
   text-align: center;
   white-space: nowrap;
-  background-color: burlywood;
-  padding: 0 2px;
+  color: white;
+  background-color: crimson;
+  padding: 0 3px;
   border-radius: 3px;
   font-weight: bold;
+  line-height: 22px;
 }
 
 .thumb-label_horizontal {
@@ -97,16 +109,32 @@
   position: absolute;
   text-align: center;
   cursor: pointer;
+  user-select: none;
+  color: #333;
 }
 
 .scale__value:hover {
-  opacity: 0.6;
+  color: crimson;
 }
 
 .settings {
+  font-family: 'Roboto Mono', monospace;
   padding: 10px;
   display: flex;
   flex-direction: column;
+  position: absolute;
+  left: -500px;
+  top: 0;
+  background-color: blanchedalmond;
+  color: #333;
+  border-radius: 5px;
+  text-align: center;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
 }
 
 .settings__label {
@@ -116,4 +144,9 @@
 .settings__name {
   font-weight: bold;
   text-transform: uppercase;
+  letter-spacing: 3px;
+}
+
+.settings__input {
+  text-align: center;
 }
