@@ -5,6 +5,9 @@ const defaultOptions: ModelOptions = {
   min: -5,
   max: 10,
   step: 1,
+  from: -2,
+  to: 5,
+  type: 'double',
 };
 
 describe('Model', () => {
@@ -17,6 +20,7 @@ describe('Model', () => {
 
   test('must swap min=10 and max=9', () => {
     const badOptions: ModelOptions = {
+      ...defaultOptions,
       min: 10,
       max: 9,
       step: 1,
@@ -28,6 +32,7 @@ describe('Model', () => {
 
   test('must swap min=10 and max=-11', () => {
     const badOptions: ModelOptions = {
+      ...defaultOptions,
       min: 10,
       max: -11,
       step: 1,
@@ -39,6 +44,7 @@ describe('Model', () => {
 
   test('must swap min=-10 and max=-11', () => {
     const badOptions: ModelOptions = {
+      ...defaultOptions,
       min: -10,
       max: -11,
       step: 1,
@@ -50,6 +56,7 @@ describe('Model', () => {
 
   test('must correct max=min=10 and increase max by step', () => {
     const badOptions: ModelOptions = {
+      ...defaultOptions,
       min: 10,
       max: 10,
       step: 1,
@@ -61,6 +68,7 @@ describe('Model', () => {
 
   test('must correct a zero step', () => {
     const badOptions: ModelOptions = {
+      ...defaultOptions,
       min: 10,
       max: 10,
       step: 0,
@@ -71,6 +79,7 @@ describe('Model', () => {
 
   test('must correct a step equals -5', () => {
     const badOptions: ModelOptions = {
+      ...defaultOptions,
       min: 10,
       max: 10,
       step: -5,
@@ -81,6 +90,7 @@ describe('Model', () => {
 
   test('must correct a step equals -100', () => {
     const badOptions: ModelOptions = {
+      ...defaultOptions,
       min: 10,
       max: 10,
       step: -100,
@@ -91,6 +101,7 @@ describe('Model', () => {
 
   test('must correct a step equals -0.01', () => {
     const badOptions: ModelOptions = {
+      ...defaultOptions,
       min: 10,
       max: 10,
       step: -0.01,
@@ -99,14 +110,84 @@ describe('Model', () => {
     expect(model.state.step).toBe(1);
   });
 
-  test('must create a correct values from -3 to 5 with step=1', () => {
-    const options: ModelOptions = {
-      min: -3,
-      max: 5,
-      step: 1,
+  test('must swap from=5 and to=4', () => {
+    const badOptions: ModelOptions = {
+      ...defaultOptions,
+      from: 5,
+      to: 4,
     };
-    const correctValues = [-3, -2, -1, 0, 1, 2, 3, 4, 5];
-    const model = new Model(options);
-    expect(model.state.values).toEqual(correctValues);
+    const model = new Model(badOptions);
+    expect(model.state.to).toBe(badOptions.from);
+    expect(model.state.from).toBe(badOptions.to);
+  });
+
+  test('must correct from=to=5!=max(min) and increase "to" by step', () => {
+    const from = 5;
+    const to = from;
+    const step = 2;
+    const badOptions: ModelOptions = {
+      ...defaultOptions,
+      from,
+      to,
+      step,
+    };
+    const model = new Model(badOptions);
+    expect(model.state.to).toBe(to + step);
+    expect(model.state.from).toBe(from);
+  });
+
+  test('must correct from=to=10=max and decrease "from" by last step', () => {
+    const max = 10;
+    const from = max;
+    const to = max;
+    const step = 2;
+    const badOptions: ModelOptions = {
+      ...defaultOptions,
+      from,
+      to,
+      step,
+      max,
+    };
+    const { min } = badOptions;
+    const lastStep = (max - min) % step ? (max - min) % step : step;
+    const model = new Model(badOptions);
+    expect(model.state.to).toBe(to);
+    expect(model.state.from).toBe(from - lastStep);
+  });
+
+  test('must correct from=to=-50<min', () => {
+    const min = -5;
+    const from = -60;
+    const to = from;
+    const step = 2;
+    const badOptions: ModelOptions = {
+      ...defaultOptions,
+      from,
+      to,
+      step,
+      min,
+    };
+    const model = new Model(badOptions);
+    expect(model.state.to).toBe(min + step);
+    expect(model.state.from).toBe(min);
+  });
+
+  test('must correct from=to=max on one-step slider', () => {
+    const min = -5;
+    const max = 5;
+    const step = 15;
+    const from = 5;
+    const to = from;
+    const badOptions: ModelOptions = {
+      ...defaultOptions,
+      from,
+      to,
+      step,
+      min,
+      max,
+    };
+    const model = new Model(badOptions);
+    expect(model.state.to).toBe(max);
+    expect(model.state.from).toBe(min);
   });
 });

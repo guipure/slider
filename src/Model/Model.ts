@@ -94,19 +94,10 @@ class Model {
       }
     }
 
-    if (correctedFrom >= max - lastStep / 2) {
-      correctedFrom = max;
-      if (correctedTo >= max - lastStep / 2 && isDouble) {
-        correctedFrom = max - lastStep;
-        correctedTo = max;
-        return { from: correctedFrom, to: correctedTo };
-      }
-    }
-
     if (correctedFrom < min) {
       correctedFrom = min;
       if (correctedTo <= min) {
-        correctedFrom = min + step;
+        correctedTo = min + step;
         return { from: correctedFrom, to: correctedTo };
       }
     }

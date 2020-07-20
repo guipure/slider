@@ -4,11 +4,11 @@ import './plugin';
 $('.js-slider-wrapper').slider({
   orientation: 'horizontal',
   type: 'double',
-  min: 1,
+  min: -5,
   max: 10,
-  step: 1,
-  from: 3,
-  to: 6,
+  step: 2,
+  from: -50,
+  to: -50,
   hide_from_to: false,
   hide_scale: false,
 });
