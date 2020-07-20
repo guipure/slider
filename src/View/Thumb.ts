@@ -70,7 +70,8 @@ class Thumb {
     const coordinate = this.valueToPx(value);
     const thumbHalfWidth: number = Number.parseInt(getComputedStyle(this.element).width, 10) / 2;
     const side: 'left' | 'top' = this.getSide(orientation);
-    this.element.style[side] = `${coordinate - thumbHalfWidth}px`;
+    const position: number = this.slider.convertPxToPercent(coordinate - thumbHalfWidth);
+    this.element.style[side] = `${position}%`;
     this.events.notify('thumbMove');
   }
 

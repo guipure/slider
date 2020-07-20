@@ -58,6 +58,10 @@ class View {
     return this.element.getBoundingClientRect()[prop];
   }
 
+  public convertPxToPercent(value: number) {
+    return (value * 100) / this.getSliderSize(this.state.orientation);
+  }
+
   private init(options: ViewOptions, values: Values, from: number, to: number): ViewState {
     const pxStep: number = this.getPxStep(options.orientation, values);
     const pxMax: number = this.getSliderSize(options.orientation);

@@ -34,54 +34,48 @@ class Scale {
     this.insertScaleValues();
   }
 
-  private calculateIncrement(valueMax: number, valueStep: number): number {
-    let inc;
+  private calculateIncrement(step: number): number {
     const { pxMax, pxStep } = this.slider.state;
     const quantity = Math.ceil(pxMax / pxStep);
-
-    if (quantity <= 10) {
-      inc = valueStep;
-    } else if (valueMax < 1000) {
-      inc = Math.round(quantity / 7) * valueStep;
-    } else {
-      inc = Math.round(quantity / 5) * valueStep;
-    }
-
+    const inc = Math.ceil(quantity / 5) * step;
     return inc;
   }
 
   private insertScaleValues(): void {
     const { pxMax, pxStep, values } = this.slider.state;
     const { min, max, step } = values;
-    const inc = this.calculateIncrement(max, step);
+    const inc = this.calculateIncrement(step);
     const pxInc = (inc / step) * pxStep;
 
     let pxCurrent = 0;
 
     for (let current = min; current < max; current += inc) {
-      if (pxCurrent > pxMax - pxInc) break;
-      this.element.append(this.createScaleValue(current, pxCurrent));
+      if (pxCurrent > pxMax - 50) break;
+      this.appendScaleValue(this.element, current, pxCurrent);
       pxCurrent += pxInc;
     }
 
-    this.element.append(this.createScaleValue(max, pxMax));
+    this.appendScaleValue(this.element, max, pxMax);
   }
 
-  private createScaleValue(value: number, position: number): HTMLElement {
+  private appendScaleValue(anchor: HTMLElement, value: number, position: number): void {
     const scaleValue = document.createElement('span');
     scaleValue.className = 'scale__value';
     scaleValue.innerHTML = value.toString();
+    anchor.append(scaleValue);
+    const convert = this.slider.convertPxToPercent.bind(this.slider);
 
     if (this.slider.state.orientation === 'horizontal') {
-      const width = 50;
-      scaleValue.style.width = `${width}px`;
-      scaleValue.style.left = `${position - width / 2}px`;
+      const width = convert(50);
+      const left = convert(position - 50 / 2);
+      scaleValue.style.width = `${width}%`;
+      scaleValue.style.left = `${left}%`;
     } else {
-      const height = 20;
-      scaleValue.style.height = `${height}px`;
-      scaleValue.style.top = `${position - height / 2}px`;
+      const height = convert(20);
+      const top = convert(position - 20 / 2);
+      scaleValue.style.height = `${height}%`;
+      scaleValue.style.top = `${top}%`;
     }
-    return scaleValue;
   }
 
   private onClick(event: Event): void {

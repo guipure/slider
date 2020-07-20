@@ -26,16 +26,17 @@ class Bar {
     const dimension: 'width' | 'height' = isHorizontal ? 'width' : 'height';
     const thumbsPositions = this.slider.getThumbsPositions();
     const sliderPosition = this.slider.getSliderPosition();
+    const convert = this.slider.convertPxToPercent.bind(this.slider);
 
     if (this.slider.state.type === 'single') {
-      const length: number = Math.abs(thumbsPositions[1] - sliderPosition);
-      bar.style[side] = '0px';
-      bar.style[dimension] = `${length}px`;
+      const length: number = convert(Math.abs(thumbsPositions[1] - sliderPosition));
+      bar.style[side] = '0%';
+      bar.style[dimension] = `${length}%`;
     } else {
-      const start = Math.abs(thumbsPositions[0] - sliderPosition);
-      const length: number = Math.abs(thumbsPositions[1] - thumbsPositions[0]);
-      bar.style[side] = `${start}px`;
-      bar.style[dimension] = `${length}px`;
+      const start = convert(Math.abs(thumbsPositions[0] - sliderPosition));
+      const length: number = convert(Math.abs(thumbsPositions[1] - thumbsPositions[0]));
+      bar.style[side] = `${start}%`;
+      bar.style[dimension] = `${length}%`;
     }
   }
 }

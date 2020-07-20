@@ -54,12 +54,6 @@ describe('Scale', () => {
     expect(scaleElement).toBeVisible();
   });
 
-  test('must create at list two scale values', () => {
-    const scaleValueElements = slider.querySelectorAll('.scale__value');
-
-    expect(scaleValueElements.length).toBeGreaterThanOrEqual(2);
-  });
-
   test('click on a scale value must dispatch a scaleclick event', () => {
     const scaleValueElement: HTMLElement = slider.querySelector('.scale__value') as HTMLElement;
     const value: number = Number(scaleValueElement.innerHTML);
