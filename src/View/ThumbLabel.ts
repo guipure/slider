@@ -33,7 +33,7 @@ class ThumbLabel {
     this.element.innerHTML = this.thumb.currentValue.toString();
     this.element.style.opacity = '1';
 
-    if (this.doCollapse()) {
+    if (this.doCollide()) {
       this.uniteLabels();
     }
 
@@ -44,7 +44,7 @@ class ThumbLabel {
     }
   }
 
-  private doCollapse(): boolean {
+  private doCollide(): boolean {
     if (this.element.style.display === 'none') return false;
     const slider = this.thumb.element.parentElement as HTMLElement;
     const labels = slider.querySelectorAll('.thumb-label');

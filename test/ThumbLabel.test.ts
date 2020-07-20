@@ -1,25 +1,36 @@
 import '@testing-library/jest-dom';
 import { View } from '../src/View/View';
-import { ViewOptions } from '../src/Presenter/Options';
+import { ViewOptions, Values } from '../src/Presenter/Options';
+
+const standardOptions: ViewOptions = {
+  orientation: 'horizontal',
+  type: 'double',
+  hide_from_to: false,
+  hide_scale: false,
+};
+
+function createSlider(options: ViewOptions): View {
+  const anchor = document.querySelector('.anchor') as HTMLElement;
+  const values: Values = {
+    min: -10,
+    max: 10,
+    step: 5,
+  };
+  const from: number = -5;
+  const to: number = 5;
+  const slider: View = new View(anchor, options, values, from, to);
+  return slider;
+}
 
 describe('ThumbLabel', () => {
   let view: View;
   let slider: HTMLElement;
 
   beforeEach(() => {
-    const options: ViewOptions = {
-      from: -1,
-      to: 0,
-      orientation: 'horizontal',
-      type: 'double',
-      hide_from_to: false,
-      hide_scale: false,
-    };
-    const anchor = document.createElement('div');
+    const anchor: HTMLElement = document.createElement('div');
     anchor.className = 'anchor';
     document.body.append(anchor);
-    const values: number[] = [-1, 0];
-    view = new View(anchor, options, values);
+    view = createSlider(standardOptions);
     slider = view.element;
   });
 

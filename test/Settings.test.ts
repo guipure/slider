@@ -5,19 +5,19 @@ import { Settings } from '../src/View/Settings';
 describe('Thumb', () => {
   let settings: Settings;
   let anchor: HTMLElement;
+  const options: Options = {
+    min: -5,
+    max: 10,
+    step: 1,
+    from: -1,
+    to: 0,
+    orientation: 'horizontal',
+    type: 'double',
+    hide_from_to: false,
+    hide_scale: false,
+  };
 
   beforeEach(() => {
-    const options: Options = {
-      min: -5,
-      max: 10,
-      step: 1,
-      from: -1,
-      to: 0,
-      orientation: 'horizontal',
-      type: 'double',
-      hide_from_to: false,
-      hide_scale: false,
-    };
     anchor = document.createElement('div');
     anchor.className = 'anchor';
     document.body.append(anchor);
@@ -26,6 +26,22 @@ describe('Thumb', () => {
 
   afterEach(() => {
     document.body.innerHTML = '';
+  });
+
+  test('must initialize settings with standard options', () => {
+    expect(settings.state).toStrictEqual(options);
+  });
+
+  test('must initialize settings with another options', () => {
+    const anotherOptions: Options = {
+      ...options,
+      orientation: 'vertical',
+      type: 'single',
+      hide_from_to: true,
+      hide_scale: true,
+    };
+    const anotherSettings = new Settings(anchor, anotherOptions);
+    expect(anotherSettings.state).toStrictEqual(anotherOptions);
   });
 
   test('must change the min value', () => {
@@ -117,19 +133,21 @@ describe('Thumb', () => {
   });
 
   test('must change the hide_scale option', () => {
-    const select = anchor.querySelector('select[name=hide_scale]') as HTMLInputElement;
-    select.value = 'true';
-    select.dispatchEvent(new InputEvent('change'));
-
+    const hideScaleTrueBtn = anchor.querySelector('input[name=hide_scale][value=true]') as HTMLInputElement;
+    const hideScaleFalseBtn = anchor.querySelector('input[name=hide_scale][value=false]') as HTMLInputElement;
+    hideScaleTrueBtn.dispatchEvent(new InputEvent('change'));
     expect(settings.state.hide_scale).toBe(true);
+    hideScaleFalseBtn.dispatchEvent(new InputEvent('change'));
+    expect(settings.state.hide_scale).toBe(false);
   });
 
   test('must change the hide_from_to option', () => {
-    const select = anchor.querySelector('select[name=hide_from_to]') as HTMLInputElement;
-    select.value = 'true';
-    select.dispatchEvent(new InputEvent('change'));
-
+    const hideFromToTrueBtn = anchor.querySelector('input[name=hide_from_to][value=true]') as HTMLInputElement;
+    const hideFromToFalseBtn = anchor.querySelector('input[name=hide_from_to][value=false]') as HTMLInputElement;
+    hideFromToTrueBtn.dispatchEvent(new InputEvent('change'));
     expect(settings.state.hide_from_to).toBe(true);
+    hideFromToFalseBtn.dispatchEvent(new InputEvent('change'));
+    expect(settings.state.hide_from_to).toBe(false);
   });
 
   test('updateFromTo method must update the settings', () => {

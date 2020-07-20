@@ -1,10 +1,8 @@
 import '@testing-library/jest-dom';
 import { View } from '../src/View/View';
-import { ViewOptions } from '../src/Presenter/Options';
+import { ViewOptions, Values } from '../src/Presenter/Options';
 
 const standardOptions: ViewOptions = {
-  from: -1,
-  to: 6,
   orientation: 'horizontal',
   type: 'double',
   hide_from_to: false,
@@ -13,8 +11,14 @@ const standardOptions: ViewOptions = {
 
 function createSlider(options: ViewOptions): View {
   const anchor = document.querySelector('.anchor') as HTMLElement;
-  const values: number[] = [-2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8];
-  const slider: View = new View(anchor, options, values);
+  const values: Values = {
+    min: -10,
+    max: 10,
+    step: 5,
+  };
+  const from: number = -5;
+  const to: number = 5;
+  const slider: View = new View(anchor, options, values, from, to);
   return slider;
 }
 
@@ -32,11 +36,12 @@ describe('View', () => {
     const options = { ...standardOptions };
     const slider: View = createSlider(options);
     const {
-      from, to, orientation, type, hide_from_to, hide_scale,
+      orientation,
+      type,
+      hide_from_to,
+      hide_scale,
     } = slider.state;
 
-    expect(from).toBe(options.from);
-    expect(to).toBe(options.to);
     expect(orientation).toBe(options.orientation);
     expect(type).toBe(options.type);
     expect(hide_from_to).toBe(options.hide_from_to);
@@ -117,25 +122,6 @@ describe('View', () => {
     const scale = slider.element.querySelector('.scale');
 
     expect(scale).not.toBeVisible();
-  });
-
-  test('must swap from and to when from > to', () => {
-    const options = { ...standardOptions };
-    options.from = 6;
-    options.to = 2;
-    const slider: View = createSlider(options);
-
-    expect(slider.state.from).toBe(2);
-    expect(slider.state.to).toBe(6);
-  });
-
-  test('from and to must not be equal', () => {
-    const options = { ...standardOptions };
-    options.from = 3;
-    options.to = 3;
-    const slider: View = createSlider(options);
-
-    expect(slider.state.from).not.toBe(slider.state.to);
   });
 
   test('setState must change the orientation', () => {
@@ -246,75 +232,6 @@ describe('View', () => {
 
     slider.setState({ to: 5 });
     expect(slider.state.to).toBe(5);
-  });
-
-  test('setState must swap from and to when from > to', () => {
-    const options = { ...standardOptions };
-    const slider: View = createSlider(options);
-
-    slider.setState({ from: 2, to: 0 });
-    expect(slider.state.from).toBe(0);
-    expect(slider.state.to).toBe(2);
-
-    slider.setState({ from: -1, to: -2 });
-    expect(slider.state.from).toBe(-2);
-    expect(slider.state.to).toBe(-1);
-
-    slider.setState({ from: 5, to: 4 });
-    expect(slider.state.from).toBe(4);
-    expect(slider.state.to).toBe(5);
-  });
-
-  test('setState must change from or to when from = to != boundary values', () => {
-    const options = { ...standardOptions };
-    const slider: View = createSlider(options);
-
-    slider.setState({ from: 2, to: 2 });
-    expect(slider.state.from).toBe(2);
-    expect(slider.state.to).toBe(3);
-  });
-
-  test('setState must increase to when from = to = min', () => {
-    const options = { ...standardOptions };
-    const slider: View = createSlider(options);
-
-    slider.setState({ from: -2, to: -2 });
-    expect(slider.state.from).toBe(-2);
-    expect(slider.state.to).toBe(-1);
-  });
-
-  test('setState must reduce from when from = to = max', () => {
-    const options = { ...standardOptions };
-    const slider: View = createSlider(options);
-
-    slider.setState({ from: 8, to: 8 });
-    expect(slider.state.from).toBe(7);
-    expect(slider.state.to).toBe(8);
-  });
-
-  test('must convert values [0, 1, 2] to pxValues [0, 100, 200] if anchor width = 200px', () => {
-    const options = { ...standardOptions };
-    const anchor: HTMLElement = document.createElement('div');
-    anchor.className = 'anchor';
-    document.body.append(anchor);
-    const values: number[] = [0, 1, 2];
-    const slider: View = new View(anchor, options, values);
-    slider.element.getBoundingClientRect = jest.fn(() => ({
-      x: 0,
-      y: 0,
-      width: 200,
-      height: 50,
-      top: 0,
-      right: 200,
-      bottom: 50,
-      left: 0,
-      toJSON: () => null,
-    }));
-    slider.setState({ values });
-    expect(slider.state.pxValues).toStrictEqual([0, 100, 200]);
-
-    slider.setState({ values: [-2, 0, 2, 4, 6] });
-    expect(slider.state.pxValues).toStrictEqual([0, 50, 100, 150, 200]);
   });
 
   test('thumb move must call getThumbsPosition method', () => {
