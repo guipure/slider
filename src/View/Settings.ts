@@ -8,7 +8,7 @@ class Settings {
 
   constructor(private anchor: HTMLElement, public state: Options) {
     this.events = new EventManager();
-    this.form = this.createFrom();
+    this.form = this.createForm();
     this.createSettings();
     this.initValues();
   }
@@ -18,7 +18,7 @@ class Settings {
     this.initValues();
   }
 
-  private createFrom(): HTMLFormElement {
+  private createForm(): HTMLFormElement {
     const form = document.createElement('form');
     form.className = 'settings';
     this.anchor.append(form);
@@ -106,7 +106,6 @@ class Settings {
 
   private initValues() {
     const inputs = this.form.querySelectorAll('input');
-    const selects = this.form.querySelectorAll('select');
     inputs.forEach((input: HTMLInputElement) => {
       switch (input.name) {
         case 'min':
