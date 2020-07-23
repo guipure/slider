@@ -1,4 +1,4 @@
-import '../assets/favicons/favicons';
+import './assets/favicons/favicons';
 import './slider.scss';
 import './slider';
 

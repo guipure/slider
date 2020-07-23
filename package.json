@@ -23,7 +23,7 @@
   "bugs": {
     "url": "https://github.com/guipure/slider/issues"
   },
-  "homepage": "https://github.com/guipure/slider#readme",
+  "homepage": "https://github.com/guipure/slider",
   "devDependencies": {
     "@babel/core": "^7.10.4",
     "@babel/preset-env": "^7.10.4",
