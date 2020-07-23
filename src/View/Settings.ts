@@ -27,78 +27,78 @@ class Settings {
 
   private createSettings() {
     const settingsTemplate = `
-    <label class="settings__label">
+    <div class="settings__row">
       <p class="settings__name">min</p>
-      <input class="settings__input" type="number" name="min">
-    </label>
+      <input class="settings__input" type="number" name="min" />
+    </div>
 
-    <label class="settings__label">
+    <div class="settings__row">
       <p class="settings__name">max</p>
-      <input class="settings__input" type="number" name="max">
-    </label>
+      <input class="settings__input" type="number" name="max" />
+    </div>
 
-    <label class="settings__label">
+    <div class="settings__row">
       <p class="settings__name">step</p>
-      <input class="settings__input" type="number" name="step">
-    </label>
+      <input class="settings__input" type="number" name="step" />
+    </div>
 
-    <label class="settings__label">
+    <div class="settings__row">
       <p class="settings__name">from</p>
-      <input class="settings__input" type="number" name="from">
-    </label>
+      <input class="settings__input" type="number" name="from" />
+    </div>
 
-    <label class="settings__label">
+    <div class="settings__row">
       <p class="settings__name">to</p>
-      <input class="settings__input" type="number" name="to">
-    </label>
+      <input class="settings__input" type="number" name="to" />
+    </div>
 
-    <label class="settings__label">
+    <div class="settings__row">
       <p class="settings__name">orientation</p>
       <label>
         horizontal
-        <input class="settings__input" type="radio" name="orientation" value="horizontal">
+        <input class="settings__input" type="radio" name="orientation" value="horizontal" />
       </label>
       <label>
         vertical
-        <input class="settings__input" type="radio" name="orientation" value="vertical">
+        <input class="settings__input" type="radio" name="orientation" value="vertical" />
       </label>
-    </label>
+    </div>
     
-    <label class="settings__label">
+    <div class="settings__row">
       <p class="settings__name">type</p>
       <label>
         single
-        <input class="settings__input" type="radio" name="type" value="single">
+        <input class="settings__input" type="radio" name="type" value="single" />
       </label>
       <label>
         double
-        <input class="settings__input" type="radio" name="type" value="double">
+        <input class="settings__input" type="radio" name="type" value="double" />
       </label>
-    </label>
+    </div>
     
-    <label class="settings__label">
+    <div class="settings__row">
       <p class="settings__name">hide_from_to</p>
       <label>
         true
-        <input class="settings__input" type="radio" name="hide_from_to" value="true">
+        <input class="settings__input" type="radio" name="hide_from_to" value="true" />
       </label>
       <label>
         false
-        <input class="settings__input" type="radio" name="hide_from_to" value="false">
+        <input class="settings__input" type="radio" name="hide_from_to" value="false" />
       </label>
-    </label>
+    </div>
     
-    <label class="settings__label">
+    <div class="settings__row">
       <p class="settings__name">hide_scale</p>
       <label>
         true
-        <input class="settings__input" type="radio" name="hide_scale" value="true">
+        <input class="settings__input" type="radio" name="hide_scale" value="true" />
       </label>
       <label>
         false
-        <input class="settings__input" type="radio" name="hide_scale" value="false">
+        <input class="settings__input" type="radio" name="hide_scale" value="false" />
       </label>
-    </label>
+    </div>
     `;
 
     this.form.insertAdjacentHTML('beforeend', settingsTemplate);

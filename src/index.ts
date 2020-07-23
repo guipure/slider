@@ -1,5 +1,6 @@
-import './index.scss';
-import './plugin';
+import '../assets/favicons/favicons';
+import './slider.scss';
+import './slider';
 
 $('.js-first-anchor').slider();
 
