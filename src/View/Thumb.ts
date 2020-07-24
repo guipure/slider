@@ -76,8 +76,9 @@ class Thumb {
   }
 
   private convertValueToPx(value: number): number {
-    const { values, pxMax, pxStep } = this.slider.state;
-    const { min, max, step } = values;
+    const {
+      min, max, step, pxMax, pxStep,
+    } = this.slider.state;
 
     if (value === max) {
       return pxMax;

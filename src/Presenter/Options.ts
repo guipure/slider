@@ -14,20 +14,21 @@ interface Options {
 }
 
 interface ViewOptions {
+  min: number,
+  max: number,
+  step: number,
+  from: number,
+  to: number,
   orientation: Orientation,
   type: SliderType,
   hideFromTo: boolean,
   hideScale: boolean,
 }
 
-interface Values {
+interface ViewState extends ViewOptions {
   min: number,
   max: number,
   step: number,
-}
-
-interface ViewState extends ViewOptions {
-  values: Values,
   pxStep: number,
   pxMax: number,
   from: number,
@@ -56,5 +57,5 @@ const standardOptions: Options = {
 };
 
 export {
-  Options, ViewOptions, ViewState, Values, ModelOptions, Orientation, SliderType, standardOptions,
+  Options, ViewOptions, ViewState, ModelOptions, Orientation, SliderType, standardOptions,
 };

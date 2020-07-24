@@ -42,8 +42,9 @@ class Scale {
   }
 
   private insertScaleValues(): void {
-    const { pxMax, pxStep, values } = this.slider.state;
-    const { min, max, step } = values;
+    const {
+      pxMax, pxStep, min, max, step,
+    } = this.slider.state;
     const inc = this.calculateIncrement(step);
     const pxInc = (inc / step) * pxStep;
 

@@ -12,7 +12,7 @@ class Model {
   }
 
   public setState(options: ModelOptions): void {
-    const correctedOptions = this.correctOptions(options);
+    const correctedOptions: ModelOptions = this.correctOptions(options);
     this.state = { ...correctedOptions };
     this.events.notify('newModelState', this.state);
   }
@@ -29,7 +29,7 @@ class Model {
     } = options;
     const correctedStep = this.correctStep(step);
     const correctedMinMax = this.correctMinMax(min, max, correctedStep.step);
-    const currentOptions = { ...options, ...correctedMinMax, ...correctedStep };
+    const currentOptions: ModelOptions = { ...options, ...correctedMinMax, ...correctedStep };
     const correctedFromTo = this.correctFromAndTo(currentOptions);
     return { ...currentOptions, ...correctedFromTo };
   }
@@ -49,7 +49,7 @@ class Model {
   }
 
   private correctStep(step: number): { step: number } {
-    let correctedStep = Math.round(step);
+    let correctedStep: number = Math.round(step);
 
     if (correctedStep < 1) {
       correctedStep = 1;
@@ -62,9 +62,8 @@ class Model {
     const {
       min, max, step, from, to,
     } = options;
-    const isDouble = options.type === 'double';
-
     let lastStep: number = (max - min) % step;
+
     if (lastStep === 0) {
       lastStep = step;
     }
@@ -80,11 +79,15 @@ class Model {
       return Math.round((num - min) / step) * step + min;
     }
 
-    if (correctedTo < correctedFrom && isDouble) {
+    const isDouble: boolean = options.type === 'double';
+    const isToLessThanFrom: boolean = correctedTo < correctedFrom && isDouble;
+    const isToEqualsFrom: boolean = correctedTo === correctedFrom && isDouble;
+
+    if (isToLessThanFrom) {
       [correctedTo, correctedFrom] = [correctedFrom, correctedTo];
     }
 
-    if (correctedTo === correctedFrom && isDouble) {
+    if (isToEqualsFrom) {
       if (correctedTo === max) {
         correctedFrom = max - lastStep;
       } else if (correctedFrom === min) {

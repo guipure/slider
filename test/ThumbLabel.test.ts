@@ -1,8 +1,13 @@
 import '@testing-library/jest-dom';
 import { View } from '../src/View/View';
-import { ViewOptions, Values } from '../src/Presenter/Options';
+import { ViewOptions } from '../src/Presenter/Options';
 
 const standardOptions: ViewOptions = {
+  min: -10,
+  max: 10,
+  step: 5,
+  from: -5,
+  to: 5,
   orientation: 'horizontal',
   type: 'double',
   hideFromTo: false,
@@ -11,14 +16,7 @@ const standardOptions: ViewOptions = {
 
 function createSlider(options: ViewOptions): View {
   const anchor = document.querySelector('.anchor') as HTMLElement;
-  const values: Values = {
-    min: -10,
-    max: 10,
-    step: 5,
-  };
-  const from: number = -5;
-  const to: number = 5;
-  const slider: View = new View(anchor, options, values, from, to);
+  const slider: View = new View(anchor, options);
   return slider;
 }
 

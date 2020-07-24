@@ -1,4 +1,4 @@
-import { ViewOptions, ViewState, Values, Orientation } from '../Presenter/Options';
+import { ViewOptions, ViewState, Orientation } from '../Presenter/Options';
 import { Track } from './Track';
 import { Thumb } from './Thumb';
 import { EventManager } from '../EventManager/EventManager';
@@ -11,10 +11,10 @@ class View {
 
   public element: HTMLElement = document.body;
 
-  constructor(private anchor: HTMLElement, options: ViewOptions, values: Values, from: number, to: number) {
+  constructor(private anchor: HTMLElement, options: ViewOptions) {
     this.events = new EventManager();
     this.element = this.createSlider();
-    this.state = this.init(options, values, from, to);
+    this.state = this.init(options);
     this.createSliderElements();
     this.setState = this.setState.bind(this);
   }
@@ -24,8 +24,8 @@ class View {
     const newOrientation: Orientation = newState.orientation;
     const isOrientationChanged: boolean = newOrientation && prevOrientation !== newOrientation;
     const updatedState: ViewState = { ...this.state, ...newState };
-    const { orientation, values } = updatedState;
-    const pxStep: number = this.getPxStep(orientation, values);
+    const { orientation } = updatedState;
+    const pxStep: number = this.getPxStep(updatedState);
     const pxMax: number = this.getSliderSize(orientation);
     this.state = {
       ...updatedState, pxStep, pxMax,
@@ -62,11 +62,11 @@ class View {
     return (value * 100) / this.getSliderSize(this.state.orientation);
   }
 
-  private init(options: ViewOptions, values: Values, from: number, to: number): ViewState {
-    const pxStep: number = this.getPxStep(options.orientation, values);
+  private init(options: ViewOptions): ViewState {
+    const pxStep: number = this.getPxStep(options);
     const pxMax: number = this.getSliderSize(options.orientation);
     return {
-      ...options, values, from, to, pxStep, pxMax,
+      ...options, pxStep, pxMax,
     };
   }
 
@@ -170,9 +170,8 @@ class View {
   }
 
   private convertPxToValue(coordinate: number): number {
-    const { orientation, values } = this.state;
-    const pxStep: number = this.getPxStep(orientation, values);
-    const { min, max, step } = values;
+    const { orientation, min, max, step } = this.state;
+    const pxStep: number = this.getPxStep(this.state);
     const sliderStart: number = this.getSliderPosition();
     const px: number = coordinate - sliderStart;
 
@@ -198,8 +197,10 @@ class View {
     return sliderPosition.height;
   }
 
-  private getPxStep(orientation: Orientation, values: Values): number {
-    const { min, max, step } = values;
+  private getPxStep(options: any): number {
+    const {
+      min, max, step, orientation,
+    } = options;
     const quantity = Math.ceil((max - min) / step);
     return this.getSliderSize(orientation) / quantity;
   }

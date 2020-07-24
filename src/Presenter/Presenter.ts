@@ -5,7 +5,6 @@ import {
   ViewOptions,
   ViewState,
   ModelOptions,
-  Values,
 } from './Options';
 import { Settings } from '../View/Settings';
 
@@ -18,14 +17,16 @@ class Presenter {
 
   constructor(anchor: HTMLElement, options: Options) {
     const modelOptions: ModelOptions = options as ModelOptions;
-    const viewOptions: ViewOptions = options as ViewOptions;
+    let viewOptions: ViewOptions = options as ViewOptions;
 
     this.model = new Model(modelOptions);
     const {
       min, max, step, from, to,
     } = this.model.state;
-    const values = { min, max, step };
-    this.view = new View(anchor, viewOptions, values, from, to);
+    viewOptions = {
+      ...viewOptions, min, max, step, from, to,
+    };
+    this.view = new View(anchor, viewOptions);
     this.settings = new Settings(anchor, options);
     this.subscribe();
   }
@@ -45,9 +46,8 @@ class Presenter {
     const {
       min, max, step, from, to,
     } = modelState;
-    const values: Values = { min, max, step };
     this.view.setState({
-      ...this.view.state, values, from, to,
+      ...this.view.state, min, max, step, from, to,
     });
   }
 
