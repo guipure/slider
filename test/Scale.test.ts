@@ -39,14 +39,14 @@ describe('Scale', () => {
   });
 
   test('must create a visible element', () => {
-    const scaleElement = slider.querySelector('.scale');
+    const scaleElement = slider.querySelector('.slider__scale');
 
     expect(scaleElement).toBeVisible();
   });
 
   test('must be hidden when hide_scale=true', () => {
     view.setState({ hide_scale: true });
-    const scaleElement = slider.querySelector('.scale');
+    const scaleElement = slider.querySelector('.slider__scale');
 
     expect(scaleElement).not.toBeVisible();
 
@@ -55,7 +55,7 @@ describe('Scale', () => {
   });
 
   test('click on a scale value must dispatch a scaleclick event', () => {
-    const scaleValueElement: HTMLElement = slider.querySelector('.scale__value') as HTMLElement;
+    const scaleValueElement: HTMLElement = slider.querySelector('.slider__scale-value') as HTMLElement;
     const value: number = Number(scaleValueElement.innerHTML);
     const checkScaleClick = jest.fn((event) => event.detail.value);
     slider.addEventListener('scaleclick', checkScaleClick);
@@ -66,7 +66,7 @@ describe('Scale', () => {
 
   test('click on a scale value must dispatch a scaleclick event if type is single', () => {
     view.setState({ type: 'single' });
-    const scaleValueElement: HTMLElement = slider.querySelector('.scale__value') as HTMLElement;
+    const scaleValueElement: HTMLElement = slider.querySelector('.slider__scale-value') as HTMLElement;
     const value: number = Number(scaleValueElement.innerHTML);
     const checkScaleClick = jest.fn((event) => event.detail.value);
     slider.addEventListener('scaleclick', checkScaleClick);
@@ -76,7 +76,7 @@ describe('Scale', () => {
   });
 
   test('click on a scale (not a concrete value) must not dispatch a scaleclick event', () => {
-    const scaleValueElement: HTMLElement = slider.querySelector('.scale') as HTMLElement;
+    const scaleValueElement: HTMLElement = slider.querySelector('.slider__scale') as HTMLElement;
     const checkScaleClick = jest.fn();
     slider.addEventListener('scaleclick', checkScaleClick);
     scaleValueElement.click();

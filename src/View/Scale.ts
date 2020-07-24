@@ -16,7 +16,7 @@ class Scale {
 
   private createScale(): HTMLElement {
     const element = document.createElement('div');
-    element.className = `scale scale_${this.slider.state.orientation}`;
+    element.className = `slider__scale slider__scale_${this.slider.state.orientation}`;
     element.addEventListener('click', this.onClick);
     return element;
   }
@@ -29,7 +29,7 @@ class Scale {
 
     this.element.style.display = 'block';
     this.element.innerHTML = '';
-    this.element.className = `scale scale_${this.slider.state.orientation}`;
+    this.element.className = `slider__scale slider__scale_${this.slider.state.orientation}`;
 
     this.insertScaleValues();
   }
@@ -60,7 +60,7 @@ class Scale {
 
   private appendScaleValue(anchor: HTMLElement, value: number, position: number): void {
     const scaleValue = document.createElement('span');
-    scaleValue.className = 'scale__value';
+    scaleValue.className = 'slider__scale-value';
     scaleValue.innerHTML = value.toString();
     anchor.append(scaleValue);
     const convert = this.slider.convertPxToPercent.bind(this.slider);
@@ -81,7 +81,7 @@ class Scale {
   private onClick(event: Event): void {
     const { target } = event;
     if (!(target instanceof HTMLElement)) return;
-    if (target.className !== 'scale__value') return;
+    if (target.className !== 'slider__scale-value') return;
     const value: number = Number(target.innerHTML);
     const scaleEvent = new CustomEvent('scaleclick', { bubbles: true, detail: { event, value } });
     target.dispatchEvent(scaleEvent);

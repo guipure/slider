@@ -39,7 +39,7 @@ describe('Bar', () => {
   });
 
   test('must be visible', () => {
-    const bar = slider.querySelector('.bar') as HTMLElement;
+    const bar = slider.querySelector('.slider__bar') as HTMLElement;
 
     expect(bar).toBeVisible();
   });

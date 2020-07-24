@@ -39,7 +39,7 @@ describe('Thumb', () => {
   });
 
   test('must be visible', () => {
-    const thumbs = slider.querySelectorAll('.thumb');
+    const thumbs = slider.querySelectorAll('.slider__thumb');
 
     expect(thumbs[0]).toBeVisible();
     expect(thumbs[1]).toBeVisible();
@@ -47,7 +47,7 @@ describe('Thumb', () => {
 
   test('if type=single only one thumb must be visible', () => {
     view.setState({ type: 'single' });
-    const thumbs = slider.querySelectorAll('.thumb');
+    const thumbs = slider.querySelectorAll('.slider__thumb');
 
     expect(thumbs[0]).toBeVisible();
     expect(thumbs[1]).not.toBeVisible();

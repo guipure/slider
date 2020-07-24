@@ -15,7 +15,7 @@ class Bar {
 
   private createBar(track: HTMLElement): HTMLElement {
     const bar = document.createElement('div');
-    bar.className = `bar bar-${this.slider.state.orientation}`;
+    bar.className = `slider__bar slider__bar_${this.slider.state.orientation}`;
     track.append(bar);
     return bar;
   }

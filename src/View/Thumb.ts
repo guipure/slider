@@ -30,9 +30,9 @@ class Thumb {
 
   private createThumb(): HTMLElement {
     const thumb = document.createElement('div');
-    const doesOtherThumbExist = !!this.slider.element.querySelector('.thumb');
+    const doesOtherThumbExist = !!this.slider.element.querySelector('.slider__thumb');
     const thumbNumber: 'first' | 'second' = doesOtherThumbExist ? 'second' : 'first';
-    thumb.className = `thumb thumb-${this.slider.state.orientation} thumb-${thumbNumber}`;
+    thumb.className = `slider__thumb slider__thumb_${this.slider.state.orientation} slider__thumb_${thumbNumber}`;
     thumb.ondragstart = function () {
       return false;
     };
@@ -46,7 +46,7 @@ class Thumb {
   }
 
   private toggleThumb(type: SliderType): void {
-    if (this.element.classList.contains('thumb-second')) {
+    if (this.element.classList.contains('slider__thumb_second')) {
       if (type === 'single') {
         this.hideThumb();
       } else {
@@ -56,7 +56,7 @@ class Thumb {
   }
 
   private placeThumb(from: number, to: number): void {
-    if (this.element.classList.contains('thumb-first')) {
+    if (this.element.classList.contains('slider__thumb_first')) {
       this.currentValue = from;
       this.moveThumbAtValue(from);
     } else {

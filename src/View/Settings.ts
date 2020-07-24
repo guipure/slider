@@ -54,11 +54,11 @@ class Settings {
 
     <div class="settings__row">
       <p class="settings__name">orientation</p>
-      <label>
+      <label class="settings__radio">
         horizontal
         <input class="settings__input" type="radio" name="orientation" value="horizontal" />
       </label>
-      <label>
+      <label class="settings__radio">
         vertical
         <input class="settings__input" type="radio" name="orientation" value="vertical" />
       </label>
@@ -66,11 +66,11 @@ class Settings {
     
     <div class="settings__row">
       <p class="settings__name">type</p>
-      <label>
+      <label class="settings__radio">
         single
         <input class="settings__input" type="radio" name="type" value="single" />
       </label>
-      <label>
+      <label class="settings__radio">
         double
         <input class="settings__input" type="radio" name="type" value="double" />
       </label>
@@ -78,11 +78,11 @@ class Settings {
     
     <div class="settings__row">
       <p class="settings__name">hide_from_to</p>
-      <label>
+      <label class="settings__radio">
         true
         <input class="settings__input" type="radio" name="hide_from_to" value="true" />
       </label>
-      <label>
+      <label class="settings__radio">
         false
         <input class="settings__input" type="radio" name="hide_from_to" value="false" />
       </label>
@@ -90,11 +90,11 @@ class Settings {
     
     <div class="settings__row">
       <p class="settings__name">hide_scale</p>
-      <label>
+      <label class="settings__radio">
         true
         <input class="settings__input" type="radio" name="hide_scale" value="true" />
       </label>
-      <label>
+      <label class="settings__radio">
         false
         <input class="settings__input" type="radio" name="hide_scale" value="false" />
       </label>

@@ -18,7 +18,7 @@ class ThumbLabel {
 
   private createLabel(orientation: Orientation): HTMLElement {
     const element = document.createElement('div');
-    element.className = `thumb-label thumb-label_${orientation}`;
+    element.className = `slider__thumb-label slider__thumb-label_${orientation}`;
     return element;
   }
 
@@ -47,7 +47,7 @@ class ThumbLabel {
   private doCollide(): boolean {
     if (this.element.style.display === 'none') return false;
     const slider = this.thumb.element.parentElement as HTMLElement;
-    const labels = slider.querySelectorAll('.thumb-label');
+    const labels = slider.querySelectorAll('.slider__thumb-label');
     if (labels.length < 2) return false;
     const firstLabel = labels[0] as HTMLElement;
     const secondLabel = labels[1] as HTMLElement;
@@ -76,7 +76,7 @@ class ThumbLabel {
   private uniteLabels(): void {
     if (this.element.style.display === 'none') return;
     const slider = this.thumb.element.parentElement as HTMLElement;
-    const labels = slider.querySelectorAll('.thumb-label');
+    const labels = slider.querySelectorAll('.slider__thumb-label');
     if (labels.length < 2) return;
     const firstLabel = labels[0] as HTMLElement;
     const secondLabel = labels[1] as HTMLElement;

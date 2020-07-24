@@ -41,7 +41,7 @@ class View {
   }
 
   public getThumbsPositions(): number[] {
-    const thumbs = this.element.querySelectorAll('.thumb');
+    const thumbs = this.element.querySelectorAll('.slider__thumb');
 
     const calculatePosition = (element: any): number => {
       const prop: 'left' | 'top' = this.state.orientation === 'horizontal' ? 'left' : 'top';
@@ -148,7 +148,7 @@ class View {
   private onThumbMouseDown(event: MouseEvent): void {
     const target = event.target as HTMLElement;
     if (!/thumb/.test(target.className)) return;
-    target.classList.add('thumb_large');
+    target.classList.add('slider__thumb_large');
     const isHorizontal: boolean = this.state.orientation === 'horizontal';
     const axis: 'clientX' | 'clientY' = isHorizontal ? 'clientX' : 'clientY';
 
@@ -163,7 +163,7 @@ class View {
     document.addEventListener('mouseup', onMouseUp);
 
     function onMouseUp() {
-      target.classList.remove('thumb_large');
+      target.classList.remove('slider__thumb_large');
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
     }

@@ -5,122 +5,119 @@
 }
 
 .slider {
-  display: inline-block;
   position: relative;
-  height: 100%;
   width: 50%;
-  top: 30px;
   font-family: Helvetica, Arial, sans-serif;
-}
 
-.track {
-  position: absolute;
-  border-radius: 20px;
-  cursor: pointer;
-  border: #bbb 1px solid;
-}
+  &__thumb {
+    position: absolute;
+    display: flex;
+    height: 20px;
+    width: 20px;
+    background-color: crimson;
+    cursor: pointer;
+    border-radius: 50%;
+    z-index: 2;
+    transition: transform 0.25s;
 
-.track-horizontal {
-  margin-top: 5px;
-  width: 100%;
-  height: 10px;
-}
+    &_large {
+      transform: scale(1.2);
+    }
 
-.track-vertical {
-  margin-left: 5px;
-  width: 10px;
-  height: 100%;
-}
+    &_horizontal {
+      justify-content: center;
+    }
 
-.bar {
-  background-color: rgba(220, 20, 60, 0.431);
-  position: relative;
-  border-radius: 20px;
-}
+    &_vertical {
+      justify-content: flex-end;
+    }
+  }
 
-.bar-horizontal {
-  height: 10px;
-  top: -1px;
-}
+  &__thumb-label {
+    position: relative;
+    user-select: none;
+    white-space: nowrap;
+    color: white;
+    background-color: crimson;
+    padding: 0 3px;
+    border-radius: 3px;
+    font-weight: bold;
+    line-height: 22px;
 
-.bar-vertical {
-  width: 10px;
-  left: -1px;
-}
+    &_horizontal {
+      top: -22px;
+    }
 
-.thumb {
-  position: absolute;
-  display: flex;
-  height: 20px;
-  width: 20px;
-  background-color: crimson;
-  cursor: pointer;
-  border-radius: 50%;
-  z-index: 2;
-  transition: transform 0.25s;
-}
+    &_vertical {
+      left: -25px;
+    }
+  }
 
-.thumb_large {
-  transform: scale(1.2);
-}
+  &__track {
+    position: absolute;
+    border-radius: 20px;
+    cursor: pointer;
+    border: #bbb 1px solid;
 
-.thumb-horizontal {
-  justify-content: center;
-}
+    &_horizontal {
+      margin-top: 5px;
+      width: 100%;
+      height: 10px;
+    }
 
-.thumb-vertical {
-  justify-content: flex-end;
-}
+    &_vertical {
+      margin-left: 5px;
+      width: 10px;
+      height: 100%;
+    }
+  }
 
-.thumb-label {
-  position: relative;
-  user-select: none;
-  text-align: center;
-  white-space: nowrap;
-  color: white;
-  background-color: crimson;
-  padding: 0 3px;
-  border-radius: 3px;
-  font-weight: bold;
-  line-height: 22px;
-}
+  &__bar {
+    background-color: rgba(220, 20, 60, 0.431);
+    position: relative;
+    border-radius: 20px;
 
-.thumb-label_horizontal {
-  top: -22px;
-}
+    &_horizontal {
+      height: 10px;
+      top: -1px;
+    }
 
-.thumb-label_vertical {
-  left: -25px;
-}
+    &_vertical {
+      width: 10px;
+      left: -1px;
+    }
+  }
 
-.scale_horizontal {
-  position: relative;
-  top: 30px;
-  width: 100%;
-}
+  &__scale {
+    position: relative;
+  
 
-.scale_vertical {
-  position: relative;
-  left: 30px;
-  height: 100%;
-}
+    &_horizontal {
+      top: 30px;
+    }
 
-.scale__value {
-  position: absolute;
-  text-align: center;
-  cursor: pointer;
-  user-select: none;
-  color: #333;
-}
+    &_vertical {
+      left: 30px;
+      height: 100%;
+    }
+  }
 
-.scale__value:hover {
-  color: crimson;
+  &__scale-value {
+    position: absolute;
+    text-align: center;
+    cursor: pointer;
+    user-select: none;
+    color: #333;
+
+    &:hover {
+      color: crimson;
+    }
+  }
 }
 
 .settings {
   font-family: 'Courier New', Courier, monospace;
   padding: 10px;
-  float: right;
   position: relative;
   width: 20%;
   min-width: 270px;
@@ -128,24 +125,22 @@
   color: #333;
   border-radius: 5px;
   text-align: center;
-}
 
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
-}
+  &__row {
+    margin: 5px;
+  }
 
-.settings__row {
-  margin: 5px;
-}
+  &__name {
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+  }
 
-.settings__name {
-  font-weight: bold;
-  text-transform: uppercase;
-  letter-spacing: 3px;
-}
+  &__input {
+    text-align: center;
+  }
 
-.settings__input {
-  text-align: center;
+  &__radio {
+    cursor: pointer;
+  }
 }

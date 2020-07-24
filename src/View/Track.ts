@@ -16,7 +16,7 @@ class Track {
 
   private createTrack(): HTMLElement {
     const element = document.createElement('div');
-    element.className = `track track-${this.slider.state.orientation}`;
+    element.className = `slider__track slider__track_${this.slider.state.orientation}`;
     return element;
   }
 

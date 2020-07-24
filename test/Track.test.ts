@@ -39,14 +39,14 @@ describe('Track', () => {
   });
 
   test('must be visible', () => {
-    const track = slider.querySelector('.track') as HTMLElement;
+    const track = slider.querySelector('.slider__track') as HTMLElement;
 
     expect(track).toBeVisible();
   });
 
   test('track click must call getSliderPosition method', () => {
     const spy = jest.spyOn(view, 'getSliderPosition');
-    const track = slider.querySelector('.track') as HTMLElement;
+    const track = slider.querySelector('.slider__track') as HTMLElement;
     track.click();
 
     expect(spy).toBeCalled();
@@ -55,7 +55,7 @@ describe('Track', () => {
   test('track click must call getSliderPosition method if vertical', () => {
     view.setState({ orientation: 'vertical' });
     const spy = jest.spyOn(view, 'getSliderPosition');
-    const track = slider.querySelector('.track') as HTMLElement;
+    const track = slider.querySelector('.slider__track') as HTMLElement;
     track.click();
 
     expect(spy).toBeCalled();

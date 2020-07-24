@@ -60,7 +60,7 @@ describe('View', () => {
   test('must create two thumbs with standard options', () => {
     const options = { ...standardOptions };
     const slider: View = createSlider(options);
-    const thumbs = slider.element.querySelectorAll('.thumb');
+    const thumbs = slider.element.querySelectorAll('.slider__thumb');
 
     expect(thumbs.length).toBe(2);
     expect(thumbs[0]).toBeVisible();
@@ -70,7 +70,7 @@ describe('View', () => {
   test('with standard options must create two thumb labels', () => {
     const options = { ...standardOptions };
     const slider: View = createSlider(options);
-    const thumbLabels = slider.element.querySelectorAll('.thumb-label');
+    const thumbLabels = slider.element.querySelectorAll('.slider__thumb-label');
 
     expect(thumbLabels.length).toBe(2);
     expect(thumbLabels[0]).toBeVisible();
@@ -81,7 +81,7 @@ describe('View', () => {
     const options = { ...standardOptions };
     options.hide_from_to = true;
     const slider: View = createSlider(options);
-    const thumbLabels = slider.element.querySelectorAll('.thumb-label');
+    const thumbLabels = slider.element.querySelectorAll('.slider__thumb-label');
 
     expect(thumbLabels.length).toBe(2);
     expect(thumbLabels[0]).not.toBeVisible();
@@ -91,7 +91,7 @@ describe('View', () => {
   test('must create a track', () => {
     const options = { ...standardOptions };
     const slider: View = createSlider(options);
-    const track = slider.element.querySelector('.track');
+    const track = slider.element.querySelector('.slider__track');
 
     expect(track).toBeTruthy();
     expect(track).toBeVisible();
@@ -100,7 +100,7 @@ describe('View', () => {
   test('must create a bar', () => {
     const options = { ...standardOptions };
     const slider: View = createSlider(options);
-    const bar = slider.element.querySelector('.bar');
+    const bar = slider.element.querySelector('.slider__bar');
 
     expect(bar).toBeTruthy();
     expect(bar).toBeVisible();
@@ -109,7 +109,7 @@ describe('View', () => {
   test('with standard options must create a scale', () => {
     const options = { ...standardOptions };
     const slider: View = createSlider(options);
-    const scale = slider.element.querySelector('.scale');
+    const scale = slider.element.querySelector('.slider__scale');
 
     expect(scale).toBeTruthy();
     expect(scale).toBeVisible();
@@ -119,7 +119,7 @@ describe('View', () => {
     const options = { ...standardOptions };
     options.hide_scale = true;
     const slider: View = createSlider(options);
-    const scale = slider.element.querySelector('.scale');
+    const scale = slider.element.querySelector('.slider__scale');
 
     expect(scale).not.toBeVisible();
   });
@@ -161,7 +161,7 @@ describe('View', () => {
   test('setState must change the hide_from_to option', () => {
     const options = { ...standardOptions };
     const slider: View = createSlider(options);
-    const thumbLabels = slider.element.querySelectorAll('.thumb-label');
+    const thumbLabels = slider.element.querySelectorAll('.slider__thumb-label');
 
     slider.setState({ hide_from_to: true });
     expect(slider.state.hide_from_to).toBe(true);
@@ -187,7 +187,7 @@ describe('View', () => {
   test('setState must change the hide_scale option', () => {
     const options = { ...standardOptions };
     const slider: View = createSlider(options);
-    const scale = slider.element.querySelector('.scale');
+    const scale = slider.element.querySelector('.slider__scale');
 
     slider.setState({ hide_scale: true });
     expect(slider.state.hide_scale).toBe(true);
@@ -238,7 +238,7 @@ describe('View', () => {
     const options = { ...standardOptions };
     const slider: View = createSlider(options);
     const spy = jest.spyOn(slider, 'getThumbsPositions');
-    const thumb = slider.element.querySelector('.thumb') as HTMLElement;
+    const thumb = slider.element.querySelector('.slider__thumb') as HTMLElement;
     thumb.dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
     document.dispatchEvent(new MouseEvent('mousemove'));
     document.dispatchEvent(new MouseEvent('mouseup'));
