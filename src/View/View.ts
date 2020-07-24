@@ -89,7 +89,7 @@ class View {
 
   private onTrackClick(event: any): void {
     const target = event.target as HTMLElement;
-    if (!/track | bar/.test(target.className)) return;
+    if (!/track|bar/.test(target.className)) return;
     let coordinate: number;
 
     if (this.state.orientation === 'horizontal') {

@@ -4,7 +4,7 @@ import { Orientation } from '../Presenter/Options';
 class ThumbLabel {
   private element: HTMLElement;
 
-  constructor(private thumb: Thumb, private orientation: Orientation, private hide_from_to: boolean) {
+  constructor(private thumb: Thumb, private orientation: Orientation, private hideFromTo: boolean) {
     this.element = this.createLabel(orientation);
     this.init(thumb);
   }
@@ -22,9 +22,9 @@ class ThumbLabel {
     return element;
   }
 
-  private setHideFromTo(state: { hide_from_to: boolean }): void {
-    if (state.hide_from_to !== this.hide_from_to) {
-      this.hide_from_to = state.hide_from_to;
+  private setHideFromTo(state: { hideFromTo: boolean }): void {
+    if (state.hideFromTo !== this.hideFromTo) {
+      this.hideFromTo = state.hideFromTo;
       this.update();
     }
   }
@@ -37,7 +37,7 @@ class ThumbLabel {
       this.uniteLabels();
     }
 
-    if (this.hide_from_to) {
+    if (this.hideFromTo) {
       this.element.style.display = 'none';
     } else {
       this.element.style.display = 'block';

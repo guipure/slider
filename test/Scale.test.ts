@@ -5,8 +5,8 @@ import { ViewOptions, Values } from '../src/Presenter/Options';
 const standardOptions: ViewOptions = {
   orientation: 'horizontal',
   type: 'double',
-  hide_from_to: false,
-  hide_scale: false,
+  hideFromTo: false,
+  hideScale: false,
 };
 
 function createSlider(options: ViewOptions): View {
@@ -44,13 +44,13 @@ describe('Scale', () => {
     expect(scaleElement).toBeVisible();
   });
 
-  test('must be hidden when hide_scale=true', () => {
-    view.setState({ hide_scale: true });
+  test('must be hidden when hideScale=true', () => {
+    view.setState({ hideScale: true });
     const scaleElement = slider.querySelector('.slider__scale');
 
     expect(scaleElement).not.toBeVisible();
 
-    view.setState({ hide_scale: false });
+    view.setState({ hideScale: false });
     expect(scaleElement).toBeVisible();
   });
 

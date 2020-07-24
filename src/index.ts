@@ -11,8 +11,8 @@ $('.js-second-anchor').slider({
   max: 100000,
   step: 10,
   from: -1000,
-  hide_from_to: false,
-  hide_scale: false,
+  hideFromTo: false,
+  hideScale: false,
 });
 
 $('.js-third-anchor').slider({
@@ -23,8 +23,8 @@ $('.js-third-anchor').slider({
   step: 2,
   from: 500,
   to: 1500,
-  hide_from_to: false,
-  hide_scale: false,
+  hideFromTo: false,
+  hideScale: false,
 });
 
 $('.js-fourth-anchor').slider({
@@ -34,6 +34,6 @@ $('.js-fourth-anchor').slider({
   max: 500,
   step: 25,
   from: 175,
-  hide_from_to: false,
-  hide_scale: false,
+  hideFromTo: false,
+  hideScale: false,
 });

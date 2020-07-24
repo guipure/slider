@@ -25,7 +25,7 @@ class Thumb {
   private update(newState: ViewState): void {
     this.toggleThumb(newState.type);
     this.placeThumb(newState.from, newState.to);
-    this.events.notify('changedHideFromTo', { hide_from_to: newState.hide_from_to });
+    this.events.notify('changedHideFromTo', { hideFromTo: newState.hideFromTo });
   }
 
   private createThumb(): HTMLElement {
@@ -41,8 +41,8 @@ class Thumb {
   }
 
   private createLabel(): void {
-    const { orientation, hide_from_to } = this.slider.state;
-    const label = new ThumbLabel(this, orientation, hide_from_to);
+    const { orientation, hideFromTo } = this.slider.state;
+    const label = new ThumbLabel(this, orientation, hideFromTo);
   }
 
   private toggleThumb(type: SliderType): void {
@@ -67,7 +67,7 @@ class Thumb {
 
   private moveThumbAtValue(value: number): void {
     const { orientation } = this.slider.state;
-    const coordinate = this.valueToPx(value);
+    const coordinate = this.convertValueToPx(value);
     const thumbHalfWidth: number = Number.parseInt(getComputedStyle(this.element).width, 10) / 2;
     const side: 'left' | 'top' = this.getSide(orientation);
     const position: number = this.slider.convertPxToPercent(coordinate - thumbHalfWidth);
@@ -75,7 +75,7 @@ class Thumb {
     this.events.notify('thumbMove');
   }
 
-  private valueToPx(value: number): number {
+  private convertValueToPx(value: number): number {
     const { values, pxMax, pxStep } = this.slider.state;
     const { min, max, step } = values;
 

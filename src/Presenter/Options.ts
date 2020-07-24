@@ -9,15 +9,15 @@ interface Options {
   step: number,
   from: number,
   to: number,
-  hide_from_to: boolean,
-  hide_scale: boolean,
+  hideFromTo: boolean,
+  hideScale: boolean,
 }
 
 interface ViewOptions {
   orientation: Orientation,
   type: SliderType,
-  hide_from_to: boolean,
-  hide_scale: boolean,
+  hideFromTo: boolean,
+  hideScale: boolean,
 }
 
 interface Values {
@@ -51,8 +51,8 @@ const standardOptions: Options = {
   step: 1,
   from: 2,
   to: 8,
-  hide_from_to: false,
-  hide_scale: false,
+  hideFromTo: false,
+  hideScale: false,
 };
 
 export {

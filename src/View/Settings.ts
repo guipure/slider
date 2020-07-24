@@ -77,26 +77,26 @@ class Settings {
     </div>
     
     <div class="settings__row">
-      <p class="settings__name">hide_from_to</p>
+      <p class="settings__name">hide From To</p>
       <label class="settings__radio">
         true
-        <input class="settings__input" type="radio" name="hide_from_to" value="true" />
+        <input class="settings__input" type="radio" name="hideFromTo" value="true" />
       </label>
       <label class="settings__radio">
         false
-        <input class="settings__input" type="radio" name="hide_from_to" value="false" />
+        <input class="settings__input" type="radio" name="hideFromTo" value="false" />
       </label>
     </div>
     
     <div class="settings__row">
-      <p class="settings__name">hide_scale</p>
+      <p class="settings__name">hide Scale</p>
       <label class="settings__radio">
         true
-        <input class="settings__input" type="radio" name="hide_scale" value="true" />
+        <input class="settings__input" type="radio" name="hideScale" value="true" />
       </label>
       <label class="settings__radio">
         false
-        <input class="settings__input" type="radio" name="hide_scale" value="false" />
+        <input class="settings__input" type="radio" name="hideScale" value="false" />
       </label>
     </div>
     `;
@@ -148,23 +148,23 @@ class Settings {
             input.checked = true;
           }
           break;
-        case 'hide_from_to':
-          input.onchange = () => this.setState({ hide_from_to: input.value === 'true' });
+        case 'hideFromTo':
+          input.onchange = () => this.setState({ hideFromTo: input.value === 'true' });
           if (input.value === 'true') {
-            if (this.state.hide_from_to === true) {
+            if (this.state.hideFromTo === true) {
               input.checked = true;
             }
-          } else if (this.state.hide_from_to === false) {
+          } else if (this.state.hideFromTo === false) {
             input.checked = true;
           }
           break;
-        case 'hide_scale':
-          input.onchange = () => this.setState({ hide_scale: input.value === 'true' });
+        case 'hideScale':
+          input.onchange = () => this.setState({ hideScale: input.value === 'true' });
           if (input.value === 'true') {
-            if (this.state.hide_scale === true) {
+            if (this.state.hideScale === true) {
               input.checked = true;
             }
-          } else if (this.state.hide_scale === false) {
+          } else if (this.state.hideScale === false) {
             input.checked = true;
           }
           break;

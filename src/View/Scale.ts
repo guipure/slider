@@ -22,7 +22,7 @@ class Scale {
   }
 
   private update(): void {
-    if (this.slider.state.hide_scale) {
+    if (this.slider.state.hideScale) {
       this.element.style.display = 'none';
       return;
     }

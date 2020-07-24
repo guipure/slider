@@ -5,8 +5,8 @@ import { ViewOptions, Values } from '../src/Presenter/Options';
 const standardOptions: ViewOptions = {
   orientation: 'horizontal',
   type: 'double',
-  hide_from_to: false,
-  hide_scale: false,
+  hideFromTo: false,
+  hideScale: false,
 };
 
 function createSlider(options: ViewOptions): View {

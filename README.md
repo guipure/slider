@@ -32,8 +32,8 @@ $(#element).slider()
 | step | 1 | number | Шаг: целое положительное число |
 | from | 2 | number | Начальная позиция левого ползунка |
 | to | 8 | number | Начальная позиция правого ползунка |
-| hide_from_to | false | boolean | Скрытие текущих значений ползунков |
-| hide_scale | false | boolean | Скрытие шкалы значений |
+| hideFromTo | false | boolean | Скрытие текущих значений ползунков |
+| hideScale | false | boolean | Скрытие шкалы значений |
 
 ## Архитектура плагина
 
@@ -49,4 +49,4 @@ $(#element).slider()
 
 ### UML-диаграмма
 
-![UML-diagram](https://i.imgur.com/az7itIy.jpg)
+![UML-diagram](https://i.imgur.com/hYZC7Oh.jpg)

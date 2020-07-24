@@ -5,8 +5,8 @@ import { ViewOptions, Values } from '../src/Presenter/Options';
 const standardOptions: ViewOptions = {
   orientation: 'horizontal',
   type: 'double',
-  hide_from_to: false,
-  hide_scale: false,
+  hideFromTo: false,
+  hideScale: false,
 };
 
 function createSlider(options: ViewOptions): View {
@@ -45,8 +45,8 @@ describe('ThumbLabel', () => {
     expect(thumbLabels[1]).toBeVisible();
   });
 
-  test('must be not visible if hide_from_to=true', () => {
-    view.setState({ hide_from_to: true });
+  test('must be not visible if hideFromTo=true', () => {
+    view.setState({ hideFromTo: true });
     const thumbLabels = slider.querySelectorAll('.slider__thumb-label');
 
     expect(thumbLabels[0]).not.toBeVisible();

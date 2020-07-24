@@ -5,8 +5,8 @@ import { ViewOptions, Values } from '../src/Presenter/Options';
 const standardOptions: ViewOptions = {
   orientation: 'horizontal',
   type: 'double',
-  hide_from_to: false,
-  hide_scale: false,
+  hideFromTo: false,
+  hideScale: false,
 };
 
 function createSlider(options: ViewOptions): View {
@@ -38,14 +38,14 @@ describe('View', () => {
     const {
       orientation,
       type,
-      hide_from_to,
-      hide_scale,
+      hideFromTo,
+      hideScale,
     } = slider.state;
 
     expect(orientation).toBe(options.orientation);
     expect(type).toBe(options.type);
-    expect(hide_from_to).toBe(options.hide_from_to);
-    expect(hide_scale).toBe(options.hide_scale);
+    expect(hideFromTo).toBe(options.hideFromTo);
+    expect(hideScale).toBe(options.hideScale);
   });
 
   test('must create slider element', () => {
@@ -77,9 +77,9 @@ describe('View', () => {
     expect(thumbLabels[1]).toBeVisible();
   });
 
-  test('with hide_from_to option must hide two thumb labels', () => {
+  test('with hideFromTo option must hide two thumb labels', () => {
     const options = { ...standardOptions };
-    options.hide_from_to = true;
+    options.hideFromTo = true;
     const slider: View = createSlider(options);
     const thumbLabels = slider.element.querySelectorAll('.slider__thumb-label');
 
@@ -115,9 +115,9 @@ describe('View', () => {
     expect(scale).toBeVisible();
   });
 
-  test('with hide_scale option must hide a scale', () => {
+  test('with hideScale option must hide a scale', () => {
     const options = { ...standardOptions };
-    options.hide_scale = true;
+    options.hideScale = true;
     const slider: View = createSlider(options);
     const scale = slider.element.querySelector('.slider__scale');
 
@@ -158,51 +158,51 @@ describe('View', () => {
     expect(slider.state.type).toBe('single');
   });
 
-  test('setState must change the hide_from_to option', () => {
+  test('setState must change the hideFromTo option', () => {
     const options = { ...standardOptions };
     const slider: View = createSlider(options);
     const thumbLabels = slider.element.querySelectorAll('.slider__thumb-label');
 
-    slider.setState({ hide_from_to: true });
-    expect(slider.state.hide_from_to).toBe(true);
+    slider.setState({ hideFromTo: true });
+    expect(slider.state.hideFromTo).toBe(true);
     expect(thumbLabels[0]).not.toBeVisible();
     expect(thumbLabels[1]).not.toBeVisible();
 
-    slider.setState({ hide_from_to: true });
-    expect(slider.state.hide_from_to).toBe(true);
+    slider.setState({ hideFromTo: true });
+    expect(slider.state.hideFromTo).toBe(true);
     expect(thumbLabels[0]).not.toBeVisible();
     expect(thumbLabels[1]).not.toBeVisible();
 
-    slider.setState({ hide_from_to: false });
-    expect(slider.state.hide_from_to).toBe(false);
+    slider.setState({ hideFromTo: false });
+    expect(slider.state.hideFromTo).toBe(false);
     expect(thumbLabels[0]).toBeVisible();
     expect(thumbLabels[1]).toBeVisible();
 
-    slider.setState({ hide_from_to: true });
-    expect(slider.state.hide_from_to).toBe(true);
+    slider.setState({ hideFromTo: true });
+    expect(slider.state.hideFromTo).toBe(true);
     expect(thumbLabels[0]).not.toBeVisible();
     expect(thumbLabels[1]).not.toBeVisible();
   });
 
-  test('setState must change the hide_scale option', () => {
+  test('setState must change the hideScale option', () => {
     const options = { ...standardOptions };
     const slider: View = createSlider(options);
     const scale = slider.element.querySelector('.slider__scale');
 
-    slider.setState({ hide_scale: true });
-    expect(slider.state.hide_scale).toBe(true);
+    slider.setState({ hideScale: true });
+    expect(slider.state.hideScale).toBe(true);
     expect(scale).not.toBeVisible();
 
-    slider.setState({ hide_scale: true });
-    expect(slider.state.hide_scale).toBe(true);
+    slider.setState({ hideScale: true });
+    expect(slider.state.hideScale).toBe(true);
     expect(scale).not.toBeVisible();
 
-    slider.setState({ hide_scale: false });
-    expect(slider.state.hide_scale).toBe(false);
+    slider.setState({ hideScale: false });
+    expect(slider.state.hideScale).toBe(false);
     expect(scale).toBeVisible();
 
-    slider.setState({ hide_scale: true });
-    expect(slider.state.hide_scale).toBe(true);
+    slider.setState({ hideScale: true });
+    expect(slider.state.hideScale).toBe(true);
     expect(scale).not.toBeVisible();
   });
 
