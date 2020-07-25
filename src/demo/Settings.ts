@@ -1,16 +1,17 @@
-import { EventManager } from '../EventManager/EventManager';
+import { Presenter } from '../Presenter/Presenter';
 import { Options } from '../interfaces/interfaces';
 
 class Settings {
-  public events: EventManager;
+  public state: Options;
 
   private form: HTMLFormElement;
 
-  constructor(private anchor: HTMLElement, public state: Options) {
-    this.events = new EventManager();
+  constructor(private slider: Presenter) {
+    this.state = slider.getOptions();
     this.form = this.createForm();
     this.createSettings();
     this.initValues();
+    this.slider.events.subscribe('newViewState', this.updateFromTo.bind(this));
   }
 
   public updateFromTo(newSetting: any) {
@@ -21,7 +22,7 @@ class Settings {
   private createForm(): HTMLFormElement {
     const form = document.createElement('form');
     form.className = 'settings';
-    this.anchor.append(form);
+    this.slider.anchor.append(form);
     return form;
   }
 
@@ -176,7 +177,7 @@ class Settings {
   private setState(newSetting: any) {
     newSetting = this.checkMinMax(newSetting);
     this.state = { ...this.state, ...newSetting };
-    this.events.notify('newSettings', this.state);
+    this.slider.setOptions(this.state);
   }
 
   private checkMinMax(setting: any) {

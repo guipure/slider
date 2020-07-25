@@ -5,7 +5,7 @@ import { standardOptions } from './interfaces/constants';
 
 declare global {
   interface JQuery {
-    slider(options?: any): void
+    slider(options?: any): Presenter
   }
 }
 

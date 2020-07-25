@@ -1,25 +1,36 @@
 import { Model } from '../Model/Model';
 import { View } from '../View/View';
-import { Settings } from '../View/Settings';
 import {
   Options,
   ViewOptions,
   ViewState,
   ModelOptions,
 } from '../interfaces/interfaces';
+import { standardOptions } from '../interfaces/constants';
+import { EventManager } from '../EventManager/EventManager';
 
 class Presenter {
+  public events: EventManager;
+
   private view: View;
 
   private model: Model;
 
-  private settings: Settings;
-
-  constructor(anchor: HTMLElement, options: Options) {
+  constructor(public anchor: HTMLElement, options: Options) {
+    this.events = new EventManager();
     this.model = this.createModel(options);
     this.view = this.createView(anchor, options, this.model.state);
-    this.settings = new Settings(anchor, options);
     this.subscribe();
+  }
+
+  public setOptions(options: any): void {
+    const newOptions: Options = { ...standardOptions, ...options };
+    this.handleNewSettings(newOptions);
+  }
+
+  public getOptions(): Options {
+    const { pxMax, pxStep, ...options } = { ...this.model.state, ...this.view.state };
+    return options;
   }
 
   private createModel(options: Options): Model {
@@ -39,7 +50,6 @@ class Presenter {
 
   private subscribe(): void {
     this.subscribeOnNewValues();
-    this.subscribeOnNewSettings();
     this.subscribeOnNewViewState();
     this.subscribeOnNewFromTo();
   }
@@ -57,10 +67,6 @@ class Presenter {
     });
   }
 
-  private subscribeOnNewSettings(): void {
-    this.settings.events.subscribe('newSettings', this.handleNewSettings.bind(this));
-  }
-
   private handleNewSettings(settings: Options): void {
     this.view.setState(settings as ViewOptions);
     this.model.setState(settings as ModelOptions);
@@ -71,7 +77,7 @@ class Presenter {
   }
 
   private handleNewViewState(state: ViewState): void {
-    this.settings.updateFromTo(state);
+    this.events.notify('newViewState', state);
   }
 
   private subscribeOnNewFromTo(): void {

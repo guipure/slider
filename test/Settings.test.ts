@@ -1,9 +1,10 @@
 import '@testing-library/jest-dom';
 
 import { Options } from '../src/interfaces/interfaces';
-import { Settings } from '../src/View/Settings';
+import { Settings } from '../src/demo/Settings';
+import { Presenter } from '../src/Presenter/Presenter';
 
-describe('Thumb', () => {
+describe('Settings', () => {
   let settings: Settings;
   let anchor: HTMLElement;
   const options: Options = {
@@ -22,7 +23,8 @@ describe('Thumb', () => {
     anchor = document.createElement('div');
     anchor.className = 'anchor';
     document.body.append(anchor);
-    settings = new Settings(anchor, options);
+    const presenter = new Presenter(anchor, options);
+    settings = new Settings(presenter);
   });
 
   afterEach(() => {
@@ -41,7 +43,8 @@ describe('Thumb', () => {
       hideFromTo: true,
       hideScale: true,
     };
-    const anotherSettings = new Settings(anchor, anotherOptions);
+    const anotherPresenter: Presenter = new Presenter(anchor, anotherOptions);
+    const anotherSettings: Settings = new Settings(anotherPresenter);
     expect(anotherSettings.state).toStrictEqual(anotherOptions);
   });
 

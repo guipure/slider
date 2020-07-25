@@ -26,13 +26,8 @@ interface ViewOptions {
 }
 
 interface ViewState extends ViewOptions {
-  min: number,
-  max: number,
-  step: number,
   pxStep: number,
   pxMax: number,
-  from: number,
-  to: number,
 }
 
 interface ModelOptions {
