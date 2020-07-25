@@ -1,6 +1,6 @@
 import './assets/favicons/favicons';
-import './slider.scss';
 import './slider';
+import './slider.scss';
 
 $('.js-first-anchor').slider();
 

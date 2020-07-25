@@ -1,4 +1,5 @@
 import '@testing-library/jest-dom';
+
 import { View } from '../src/View/View';
 import { ViewOptions } from '../src/interfaces/options';
 

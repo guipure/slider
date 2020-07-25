@@ -1,4 +1,5 @@
 import '@testing-library/jest-dom';
+
 import { Options } from '../src/interfaces/options';
 import { Settings } from '../src/View/Settings';
 

@@ -1,5 +1,5 @@
+import { sliderOrientation } from '../interfaces/constants';
 import { View } from './View';
-import { sliderType, sliderOrientation } from '../interfaces/constants';
 
 class Scale {
   private element: HTMLElement;

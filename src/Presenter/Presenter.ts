@@ -1,12 +1,12 @@
 import { Model } from '../Model/Model';
 import { View } from '../View/View';
+import { Settings } from '../View/Settings';
 import {
   Options,
   ViewOptions,
   ViewState,
   ModelOptions,
 } from '../interfaces/options';
-import { Settings } from '../View/Settings';
 
 class Presenter {
   private view: View;

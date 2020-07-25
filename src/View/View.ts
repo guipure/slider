@@ -1,8 +1,8 @@
 import { ViewOptions, ViewState, Orientation } from '../interfaces/options';
 import { sliderOrientation, sliderType } from '../interfaces/constants';
+import { EventManager } from '../EventManager/EventManager';
 import { Track } from './Track';
 import { Thumb } from './Thumb';
-import { EventManager } from '../EventManager/EventManager';
 import { Scale } from './Scale';
 
 class View {

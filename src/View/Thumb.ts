@@ -1,8 +1,8 @@
 import { ViewState, Orientation, SliderType } from '../interfaces/options';
+import { sliderOrientation, sliderType } from '../interfaces/constants';
+import { EventManager } from '../EventManager/EventManager';
 import { View } from './View';
 import { ThumbLabel } from './ThumbLabel';
-import { EventManager } from '../EventManager/EventManager';
-import { sliderOrientation, sliderType } from '../interfaces/constants';
 
 class Thumb {
   public element: HTMLElement;
