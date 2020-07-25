@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom';
 
-import { Options } from '../src/interfaces/options';
+import { Options } from '../src/interfaces/interfaces';
 import { Settings } from '../src/View/Settings';
 
 describe('Thumb', () => {

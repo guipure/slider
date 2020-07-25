@@ -1,5 +1,5 @@
 import { EventManager } from '../EventManager/EventManager';
-import { Options } from '../interfaces/options';
+import { Options } from '../interfaces/interfaces';
 
 class Settings {
   public events: EventManager;
@@ -121,11 +121,11 @@ class Settings {
           input.value = this.state.step.toString();
           break;
         case 'from':
-          input.onchange = () => this.onChangeFrom(Number(input.value));
+          input.onchange = () => this.onFromInputChange(Number(input.value));
           input.value = this.state.from.toString();
           break;
         case 'to':
-          input.onchange = () => this.onChangeTo(Number(input.value));
+          input.onchange = () => this.onToInputChange(Number(input.value));
           input.value = this.state.to.toString();
           break;
         case 'orientation':
@@ -200,14 +200,14 @@ class Settings {
     this.setState({ step });
   }
 
-  private onChangeFrom(num: number): void {
+  private onFromInputChange(num: number): void {
     const { min } = this.state;
     const isValid = num >= min;
     const from = isValid ? num : min;
     this.setState({ from });
   }
 
-  private onChangeTo(num: number): void {
+  private onToInputChange(num: number): void {
     const { max } = this.state;
     const isValid = num <= max;
     const to = isValid ? num : max;

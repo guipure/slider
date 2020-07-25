@@ -1,4 +1,4 @@
-import { Orientation } from '../interfaces/options';
+import { Orientation } from '../interfaces/interfaces';
 import { Thumb } from './Thumb';
 
 class ThumbLabel {

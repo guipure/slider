@@ -6,7 +6,7 @@ import {
   ViewOptions,
   ViewState,
   ModelOptions,
-} from '../interfaces/options';
+} from '../interfaces/interfaces';
 
 class Presenter {
   private view: View;

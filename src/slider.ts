@@ -1,6 +1,6 @@
 /* eslint-disable func-names */
 import { Presenter } from './Presenter/Presenter';
-import { Options } from './interfaces/options';
+import { Options } from './interfaces/interfaces';
 import { standardOptions } from './interfaces/constants';
 
 declare global {

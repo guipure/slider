@@ -1,4 +1,4 @@
-import { Options } from './options';
+import { Options } from './interfaces';
 
 const standardOptions: Options = {
   orientation: 'horizontal',

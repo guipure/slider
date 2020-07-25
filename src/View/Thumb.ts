@@ -1,4 +1,4 @@
-import { ViewState, Orientation, SliderType } from '../interfaces/options';
+import { ViewState, Orientation, SliderType } from '../interfaces/interfaces';
 import { sliderOrientation, sliderType } from '../interfaces/constants';
 import { EventManager } from '../EventManager/EventManager';
 import { View } from './View';

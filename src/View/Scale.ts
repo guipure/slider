@@ -18,7 +18,7 @@ class Scale {
   private createScale(): HTMLElement {
     const element = document.createElement('div');
     element.className = `slider__scale slider__scale_${this.slider.state.orientation}`;
-    element.addEventListener('click', this.onClick);
+    element.addEventListener('click', this.onScaleClick);
     return element;
   }
 
@@ -80,7 +80,7 @@ class Scale {
     }
   }
 
-  private onClick(event: Event): void {
+  private onScaleClick(event: Event): void {
     const { target } = event;
     if (!(target instanceof HTMLElement)) return;
     if (target.className !== 'slider__scale-value') return;
