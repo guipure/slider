@@ -1,5 +1,5 @@
 import { EventManager } from '../EventManager/EventManager';
-import { Options } from '../Presenter/Options';
+import { Options } from '../interfaces/options';
 
 class Settings {
   public events: EventManager;

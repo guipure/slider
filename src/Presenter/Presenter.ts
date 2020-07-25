@@ -5,7 +5,7 @@ import {
   ViewOptions,
   ViewState,
   ModelOptions,
-} from './Options';
+} from '../interfaces/options';
 import { Settings } from '../View/Settings';
 
 class Presenter {

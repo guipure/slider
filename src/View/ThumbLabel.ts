@@ -1,5 +1,5 @@
 import { Thumb } from './Thumb';
-import { Orientation } from '../Presenter/Options';
+import { Orientation } from '../interfaces/options';
 
 class ThumbLabel {
   private element: HTMLElement;

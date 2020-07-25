@@ -1,4 +1,4 @@
-import { ModelOptions } from '../Presenter/Options';
+import { ModelOptions } from '../interfaces/options';
 import { EventManager } from '../EventManager/EventManager';
 
 class Model {

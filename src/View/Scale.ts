@@ -1,4 +1,5 @@
 import { View } from './View';
+import { sliderType, sliderOrientation } from '../interfaces/constants';
 
 class Scale {
   private element: HTMLElement;
@@ -66,7 +67,7 @@ class Scale {
     anchor.append(scaleValue);
     const convert = this.slider.convertPxToPercent.bind(this.slider);
 
-    if (this.slider.state.orientation === 'horizontal') {
+    if (this.slider.state.orientation === sliderOrientation.HORIZONTAL) {
       const width = convert(50);
       const left = convert(position - 50 / 2);
       scaleValue.style.width = `${width}%`;

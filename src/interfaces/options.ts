@@ -44,18 +44,6 @@ interface ModelOptions {
   type: SliderType,
 }
 
-const standardOptions: Options = {
-  orientation: 'horizontal',
-  type: 'double',
-  min: 0,
-  max: 10,
-  step: 1,
-  from: 2,
-  to: 8,
-  hideFromTo: false,
-  hideScale: false,
-};
-
 export {
-  Options, ViewOptions, ViewState, ModelOptions, Orientation, SliderType, standardOptions,
+  Options, ViewOptions, ViewState, ModelOptions, Orientation, SliderType,
 };

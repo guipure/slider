@@ -1,7 +1,8 @@
-import { ViewState, Orientation, SliderType } from '../Presenter/Options';
+import { ViewState, Orientation, SliderType } from '../interfaces/options';
 import { View } from './View';
 import { ThumbLabel } from './ThumbLabel';
 import { EventManager } from '../EventManager/EventManager';
+import { sliderOrientation, sliderType } from '../interfaces/constants';
 
 class Thumb {
   public element: HTMLElement;
@@ -46,7 +47,7 @@ class Thumb {
 
   private toggleThumb(type: SliderType): void {
     if (this.element.classList.contains('slider__thumb_second')) {
-      if (type === 'single') {
+      if (type === sliderType.SINGLE) {
         this.hideThumb();
       } else {
         this.showThumb();
@@ -96,7 +97,7 @@ class Thumb {
   }
 
   private getSide(orientation: Orientation): 'left' | 'top' {
-    if (orientation === 'horizontal') {
+    if (orientation === sliderOrientation.HORIZONTAL) {
       return 'left';
     }
 

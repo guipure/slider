@@ -1,4 +1,5 @@
 import { View } from './View';
+import { sliderOrientation, sliderType } from '../interfaces/constants';
 
 class Bar {
   private element: HTMLElement;
@@ -21,14 +22,14 @@ class Bar {
   }
 
   private placeBar(bar: HTMLElement) {
-    const isHorizontal: boolean = this.slider.state.orientation === 'horizontal';
+    const isHorizontal: boolean = this.slider.state.orientation === sliderOrientation.HORIZONTAL;
     const side: 'left' | 'top' = isHorizontal ? 'left' : 'top';
     const dimension: 'width' | 'height' = isHorizontal ? 'width' : 'height';
     const thumbsPositions = this.slider.getThumbsPositions();
     const sliderPosition = this.slider.getSliderPosition();
     const convert = this.slider.convertPxToPercent.bind(this.slider);
 
-    if (this.slider.state.type === 'single') {
+    if (this.slider.state.type === sliderType.SINGLE) {
       const length: number = convert(Math.abs(thumbsPositions[1] - sliderPosition));
       bar.style[side] = '0%';
       bar.style[dimension] = `${length}%`;

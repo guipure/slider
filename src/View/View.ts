@@ -1,4 +1,5 @@
-import { ViewOptions, ViewState, Orientation } from '../Presenter/Options';
+import { ViewOptions, ViewState, Orientation } from '../interfaces/options';
+import { sliderOrientation, sliderType } from '../interfaces/constants';
 import { Track } from './Track';
 import { Thumb } from './Thumb';
 import { EventManager } from '../EventManager/EventManager';
@@ -39,7 +40,7 @@ class View {
     const thumbs = this.element.querySelectorAll('.slider__thumb');
 
     const calculatePosition = (element: any): number => {
-      const side: 'left' | 'top' = this.state.orientation === 'horizontal' ? 'left' : 'top';
+      const side: 'left' | 'top' = this.state.orientation === sliderOrientation.HORIZONTAL ? 'left' : 'top';
       const width: number = Number.parseInt(getComputedStyle(element).width, 10);
       return element.getBoundingClientRect()[side] + width / 2;
     };
@@ -49,7 +50,7 @@ class View {
   }
 
   public getSliderPosition() {
-    const side: 'left' | 'top' = this.state.orientation === 'horizontal' ? 'left' : 'top';
+    const side: 'left' | 'top' = this.state.orientation === sliderOrientation.HORIZONTAL ? 'left' : 'top';
     return this.element.getBoundingClientRect()[side];
   }
 
@@ -99,7 +100,7 @@ class View {
     if (!/track|bar/.test(target.className)) return;
     let coordinate: number;
 
-    if (this.state.orientation === 'horizontal') {
+    if (this.state.orientation === sliderOrientation.HORIZONTAL) {
       coordinate = event.clientX;
     } else {
       coordinate = event.clientY;
@@ -118,7 +119,7 @@ class View {
     const fromDistance: number = Math.abs(from - value);
     const toDistance: number = Math.abs(to - value);
 
-    if (this.state.type === 'single') {
+    if (this.state.type === sliderType.SINGLE) {
       if (fromDistance) {
         this.setState({ from: value });
         this.events.notify('newFromTo', { from: value });
@@ -155,7 +156,7 @@ class View {
     const target = event.target as HTMLElement;
     if (!/thumb/.test(target.className)) return;
     target.classList.add('slider__thumb_large');
-    const isHorizontal: boolean = this.state.orientation === 'horizontal';
+    const isHorizontal: boolean = this.state.orientation === sliderOrientation.HORIZONTAL;
     const axis: 'clientX' | 'clientY' = isHorizontal ? 'clientX' : 'clientY';
     const coordinate: number = event[axis];
     const side = this.isFromOrTo(coordinate);
@@ -200,7 +201,7 @@ class View {
   private getSliderSize(orientation: Orientation): number {
     const sliderPosition: DOMRect = this.element.getBoundingClientRect();
 
-    if (orientation === 'horizontal') {
+    if (orientation === sliderOrientation.HORIZONTAL) {
       return sliderPosition.width;
     }
 
