@@ -48,23 +48,24 @@ class Scale {
     } = this.slider.state;
     const inc = this.calculateIncrement(step);
     const pxInc = (inc / step) * pxStep;
-
+    const fragment = document.createDocumentFragment();
     let pxCurrent = 0;
 
     for (let current = min; current < max; current += inc) {
       if (pxCurrent > pxMax - 50) break;
-      this.createScaleValue(this.element, current, pxCurrent);
+      this.createScaleValue(fragment, current, pxCurrent);
       pxCurrent += pxInc;
     }
 
-    this.createScaleValue(this.element, max, pxMax);
+    this.createScaleValue(fragment, max, pxMax);
+    this.element.append(fragment);
   }
 
-  private createScaleValue(anchor: HTMLElement, value: number, position: number): void {
+  private createScaleValue(fragment: DocumentFragment, value: number, position: number): void {
     const scaleValue = document.createElement('span');
     scaleValue.className = 'slider__scale-value';
     scaleValue.innerHTML = value.toString();
-    anchor.append(scaleValue);
+    fragment.append(scaleValue);
     const convert = this.slider.convertPxToPercent.bind(this.slider);
 
     if (this.slider.state.orientation === sliderOrientation.HORIZONTAL) {
