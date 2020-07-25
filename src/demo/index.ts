@@ -3,13 +3,14 @@ import '../slider';
 import '../slider.scss';
 import { Settings } from './Settings';
 
-const firstAnchor = $('.js-first-anchor');
-const secondAnchor = $('.js-second-anchor');
-const thirdAnchor = $('.js-third-anchor');
-const fourthAnchor = $('.js-fourth-anchor');
+const $firstAnchor = $('.js-first-anchor');
+const $secondAnchor = $('.js-second-anchor');
+const $thirdAnchor = $('.js-third-anchor');
+const $fourthAnchor = $('.js-fourth-anchor');
 
-const firstSlider = firstAnchor.slider();
-const secondSlider = secondAnchor.slider({
+const firstSlider = $firstAnchor.slider();
+
+const secondSlider = $secondAnchor.slider({
   orientation: 'horizontal',
   type: 'single',
   min: -100000,
@@ -19,7 +20,8 @@ const secondSlider = secondAnchor.slider({
   hideFromTo: false,
   hideScale: false,
 });
-const thirdSlider = thirdAnchor.slider({
+
+const thirdSlider = $thirdAnchor.slider({
   orientation: 'vertical',
   type: 'double',
   min: 0,
@@ -30,7 +32,8 @@ const thirdSlider = thirdAnchor.slider({
   hideFromTo: false,
   hideScale: false,
 });
-const fourthSlider = fourthAnchor.slider({
+
+const fourthSlider = $fourthAnchor.slider({
   orientation: 'vertical',
   type: 'single',
   min: 0,
