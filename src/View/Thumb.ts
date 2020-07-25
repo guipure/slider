@@ -33,9 +33,8 @@ class Thumb {
     const doesOtherThumbExist = !!this.slider.element.querySelector('.slider__thumb');
     const thumbNumber: 'first' | 'second' = doesOtherThumbExist ? 'second' : 'first';
     thumb.className = `slider__thumb slider__thumb_${this.slider.state.orientation} slider__thumb_${thumbNumber}`;
-    thumb.ondragstart = function () {
-      return false;
-    };
+    const handleDragStart = (event: Event) => event.preventDefault();
+    thumb.addEventListener('dragstart', handleDragStart);
     this.slider.element.append(thumb);
     return thumb;
   }

@@ -46,9 +46,12 @@ class ThumbLabel {
 
   private doCollide(): boolean {
     if (this.element.style.display === 'none') return false;
+
     const slider = this.thumb.element.parentElement as HTMLElement;
     const labels = slider.querySelectorAll('.slider__thumb-label');
+
     if (labels.length < 2) return false;
+
     const firstLabel = labels[0] as HTMLElement;
     const secondLabel = labels[1] as HTMLElement;
     const start = this.orientation === 'vertical' ? 'top' : 'left';
@@ -57,16 +60,19 @@ class ThumbLabel {
     const firstLabelEnd = firstLabel.getBoundingClientRect()[end];
     const secondLabelStart = secondLabel.getBoundingClientRect()[start];
     const secondLabelEnd = secondLabel.getBoundingClientRect()[end];
+    const areLabelPositionsEqual: boolean = (
+      firstLabelStart === secondLabelStart && firstLabelEnd === secondLabelEnd
+    );
+    const doLabelPositionsOverlap: boolean = (
+      (firstLabelStart <= secondLabelEnd && secondLabelStart <= firstLabelEnd)
+      || (secondLabelStart <= firstLabelEnd && firstLabelStart <= secondLabelEnd)
+    );
 
-    if (firstLabelStart === secondLabelStart && firstLabelEnd === secondLabelEnd) {
+    if (areLabelPositionsEqual) {
       return false;
     }
 
-    if (firstLabelStart <= secondLabelEnd && secondLabelStart <= firstLabelEnd) {
-      return true;
-    }
-
-    if (secondLabelStart <= firstLabelEnd && firstLabelStart <= secondLabelEnd) {
+    if (doLabelPositionsOverlap) {
       return true;
     }
 

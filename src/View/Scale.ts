@@ -52,14 +52,14 @@ class Scale {
 
     for (let current = min; current < max; current += inc) {
       if (pxCurrent > pxMax - 50) break;
-      this.appendScaleValue(this.element, current, pxCurrent);
+      this.createScaleValue(this.element, current, pxCurrent);
       pxCurrent += pxInc;
     }
 
-    this.appendScaleValue(this.element, max, pxMax);
+    this.createScaleValue(this.element, max, pxMax);
   }
 
-  private appendScaleValue(anchor: HTMLElement, value: number, position: number): void {
+  private createScaleValue(anchor: HTMLElement, value: number, position: number): void {
     const scaleValue = document.createElement('span');
     scaleValue.className = 'slider__scale-value';
     scaleValue.innerHTML = value.toString();

@@ -16,25 +16,20 @@ class View {
     this.element = this.createSlider();
     this.state = this.init(options);
     this.createSliderElements();
-    this.setState = this.setState.bind(this);
   }
 
   public setState(newState: any) {
-    const prevOrientation: Orientation = this.state.orientation;
-    const newOrientation: Orientation = newState.orientation;
-    const isOrientationChanged: boolean = newOrientation && prevOrientation !== newOrientation;
     const updatedState: ViewState = { ...this.state, ...newState };
     const { orientation } = updatedState;
     const pxStep: number = this.getPxStep(updatedState);
     const pxMax: number = this.getSliderSize(orientation);
+    const isOrientationChanged: boolean = this.isOrientationChanged(newState.orientation);
     this.state = {
       ...updatedState, pxStep, pxMax,
     };
 
     if (isOrientationChanged) {
-      this.element.remove();
-      this.element = this.createSlider();
-      this.createSliderElements();
+      this.repaintSlider();
     }
 
     this.events.notify('newViewState', this.state);
@@ -44,9 +39,9 @@ class View {
     const thumbs = this.element.querySelectorAll('.slider__thumb');
 
     const calculatePosition = (element: any): number => {
-      const prop: 'left' | 'top' = this.state.orientation === 'horizontal' ? 'left' : 'top';
+      const side: 'left' | 'top' = this.state.orientation === 'horizontal' ? 'left' : 'top';
       const width: number = Number.parseInt(getComputedStyle(element).width, 10);
-      return element.getBoundingClientRect()[prop] + width / 2;
+      return element.getBoundingClientRect()[side] + width / 2;
     };
 
     const thumbsPositions: number[] = [calculatePosition(thumbs[0]), calculatePosition(thumbs[1])];
@@ -54,8 +49,8 @@ class View {
   }
 
   public getSliderPosition() {
-    const prop: 'left' | 'top' = this.state.orientation === 'horizontal' ? 'left' : 'top';
-    return this.element.getBoundingClientRect()[prop];
+    const side: 'left' | 'top' = this.state.orientation === 'horizontal' ? 'left' : 'top';
+    return this.element.getBoundingClientRect()[side];
   }
 
   public convertPxToPercent(value: number) {
@@ -87,6 +82,18 @@ class View {
     const scale: Scale = new Scale(this);
   }
 
+  private repaintSlider(): void {
+    this.element.remove();
+    this.element = this.createSlider();
+    this.createSliderElements();
+  }
+
+  private isOrientationChanged(newOrientation: Orientation): boolean {
+    if (!newOrientation) return false;
+    if (newOrientation !== this.state.orientation) return true;
+    return false;
+  }
+
   private onTrackClick(event: any): void {
     const target = event.target as HTMLElement;
     if (!/track|bar/.test(target.className)) return;
@@ -98,16 +105,15 @@ class View {
       coordinate = event.clientY;
     }
 
-    this.setFromTo(coordinate);
+    this.setFromTo(this.convertPxToValue(coordinate));
   }
 
   private onScaleClick(event: any): void {
     const { value } = event.detail;
-    this.setFromTo(value, undefined, true);
+    this.setFromTo(value);
   }
 
-  private setFromTo(coordinate: number, side?: 'from' | 'to', isValue?: boolean): void {
-    const value: number = isValue ? coordinate : this.convertPxToValue(coordinate);
+  private setFromTo(value: number, side?: 'from' | 'to'): void {
     const { from, to } = this.state;
     const fromDistance: number = Math.abs(from - value);
     const toDistance: number = Math.abs(to - value);
@@ -151,26 +157,30 @@ class View {
     target.classList.add('slider__thumb_large');
     const isHorizontal: boolean = this.state.orientation === 'horizontal';
     const axis: 'clientX' | 'clientY' = isHorizontal ? 'clientX' : 'clientY';
-
-    const side = this.isFromOrTo(event[axis]);
-    this.setFromTo(event[axis], side);
+    const coordinate: number = event[axis];
+    const side = this.isFromOrTo(coordinate);
+    const value = this.convertPxToValue(coordinate);
+    this.setFromTo(value, side);
 
     const onMouseMove = (moveEvent: MouseEvent) => {
-      this.setFromTo(moveEvent[axis], side);
+      const mouseValue = this.convertPxToValue(moveEvent[axis]);
+      this.setFromTo(mouseValue, side);
+    };
+
+    const onMouseUp = () => {
+      target.classList.remove('slider__thumb_large');
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
     };
 
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
-
-    function onMouseUp() {
-      target.classList.remove('slider__thumb_large');
-      document.removeEventListener('mousemove', onMouseMove);
-      document.removeEventListener('mouseup', onMouseUp);
-    }
   }
 
   private convertPxToValue(coordinate: number): number {
-    const { orientation, min, max, step } = this.state;
+    const {
+      orientation, min, max, step,
+    } = this.state;
     const pxStep: number = this.getPxStep(this.state);
     const sliderStart: number = this.getSliderPosition();
     const px: number = coordinate - sliderStart;

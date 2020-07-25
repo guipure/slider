@@ -16,19 +16,25 @@ class Presenter {
   private settings: Settings;
 
   constructor(anchor: HTMLElement, options: Options) {
-    const modelOptions: ModelOptions = options as ModelOptions;
-    let viewOptions: ViewOptions = options as ViewOptions;
-
-    this.model = new Model(modelOptions);
-    const {
-      min, max, step, from, to,
-    } = this.model.state;
-    viewOptions = {
-      ...viewOptions, min, max, step, from, to,
-    };
-    this.view = new View(anchor, viewOptions);
+    this.model = this.createModel(options);
+    this.view = this.createView(anchor, options, this.model.state);
     this.settings = new Settings(anchor, options);
     this.subscribe();
+  }
+
+  private createModel(options: Options): Model {
+    const modelOptions: ModelOptions = options as ModelOptions;
+    return new Model(modelOptions);
+  }
+
+  private createView(anchor: HTMLElement, options: Options, modelOptions: ModelOptions): View {
+    const viewOptions: ViewOptions = this.createViewOptions(options, modelOptions);
+    return new View(anchor, viewOptions);
+  }
+
+  private createViewOptions(options: Options, modelOptions: ModelOptions): ViewOptions {
+    const correctOptions: Options = { ...options, ...modelOptions };
+    return correctOptions as ViewOptions;
   }
 
   private subscribe(): void {
