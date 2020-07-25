@@ -77,10 +77,10 @@ class View {
   }
 
   private createSliderElements(): void {
-    const thumb: Thumb = new Thumb(this);
-    const otherThumb: Thumb = new Thumb(this);
-    const track: Track = new Track(this);
-    const scale: Scale = new Scale(this);
+    new Thumb(this);
+    new Thumb(this);
+    new Track(this);
+    new Scale(this);
   }
 
   private repaintSlider(): void {

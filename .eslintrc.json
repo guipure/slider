@@ -33,7 +33,6 @@
       "groups": [["builtin", "external"], "internal", ["parent", "sibling"], "index"],
       "newlines-between": "always"
     }],
-    "no-restricted-imports": ["error", "react-jss", "@material-ui/core", "@material-ui/icons", "i18next", "react-i18next"], // TODO: УДОЛИТЬ react-jss
     "no-unused-expressions": ["error", { "allowShortCircuit": true, "allowTernary": true  }],
     "no-console": ["error", { "allow": ["info", "warn", "error"] }],
     "lines-between-class-members": ["error", "always", { "exceptAfterSingleLine": true }],

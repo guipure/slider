@@ -21,7 +21,7 @@ class Track {
   }
 
   private initBar(): void {
-    const bar = new Bar(this.element, this.slider);
+    new Bar(this.element, this.slider);
   }
 }
 
