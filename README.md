@@ -26,6 +26,19 @@ npm i
 - Развернуть проект на GitHub Pages: `npm run deploy`
 
 ## Инициализация
+Подключите библиотеку [jQuery](https://jquery.com/).
+
+Подключите стили плагина:
+
+```html
+<link rel="stylesheet" href="slider.css">
+```
+
+И сам плагин:
+
+```html
+<script src="slider.js"></script>
+```
 
 Для инициализации вызовите slider на элементе:
 
