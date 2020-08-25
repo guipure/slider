@@ -1,7 +1,7 @@
 import '../assets/favicons/favicons';
 import '../slider';
 import '../slider.scss';
-import { Settings } from './Settings';
+import { Settings } from './settings/Settings';
 import './index.scss';
 
 const $firstAnchor = $('.js-first-anchor');
