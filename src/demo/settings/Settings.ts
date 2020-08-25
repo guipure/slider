@@ -1,5 +1,6 @@
-import { Presenter } from '../Presenter/Presenter';
-import { Options } from '../interfaces/interfaces';
+import { Presenter } from '../../Presenter/Presenter';
+import { Options } from '../../interfaces/interfaces';
+import './settings.scss';
 
 class Settings {
   public state: Options;

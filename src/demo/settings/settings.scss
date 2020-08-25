@@ -1,0 +1,31 @@
+.settings {
+  font-family: 'Courier New', Courier, monospace;
+  padding: 10px;
+  position: relative;
+  width: 20%;
+  min-width: 270px;
+  background-color: blanchedalmond;
+  color: #333;
+  border-radius: 5px;
+  text-align: center;
+
+  &__row {
+    margin: 5px;
+  }
+
+  &__name {
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin: 0;
+  }
+
+  &__input {
+    text-align: center;
+    margin: 0;
+  }
+
+  &__radio {
+    cursor: pointer;
+  }
+}

@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom';
 
 import { Options } from '../src/interfaces/interfaces';
-import { Settings } from '../src/demo/Settings';
+import { Settings } from '../src/demo/settings/Settings';
 import { Presenter } from '../src/Presenter/Presenter';
 
 describe('Settings', () => {
