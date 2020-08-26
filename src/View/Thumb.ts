@@ -33,10 +33,13 @@ class Thumb {
     const thumb = document.createElement('div');
     const doesOtherThumbExist = !!this.slider.element.querySelector('.slider__thumb');
     const thumbNumber: 'first' | 'second' = doesOtherThumbExist ? 'second' : 'first';
+
     thumb.className = `slider__thumb slider__thumb_${this.slider.state.orientation} slider__thumb_${thumbNumber}`;
+
     const handleDragStart = (event: Event) => event.preventDefault();
     thumb.addEventListener('dragstart', handleDragStart);
     this.slider.element.append(thumb);
+
     return thumb;
   }
 
@@ -47,11 +50,10 @@ class Thumb {
 
   private toggleThumb(type: SliderType): void {
     if (this.element.classList.contains('slider__thumb_second')) {
-      if (type === sliderType.SINGLE) {
-        this.hideThumb();
-      } else {
-        this.showThumb();
-      }
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+      type === sliderType.SINGLE
+        ? this.hideThumb()
+        : this.showThumb();
     }
   }
 
@@ -71,6 +73,7 @@ class Thumb {
     const thumbHalfWidth: number = Number.parseInt(getComputedStyle(this.element).width, 10) / 2;
     const side: 'left' | 'top' = this.getSide(orientation);
     const position: number = this.slider.convertPxToPercent(coordinate - thumbHalfWidth);
+
     this.element.style[side] = `${position}%`;
     this.events.notify('thumbMove');
   }
@@ -97,11 +100,7 @@ class Thumb {
   }
 
   private getSide(orientation: Orientation): 'left' | 'top' {
-    if (orientation === sliderOrientation.HORIZONTAL) {
-      return 'left';
-    }
-
-    return 'top';
+    return orientation === sliderOrientation.HORIZONTAL ? 'left' : 'top';
   }
 }
 

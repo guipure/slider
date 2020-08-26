@@ -16,22 +16,25 @@ class View {
     this.events = new EventManager();
     this.element = this.createSlider();
     this.state = this.init(options);
+
     this.createSliderElements();
   }
 
   public setState(newState: any) {
     const updatedState: ViewState = { ...this.state, ...newState };
+
     const { orientation } = updatedState;
     const pxStep: number = this.getPxStep(updatedState);
     const pxMax: number = this.getSliderSize(orientation);
+
     const isOrientationChanged: boolean = this.isOrientationChanged(newState.orientation);
+
     this.state = {
       ...updatedState, pxStep, pxMax,
     };
 
-    if (isOrientationChanged) {
-      this.repaintSlider();
-    }
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    isOrientationChanged && this.repaintSlider();
 
     this.events.notify('newViewState', this.state);
   }
@@ -42,10 +45,12 @@ class View {
     const calculatePosition = (element: any): number => {
       const side: 'left' | 'top' = this.state.orientation === sliderOrientation.HORIZONTAL ? 'left' : 'top';
       const width: number = Number.parseInt(getComputedStyle(element).width, 10);
+
       return element.getBoundingClientRect()[side] + width / 2;
     };
 
     const thumbsPositions: number[] = [calculatePosition(thumbs[0]), calculatePosition(thumbs[1])];
+
     return thumbsPositions.sort((a, b) => a - b);
   }
 
@@ -69,11 +74,17 @@ class View {
   private createSlider(): HTMLElement {
     const element: HTMLElement = document.createElement('div');
     element.className = 'slider';
+
+    this.addEventListeners(element);
+    this.anchor.prepend(element);
+
+    return element;
+  }
+
+  private addEventListeners(element: HTMLElement) {
     element.addEventListener('click', this.onTrackClick.bind(this));
     element.addEventListener('scaleclick', this.onScaleClick.bind(this));
     element.addEventListener('mousedown', this.onThumbMouseDown.bind(this));
-    this.anchor.prepend(element);
-    return element;
   }
 
   private createSliderElements(): void {
@@ -91,20 +102,17 @@ class View {
 
   private isOrientationChanged(newOrientation: Orientation): boolean {
     if (!newOrientation) return false;
-    if (newOrientation !== this.state.orientation) return true;
-    return false;
+    return newOrientation !== this.state.orientation;
   }
 
   private onTrackClick(event: any): void {
     const target = event.target as HTMLElement;
-    if (!/track|bar/.test(target.className)) return;
-    let coordinate: number;
 
-    if (this.state.orientation === sliderOrientation.HORIZONTAL) {
-      coordinate = event.clientX;
-    } else {
-      coordinate = event.clientY;
-    }
+    if (!/track|bar/.test(target.className)) return;
+
+    const coordinate: number = this.state.orientation === sliderOrientation.HORIZONTAL
+      ? event.clientX
+      : event.clientY;
 
     this.setFromTo(this.convertPxToValue(coordinate));
   }
@@ -154,11 +162,14 @@ class View {
 
   private onThumbMouseDown(event: MouseEvent): void {
     const target = event.target as HTMLElement;
+
     if (!/thumb/.test(target.className)) return;
+
     target.classList.add('slider__thumb_large');
     const isHorizontal: boolean = this.state.orientation === sliderOrientation.HORIZONTAL;
     const axis: 'clientX' | 'clientY' = isHorizontal ? 'clientX' : 'clientY';
     const coordinate: number = event[axis];
+
     const side = this.isFromOrTo(coordinate);
     const value = this.convertPxToValue(coordinate);
     this.setFromTo(value, side);
@@ -201,11 +212,9 @@ class View {
   private getSliderSize(orientation: Orientation): number {
     const sliderPosition: DOMRect = this.element.getBoundingClientRect();
 
-    if (orientation === sliderOrientation.HORIZONTAL) {
-      return sliderPosition.width;
-    }
-
-    return sliderPosition.height;
+    return orientation === sliderOrientation.HORIZONTAL
+      ? sliderPosition.width
+      : sliderPosition.height;
   }
 
   private getPxStep(options: any): number {
@@ -213,6 +222,7 @@ class View {
       min, max, step, orientation,
     } = options;
     const quantity = Math.ceil((max - min) / step);
+
     return this.getSliderSize(orientation) / quantity;
   }
 }

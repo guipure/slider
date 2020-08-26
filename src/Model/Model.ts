@@ -14,6 +14,7 @@ class Model {
   public setState(options: ModelOptions): void {
     const correctedOptions: ModelOptions = this.correctOptions(options);
     this.state = { ...correctedOptions };
+
     this.events.notify('newModelState', this.state);
   }
 
@@ -24,13 +25,13 @@ class Model {
   }
 
   private correctOptions(options: ModelOptions): ModelOptions {
-    const {
-      min, max, step,
-    } = options;
+    const { min, max, step } = options;
+
     const correctedStep = this.correctStep(step);
     const correctedMinMax = this.correctMinMax(min, max, correctedStep.step);
     const currentOptions: ModelOptions = { ...options, ...correctedMinMax, ...correctedStep };
     const correctedFromTo = this.correctFromAndTo(currentOptions);
+
     return { ...currentOptions, ...correctedFromTo };
   }
 
@@ -90,10 +91,10 @@ class Model {
     if (isToEqualsFrom) {
       if (correctedTo === max) {
         correctedFrom = max - lastStep;
-      } else if (correctedFrom === min) {
-        correctedTo = min + step;
       } else {
-        correctedTo = correctedFrom + step;
+        correctedTo = correctedFrom === min
+          ? min + step
+          : correctedFrom + step;
       }
     }
 

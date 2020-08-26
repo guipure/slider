@@ -12,6 +12,7 @@ class ThumbLabel {
   private init(thumb: Thumb): void {
     this.update();
     thumb.element.append(this.element);
+
     thumb.events.subscribe('thumbMove', this.update.bind(this));
     thumb.events.subscribe('changedHideFromTo', this.setHideFromTo.bind(this));
   }
@@ -19,6 +20,7 @@ class ThumbLabel {
   private createLabel(orientation: Orientation): HTMLElement {
     const element = document.createElement('div');
     element.className = `slider__thumb-label slider__thumb-label_${orientation}`;
+
     return element;
   }
 
@@ -33,15 +35,10 @@ class ThumbLabel {
     this.element.innerHTML = this.thumb.currentValue.toString();
     this.element.style.opacity = '1';
 
-    if (this.doCollide()) {
-      this.uniteLabels();
-    }
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    this.doCollide() && this.uniteLabels();
 
-    if (this.hideFromTo) {
-      this.element.style.display = 'none';
-    } else {
-      this.element.style.display = 'block';
-    }
+    this.element.style.display = this.hideFromTo ? 'none' : 'block';
   }
 
   private doCollide(): boolean {
@@ -54,15 +51,19 @@ class ThumbLabel {
 
     const firstLabel = labels[0] as HTMLElement;
     const secondLabel = labels[1] as HTMLElement;
+
     const start = this.orientation === 'vertical' ? 'top' : 'left';
     const end = this.orientation === 'vertical' ? 'bottom' : 'right';
+
     const firstLabelStart = firstLabel.getBoundingClientRect()[start];
     const firstLabelEnd = firstLabel.getBoundingClientRect()[end];
     const secondLabelStart = secondLabel.getBoundingClientRect()[start];
     const secondLabelEnd = secondLabel.getBoundingClientRect()[end];
+
     const areLabelPositionsEqual: boolean = (
       firstLabelStart === secondLabelStart && firstLabelEnd === secondLabelEnd
     );
+
     const doLabelPositionsOverlap: boolean = (
       (firstLabelStart <= secondLabelEnd && secondLabelStart <= firstLabelEnd)
       || (secondLabelStart <= firstLabelEnd && firstLabelStart <= secondLabelEnd)
@@ -81,13 +82,18 @@ class ThumbLabel {
 
   private uniteLabels(): void {
     if (this.element.style.display === 'none') return;
+
     const slider = this.thumb.element.parentElement as HTMLElement;
     const labels = slider.querySelectorAll('.slider__thumb-label');
+
     if (labels.length < 2) return;
+
     const firstLabel = labels[0] as HTMLElement;
     const secondLabel = labels[1] as HTMLElement;
+
     const firstValue: number = Number.parseInt(firstLabel.innerHTML, 10);
     const secondValue: number = Number.parseInt(secondLabel.innerHTML, 10);
+
     firstLabel.innerHTML = `${firstValue} — ${secondValue}`;
     secondLabel.style.opacity = '0';
   }

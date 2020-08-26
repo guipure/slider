@@ -46,14 +46,17 @@ class Scale {
     const {
       pxMax, pxStep, min, max, step,
     } = this.slider.state;
+
     const inc = this.calculateIncrement(step);
     const pxInc = (inc / step) * pxStep;
     const fragment = document.createDocumentFragment();
+
     let pxCurrent = 0;
 
     for (let current = min; current < max; current += inc) {
       if (pxCurrent > pxMax - 50) break;
       this.createScaleValue(fragment, current, pxCurrent);
+
       pxCurrent += pxInc;
     }
 
@@ -71,11 +74,13 @@ class Scale {
     if (this.slider.state.orientation === sliderOrientation.HORIZONTAL) {
       const width = convert(50);
       const left = convert(position - 50 / 2);
+
       scaleValue.style.width = `${width}%`;
       scaleValue.style.left = `${left}%`;
     } else {
       const height = convert(20);
       const top = convert(position - 20 / 2);
+
       scaleValue.style.height = `${height}%`;
       scaleValue.style.top = `${top}%`;
     }
@@ -83,9 +88,12 @@ class Scale {
 
   private onScaleClick(event: Event): void {
     const { target } = event;
+
     if (!(target instanceof HTMLElement)) return;
     if (target.className !== 'slider__scale-value') return;
+
     const value: number = Number(target.innerHTML);
+
     const scaleEvent = new CustomEvent('scaleclick', { bubbles: true, detail: { event, value } });
     target.dispatchEvent(scaleEvent);
   }
