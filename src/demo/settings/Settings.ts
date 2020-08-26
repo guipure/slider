@@ -11,14 +11,18 @@ class Settings {
   constructor(private slider: Presenter) {
     this.state = slider.getOptions();
     this.form = this.createForm();
-    this.createSettings();
-    this.initValues();
-    this.slider.events.subscribe('newViewState', this.updateFromTo.bind(this));
+    this.init();
   }
 
   public updateFromTo(newSetting: any) {
     this.state = { ...this.state, ...newSetting };
     this.initValues();
+  }
+
+  private init() {
+    this.createSettings();
+    this.initValues();
+    this.slider.events.subscribe('newViewState', this.updateFromTo.bind(this));
   }
 
   private createForm(): HTMLFormElement {
@@ -64,46 +68,30 @@ class Settings {
 
         case 'orientation':
           input.onchange = () => this.setState({ orientation: input.value });
-          if (input.value === 'horizontal') {
-            if (this.state.orientation === 'horizontal') {
-              input.checked = true;
-            }
-          } else if (this.state.orientation === 'vertical') {
-            input.checked = true;
-          }
+          input.checked = input.value === 'horizontal'
+            ? this.state.orientation === 'horizontal'
+            : this.state.orientation === 'vertical';
           break;
 
         case 'type':
           input.onchange = () => this.setState({ type: input.value });
-          if (input.value === 'single') {
-            if (this.state.type === 'single') {
-              input.checked = true;
-            }
-          } else if (this.state.type === 'double') {
-            input.checked = true;
-          }
+          input.checked = input.value === 'single'
+            ? this.state.type === 'single'
+            : this.state.type === 'double';
           break;
 
         case 'hideFromTo':
           input.onchange = () => this.setState({ hideFromTo: input.value === 'true' });
-          if (input.value === 'true') {
-            if (this.state.hideFromTo === true) {
-              input.checked = true;
-            }
-          } else if (this.state.hideFromTo === false) {
-            input.checked = true;
-          }
+          input.checked = input.value === 'true'
+            ? this.state.hideFromTo
+            : !this.state.hideFromTo;
           break;
 
         case 'hideScale':
           input.onchange = () => this.setState({ hideScale: input.value === 'true' });
-          if (input.value === 'true') {
-            if (this.state.hideScale === true) {
-              input.checked = true;
-            }
-          } else if (this.state.hideScale === false) {
-            input.checked = true;
-          }
+          input.checked = input.value === 'true'
+            ? this.state.hideScale
+            : !this.state.hideScale;
           break;
         // no default
       }
