@@ -1,5 +1,6 @@
 import { Presenter } from '../../Presenter/Presenter';
 import { Options } from '../../interfaces/interfaces';
+import { settingsTemplate } from './settingsTemplate';
 import './settings.scss';
 
 class Settings {
@@ -28,108 +29,39 @@ class Settings {
   }
 
   private createSettings() {
-    const settingsTemplate = `
-    <div class="settings__row">
-      <p class="settings__name">min</p>
-      <input class="settings__input" type="number" name="min" />
-    </div>
-
-    <div class="settings__row">
-      <p class="settings__name">max</p>
-      <input class="settings__input" type="number" name="max" />
-    </div>
-
-    <div class="settings__row">
-      <p class="settings__name">step</p>
-      <input class="settings__input" type="number" name="step" />
-    </div>
-
-    <div class="settings__row">
-      <p class="settings__name">from</p>
-      <input class="settings__input" type="number" name="from" />
-    </div>
-
-    <div class="settings__row">
-      <p class="settings__name">to</p>
-      <input class="settings__input" type="number" name="to" />
-    </div>
-
-    <div class="settings__row">
-      <p class="settings__name">orientation</p>
-      <label class="settings__radio">
-        horizontal
-        <input class="settings__input" type="radio" name="orientation" value="horizontal" />
-      </label>
-      <label class="settings__radio">
-        vertical
-        <input class="settings__input" type="radio" name="orientation" value="vertical" />
-      </label>
-    </div>
-    
-    <div class="settings__row">
-      <p class="settings__name">type</p>
-      <label class="settings__radio">
-        single
-        <input class="settings__input" type="radio" name="type" value="single" />
-      </label>
-      <label class="settings__radio">
-        double
-        <input class="settings__input" type="radio" name="type" value="double" />
-      </label>
-    </div>
-    
-    <div class="settings__row">
-      <p class="settings__name">hide From To</p>
-      <label class="settings__radio">
-        true
-        <input class="settings__input" type="radio" name="hideFromTo" value="true" />
-      </label>
-      <label class="settings__radio">
-        false
-        <input class="settings__input" type="radio" name="hideFromTo" value="false" />
-      </label>
-    </div>
-    
-    <div class="settings__row">
-      <p class="settings__name">hide Scale</p>
-      <label class="settings__radio">
-        true
-        <input class="settings__input" type="radio" name="hideScale" value="true" />
-      </label>
-      <label class="settings__radio">
-        false
-        <input class="settings__input" type="radio" name="hideScale" value="false" />
-      </label>
-    </div>
-    `;
-
     this.form.insertAdjacentHTML('beforeend', settingsTemplate);
   }
 
   private initValues() {
     const inputs = this.form.querySelectorAll('input');
+
     inputs.forEach((input: HTMLInputElement) => {
       switch (input.name) {
         case 'min':
           input.onchange = () => this.setState({ min: Number(input.value) });
           input.value = this.state.min.toString();
           break;
+
         case 'max':
           input.onchange = () => this.setState({ max: Number(input.value) });
           input.value = this.state.max.toString();
           break;
+
         case 'step':
           input.onchange = () => this.setStep(Number(input.value));
           input.value = this.state.step.toString();
           break;
+
         case 'from':
           input.onchange = () => this.onFromInputChange(Number(input.value));
           input.value = this.state.from.toString();
           break;
+
         case 'to':
           input.onchange = () => this.onToInputChange(Number(input.value));
           input.value = this.state.to.toString();
           break;
+
         case 'orientation':
           input.onchange = () => this.setState({ orientation: input.value });
           if (input.value === 'horizontal') {
@@ -140,6 +72,7 @@ class Settings {
             input.checked = true;
           }
           break;
+
         case 'type':
           input.onchange = () => this.setState({ type: input.value });
           if (input.value === 'single') {
@@ -150,6 +83,7 @@ class Settings {
             input.checked = true;
           }
           break;
+
         case 'hideFromTo':
           input.onchange = () => this.setState({ hideFromTo: input.value === 'true' });
           if (input.value === 'true') {
@@ -160,6 +94,7 @@ class Settings {
             input.checked = true;
           }
           break;
+
         case 'hideScale':
           input.onchange = () => this.setState({ hideScale: input.value === 'true' });
           if (input.value === 'true') {
