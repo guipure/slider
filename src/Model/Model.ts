@@ -1,13 +1,13 @@
 import { ModelOptions } from '../interfaces/interfaces';
-import { EventManager } from '../EventManager/EventManager';
+import { Observable } from '../Observable/Observable';
 
 class Model {
   public state: ModelOptions;
 
-  public events: EventManager;
+  public events: Observable;
 
   constructor(options: ModelOptions) {
-    this.events = new EventManager();
+    this.events = new Observable();
     this.state = this.init(options);
   }
 

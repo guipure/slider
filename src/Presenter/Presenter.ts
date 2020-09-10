@@ -7,17 +7,17 @@ import {
   ModelOptions,
 } from '../interfaces/interfaces';
 import { standardOptions } from '../interfaces/constants';
-import { EventManager } from '../EventManager/EventManager';
+import { Observable } from '../Observable/Observable';
 
 class Presenter {
-  public events: EventManager;
+  public events: Observable;
 
   private view: View;
 
   private model: Model;
 
   constructor(public anchor: HTMLElement, options: Options) {
-    this.events = new EventManager();
+    this.events = new Observable();
     this.model = this.createModel(options);
     this.view = this.createView(anchor, options, this.model.state);
     this.subscribe();

@@ -1,18 +1,18 @@
 import { ViewState, Orientation, SliderType } from '../interfaces/interfaces';
 import { sliderOrientation, sliderType } from '../interfaces/constants';
-import { EventManager } from '../EventManager/EventManager';
+import { Observable } from '../Observable/Observable';
 import { View } from './View';
 import { ThumbLabel } from './ThumbLabel';
 
 class Thumb {
   public element: HTMLElement;
 
-  public events: EventManager;
+  public events: Observable;
 
   public currentValue: number = 0;
 
   constructor(private slider: View) {
-    this.events = new EventManager();
+    this.events = new Observable();
     this.element = this.createThumb();
     this.init();
   }

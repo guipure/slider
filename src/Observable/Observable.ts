@@ -4,7 +4,7 @@ interface Callbacks {
   [key: string]: Array<EventCallback>
 }
 
-class EventManager {
+class Observable {
   private callbacks: Callbacks = {};
 
   public subscribe(eventType: string, callback: EventCallback): void {
@@ -28,4 +28,4 @@ class EventManager {
   }
 }
 
-export { EventManager };
+export { Observable };
