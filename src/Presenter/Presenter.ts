@@ -49,16 +49,16 @@ class Presenter {
   }
 
   private subscribe(): void {
-    this.subscribeOnNewValues();
+    this.subscribeOnNewModelState();
     this.subscribeOnNewViewState();
     this.subscribeOnNewFromTo();
   }
 
-  private subscribeOnNewValues(): void {
-    this.model.events.subscribe('newModelState', this.handleNewValues.bind(this));
+  private subscribeOnNewModelState(): void {
+    this.model.events.subscribe('newModelState', this.handleNewModelState.bind(this));
   }
 
-  private handleNewValues(modelState: ModelOptions): void {
+  private handleNewModelState(modelState: ModelOptions): void {
     const {
       min, max, step, from, to,
     } = modelState;
