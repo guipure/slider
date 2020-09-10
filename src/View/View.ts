@@ -1,3 +1,4 @@
+/* eslint-disable no-new */
 import { ViewOptions, ViewState, Orientation } from '../interfaces/interfaces';
 import { sliderOrientation, sliderType } from '../interfaces/constants';
 import { EventManager } from '../EventManager/EventManager';

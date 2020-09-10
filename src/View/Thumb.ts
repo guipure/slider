@@ -45,7 +45,8 @@ class Thumb {
 
   private createLabel(): void {
     const { orientation, hideFromTo } = this.slider.state;
-    const label = new ThumbLabel(this, orientation, hideFromTo);
+    // eslint-disable-next-line no-new
+    new ThumbLabel(this, orientation, hideFromTo);
   }
 
   private toggleThumb(type: SliderType): void {
