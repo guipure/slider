@@ -108,13 +108,9 @@ class Settings {
     const { max, min } = setting;
 
     if (max) {
-      if (max < this.state.min) {
-        return { min: max };
-      }
+      if (max < this.state.min) return { min: max };
     } else if (min) {
-      if (min > this.state.max) {
-        return { max: min };
-      }
+      if (min > this.state.max) return { max: min };
     }
 
     return setting;

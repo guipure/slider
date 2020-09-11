@@ -38,13 +38,11 @@ class Model {
   private correctMinMax(min: number, max: number, step: number): { min: number, max: number } {
     const correctedMinMax = { min, max };
 
-    if (min > max) {
-      [correctedMinMax.min, correctedMinMax.max] = [max, min];
-    }
+    min > max
+      && ([correctedMinMax.min, correctedMinMax.max] = [max, min]);
 
-    if (min === max) {
-      correctedMinMax.max = min + step;
-    }
+    min === max
+      && (correctedMinMax.max = min + step);
 
     return correctedMinMax;
   }
@@ -52,30 +50,29 @@ class Model {
   private correctStep(step: number): { step: number } {
     let correctedStep: number = Math.round(step);
 
-    if (correctedStep < 1) {
-      correctedStep = 1;
-    }
+    correctedStep < 1 && (correctedStep = 1);
 
     return { step: correctedStep };
   }
 
   private correctFromAndTo(options: ModelOptions): { from: number, to: number } {
     const {
-      min, max, step, from, to,
+      min,
+      max,
+      step,
+      from,
+      to,
     } = options;
     let lastStep: number = (max - min) % step;
 
-    if (lastStep === 0) {
-      lastStep = step;
-    }
+    lastStep === 0 && (lastStep = step);
 
     let correctedFrom: number = correct(from);
     let correctedTo: number = correct(to);
 
     function correct(num: number): number {
-      if (num >= max - lastStep / 2) {
-        return max;
-      }
+      const isNumGreaterThanMax = num >= max - lastStep / 2;
+      if (isNumGreaterThanMax) return max;
 
       return Math.round((num - min) / step) * step + min;
     }
@@ -84,14 +81,12 @@ class Model {
     const isToLessThanFrom: boolean = correctedTo < correctedFrom && isDouble;
     const isToEqualsFrom: boolean = correctedTo === correctedFrom && isDouble;
 
-    if (isToLessThanFrom) {
-      [correctedTo, correctedFrom] = [correctedFrom, correctedTo];
-    }
+    isToLessThanFrom
+      && ([correctedTo, correctedFrom] = [correctedFrom, correctedTo]);
 
     if (isToEqualsFrom) {
-      if (correctedTo === max) {
-        correctedFrom = max - lastStep;
-      } else {
+      if (correctedTo === max) (correctedFrom = max - lastStep);
+      else {
         correctedTo = correctedFrom === min
           ? min + step
           : correctedFrom + step;

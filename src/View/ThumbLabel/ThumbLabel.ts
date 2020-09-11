@@ -68,13 +68,9 @@ class ThumbLabel {
       || (secondLabelStart <= firstLabelEnd && firstLabelStart <= secondLabelEnd)
     );
 
-    if (areLabelPositionsEqual) {
-      return false;
-    }
+    if (areLabelPositionsEqual) return false;
 
-    if (doLabelPositionsOverlap) {
-      return true;
-    }
+    if (doLabelPositionsOverlap) return true;
 
     return false;
   }

@@ -25,11 +25,15 @@ class Bar {
     const isHorizontal: boolean = this.slider.state.orientation === sliderOrientation.HORIZONTAL;
     const side: 'left' | 'top' = isHorizontal ? 'left' : 'top';
     const dimension: 'width' | 'height' = isHorizontal ? 'width' : 'height';
+
     const thumbsPositions = this.slider.getThumbsPositions();
     const sliderPosition = this.slider.getSliderPosition();
+
     const convert = this.slider.convertPxToPercent.bind(this.slider);
 
-    if (this.slider.state.type === sliderType.SINGLE) {
+    const isSingle = this.slider.state.type === sliderType.SINGLE;
+
+    if (isSingle) {
       const length: number = convert(Math.abs(thumbsPositions[1] - sliderPosition));
       bar.style[side] = '0%';
       bar.style[dimension] = `${length}%`;

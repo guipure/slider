@@ -69,9 +69,12 @@ class Scale {
     scaleValue.className = 'slider__scale-value';
     scaleValue.innerHTML = value.toString();
     fragment.append(scaleValue);
+
     const convert = this.slider.convertPxToPercent.bind(this.slider);
 
-    if (this.slider.state.orientation === sliderOrientation.HORIZONTAL) {
+    const isHorizontal = this.slider.state.orientation === sliderOrientation.HORIZONTAL;
+
+    if (isHorizontal) {
       const width = convert(50);
       const left = convert(position - 50 / 2);
 

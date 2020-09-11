@@ -79,12 +79,14 @@ class Thumb {
 
   private convertValueToPx(value: number): number {
     const {
-      min, max, step, pxMax, pxStep,
+      min,
+      max,
+      step,
+      pxMax,
+      pxStep,
     } = this.slider.state;
 
-    if (value === max) {
-      return pxMax;
-    }
+    if (value === max) return pxMax;
 
     const pxValue = Math.round((value - min) / step) * pxStep;
     return pxValue;

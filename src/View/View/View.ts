@@ -125,13 +125,12 @@ class View {
     const { from, to } = this.state;
     const fromDistance: number = Math.abs(from - value);
     const toDistance: number = Math.abs(to - value);
+    const isSingle = this.state.type === sliderType.SINGLE;
 
-    if (this.state.type === sliderType.SINGLE) {
-      if (fromDistance) {
-        this.setState({ from: value });
-        this.events.notify('newFromTo', { from: value });
-        return;
-      }
+    if (isSingle && fromDistance) {
+      this.setState({ from: value });
+      this.events.notify('newFromTo', { from: value });
+      return;
     }
 
     if (fromDistance * toDistance === 0) return;
@@ -196,13 +195,9 @@ class View {
     const sliderStart: number = this.getSliderPosition();
     const px: number = coordinate - sliderStart;
 
-    if (px > this.getSliderSize(orientation)) {
-      return max;
-    }
+    if (px > this.getSliderSize(orientation)) return max;
 
-    if (px < 0) {
-      return min;
-    }
+    if (px < 0) return min;
 
     const value = Math.round(px / pxStep) * step + min;
     return value;
