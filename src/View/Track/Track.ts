@@ -21,7 +21,6 @@ class Track {
   }
 
   private initBar(): void {
-    // eslint-disable-next-line no-new
     new Bar(this.element, this.slider);
   }
 }

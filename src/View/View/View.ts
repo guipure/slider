@@ -1,4 +1,3 @@
-/* eslint-disable no-new */
 import { ViewOptions, ViewState, Orientation } from '../../interfaces/interfaces';
 import { sliderOrientation, sliderType } from '../../interfaces/constants';
 import { Observable } from '../../Observable/Observable';
@@ -34,7 +33,6 @@ class View {
       ...updatedState, pxStep, pxMax,
     };
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     isOrientationChanged && this.repaintSlider();
 
     this.events.notify('newViewState', this.state);

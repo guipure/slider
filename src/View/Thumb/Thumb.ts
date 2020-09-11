@@ -45,13 +45,11 @@ class Thumb {
 
   private createLabel(): void {
     const { orientation, hideFromTo } = this.slider.state;
-    // eslint-disable-next-line no-new
     new ThumbLabel(this, orientation, hideFromTo);
   }
 
   private toggleThumb(type: SliderType): void {
     if (this.element.classList.contains('slider__thumb_second')) {
-      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       type === sliderType.SINGLE
         ? this.hideThumb()
         : this.showThumb();

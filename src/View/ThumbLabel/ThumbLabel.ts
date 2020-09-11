@@ -35,7 +35,6 @@ class ThumbLabel {
     this.element.innerHTML = this.thumb.currentValue.toString();
     this.element.style.opacity = '1';
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     this.doCollide() && this.uniteLabels();
 
     this.element.style.display = this.hideFromTo ? 'none' : 'block';
