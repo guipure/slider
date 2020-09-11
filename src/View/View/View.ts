@@ -20,7 +20,7 @@ class View {
     this.createSliderElements();
   }
 
-  public setState(newState: any) {
+  public setState(newState: Partial<ViewState>) {
     const updatedState: ViewState = { ...this.state, ...newState };
 
     const { orientation } = updatedState;
@@ -41,7 +41,7 @@ class View {
   public getThumbsPositions(): number[] {
     const thumbs = this.element.querySelectorAll('.slider__thumb');
 
-    const calculatePosition = (element: any): number => {
+    const calculatePosition = (element: Element): number => {
       const side: 'left' | 'top' = this.state.orientation === sliderOrientation.HORIZONTAL ? 'left' : 'top';
       const width = Number.parseInt(getComputedStyle(element).width, 10);
 
@@ -99,12 +99,12 @@ class View {
     this.createSliderElements();
   }
 
-  private isOrientationChanged(newOrientation: Orientation): boolean {
+  private isOrientationChanged(newOrientation?: Orientation): boolean {
     if (!newOrientation) return false;
     return newOrientation !== this.state.orientation;
   }
 
-  private onTrackClick(event: any): void {
+  private onTrackClick(event: MouseEvent): void {
     const target = event.target as HTMLElement;
 
     if (!/track|bar/.test(target.className)) return;
@@ -214,9 +214,17 @@ class View {
       : sliderPosition.height;
   }
 
-  private getPxStep(options: any): number {
+  private getPxStep(options: {
+    min: number,
+    max: number,
+    step: number,
+    orientation: Orientation
+  }): number {
     const {
-      min, max, step, orientation,
+      min,
+      max,
+      step,
+      orientation,
     } = options;
     const quantity = Math.ceil((max - min) / step);
 

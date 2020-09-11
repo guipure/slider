@@ -14,7 +14,7 @@ class Settings {
     this.init();
   }
 
-  public updateFromTo(newSetting: any) {
+  public updateFromTo(newSetting: Partial<Options>) {
     this.state = { ...this.state, ...newSetting };
     this.initValues();
   }
@@ -98,13 +98,13 @@ class Settings {
     });
   }
 
-  private setState(newSetting: any) {
+  private setState(newSetting: {}) {
     newSetting = this.checkMinMax(newSetting);
     this.state = { ...this.state, ...newSetting };
     this.slider.setOptions(this.state);
   }
 
-  private checkMinMax(setting: any) {
+  private checkMinMax(setting: Partial<Options>) {
     const { max, min } = setting;
 
     if (max) {

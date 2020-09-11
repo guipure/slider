@@ -23,7 +23,7 @@ class Presenter {
     this.subscribe();
   }
 
-  public setOptions(options: any): void {
+  public setOptions(options: Partial<Options>): void {
     const newOptions: Options = { ...standardOptions, ...options };
     this.handleNewSettings(newOptions);
   }
@@ -84,7 +84,7 @@ class Presenter {
     this.view.events.subscribe('newFromTo', this.handleNewFromTo.bind(this));
   }
 
-  private handleNewFromTo(newFromTo: any): void {
+  private handleNewFromTo(newFromTo: Partial<ModelOptions>): void {
     const modelState: ModelOptions = this.model.state;
     const newModelState: ModelOptions = { ...modelState, ...newFromTo };
     this.model.setState(newModelState);
