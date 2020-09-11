@@ -59,11 +59,11 @@ class ThumbLabel {
     const secondLabelStart = secondLabel.getBoundingClientRect()[start];
     const secondLabelEnd = secondLabel.getBoundingClientRect()[end];
 
-    const areLabelPositionsEqual: boolean = (
+    const areLabelPositionsEqual = (
       firstLabelStart === secondLabelStart && firstLabelEnd === secondLabelEnd
     );
 
-    const doLabelPositionsOverlap: boolean = (
+    const doLabelPositionsOverlap = (
       (firstLabelStart <= secondLabelEnd && secondLabelStart <= firstLabelEnd)
       || (secondLabelStart <= firstLabelEnd && firstLabelStart <= secondLabelEnd)
     );
@@ -86,8 +86,8 @@ class ThumbLabel {
     const firstLabel = labels[0] as HTMLElement;
     const secondLabel = labels[1] as HTMLElement;
 
-    const firstValue: number = Number.parseInt(firstLabel.innerHTML, 10);
-    const secondValue: number = Number.parseInt(secondLabel.innerHTML, 10);
+    const firstValue = Number.parseInt(firstLabel.innerHTML, 10);
+    const secondValue = Number.parseInt(secondLabel.innerHTML, 10);
 
     firstLabel.innerHTML = `${firstValue} — ${secondValue}`;
     secondLabel.style.opacity = '0';

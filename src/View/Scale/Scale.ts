@@ -95,7 +95,7 @@ class Scale {
     if (!(target instanceof HTMLElement)) return;
     if (target.className !== 'slider__scale-value') return;
 
-    const value: number = Number(target.innerHTML);
+    const value = Number(target.innerHTML);
 
     const scaleEvent = new CustomEvent('scaleclick', { bubbles: true, detail: { event, value } });
     target.dispatchEvent(scaleEvent);

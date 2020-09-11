@@ -48,7 +48,7 @@ class Model {
   }
 
   private correctStep(step: number): { step: number } {
-    let correctedStep: number = Math.round(step);
+    let correctedStep = Math.round(step);
 
     correctedStep < 1 && (correctedStep = 1);
 
@@ -63,7 +63,7 @@ class Model {
       from,
       to,
     } = options;
-    let lastStep: number = (max - min) % step;
+    let lastStep = (max - min) % step;
 
     lastStep === 0 && (lastStep = step);
 
@@ -77,9 +77,9 @@ class Model {
       return Math.round((num - min) / step) * step + min;
     }
 
-    const isDouble: boolean = options.type === 'double';
-    const isToLessThanFrom: boolean = correctedTo < correctedFrom && isDouble;
-    const isToEqualsFrom: boolean = correctedTo === correctedFrom && isDouble;
+    const isDouble = options.type === 'double';
+    const isToLessThanFrom = correctedTo < correctedFrom && isDouble;
+    const isToEqualsFrom = correctedTo === correctedFrom && isDouble;
 
     isToLessThanFrom
       && ([correctedTo, correctedFrom] = [correctedFrom, correctedTo]);

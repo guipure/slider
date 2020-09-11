@@ -43,7 +43,7 @@ class View {
 
     const calculatePosition = (element: any): number => {
       const side: 'left' | 'top' = this.state.orientation === sliderOrientation.HORIZONTAL ? 'left' : 'top';
-      const width: number = Number.parseInt(getComputedStyle(element).width, 10);
+      const width = Number.parseInt(getComputedStyle(element).width, 10);
 
       return element.getBoundingClientRect()[side] + width / 2;
     };
@@ -123,8 +123,8 @@ class View {
 
   private setFromTo(value: number, side?: 'from' | 'to'): void {
     const { from, to } = this.state;
-    const fromDistance: number = Math.abs(from - value);
-    const toDistance: number = Math.abs(to - value);
+    const fromDistance = Math.abs(from - value);
+    const toDistance = Math.abs(to - value);
     const isSingle = this.state.type === sliderType.SINGLE;
 
     if (isSingle && fromDistance) {
@@ -152,8 +152,8 @@ class View {
 
   private isFromOrTo(coordinate: number): 'from' | 'to' {
     const thumbsPositions: number[] = this.getThumbsPositions();
-    const fromDistancePx: number = Math.abs(thumbsPositions[0] - coordinate);
-    const toDistancePx: number = Math.abs(thumbsPositions[1] - coordinate);
+    const fromDistancePx = Math.abs(thumbsPositions[0] - coordinate);
+    const toDistancePx = Math.abs(thumbsPositions[1] - coordinate);
 
     return (fromDistancePx < toDistancePx) ? 'from' : 'to';
   }
@@ -164,7 +164,7 @@ class View {
     if (!/thumb/.test(target.className)) return;
 
     target.classList.add('slider__thumb_large');
-    const isHorizontal: boolean = this.state.orientation === sliderOrientation.HORIZONTAL;
+    const isHorizontal = this.state.orientation === sliderOrientation.HORIZONTAL;
     const axis: 'clientX' | 'clientY' = isHorizontal ? 'clientX' : 'clientY';
     const coordinate: number = event[axis];
 
@@ -189,11 +189,14 @@ class View {
 
   private convertPxToValue(coordinate: number): number {
     const {
-      orientation, min, max, step,
+      orientation,
+      min,
+      max,
+      step,
     } = this.state;
     const pxStep: number = this.getPxStep(this.state);
     const sliderStart: number = this.getSliderPosition();
-    const px: number = coordinate - sliderStart;
+    const px = coordinate - sliderStart;
 
     if (px > this.getSliderSize(orientation)) return max;
 

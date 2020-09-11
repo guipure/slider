@@ -22,7 +22,7 @@ class Bar {
   }
 
   private placeBar(bar: HTMLElement) {
-    const isHorizontal: boolean = this.slider.state.orientation === sliderOrientation.HORIZONTAL;
+    const isHorizontal = this.slider.state.orientation === sliderOrientation.HORIZONTAL;
     const side: 'left' | 'top' = isHorizontal ? 'left' : 'top';
     const dimension: 'width' | 'height' = isHorizontal ? 'width' : 'height';
 
