@@ -1,17 +1,13 @@
 import '../assets/favicons/favicons';
 import '../slider';
 import '../slider.scss';
+import { Options } from '../interfaces/interfaces';
 import { Settings } from './settings/Settings';
 import './index.scss';
 
-const $firstAnchor = $('.js-first-anchor');
-const $secondAnchor = $('.js-second-anchor');
-const $thirdAnchor = $('.js-third-anchor');
-const $fourthAnchor = $('.js-fourth-anchor');
+const firstOptions: Partial<Options> = {};
 
-const firstSlider = $firstAnchor.slider();
-
-const secondSlider = $secondAnchor.slider({
+const secondOptions: Partial<Options> = {
   orientation: 'horizontal',
   type: 'single',
   min: -100000,
@@ -20,9 +16,9 @@ const secondSlider = $secondAnchor.slider({
   from: -1000,
   hideFromTo: false,
   hideScale: false,
-});
+};
 
-const thirdSlider = $thirdAnchor.slider({
+const thirdOptions: Partial<Options> = {
   orientation: 'vertical',
   type: 'double',
   min: 0,
@@ -32,9 +28,9 @@ const thirdSlider = $thirdAnchor.slider({
   to: 1500,
   hideFromTo: false,
   hideScale: false,
-});
+};
 
-const fourthSlider = $fourthAnchor.slider({
+const fourthOptions: Partial<Options> = {
   orientation: 'vertical',
   type: 'single',
   min: 0,
@@ -43,6 +39,12 @@ const fourthSlider = $fourthAnchor.slider({
   from: 175,
   hideFromTo: false,
   hideScale: false,
-});
+};
 
-[firstSlider, secondSlider, thirdSlider, fourthSlider].forEach((slider) => new Settings(slider));
+const options = [firstOptions, secondOptions, thirdOptions, fourthOptions];
+
+const $anchors = $('.js-anchor');
+
+$.each($anchors, (key, anchor) => (
+  new Settings($(anchor).slider(options[key]))
+));
