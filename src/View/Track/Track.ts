@@ -1,5 +1,5 @@
-import { View } from './View';
-import { Bar } from './Bar';
+import { View } from '../View/View';
+import { Bar } from '../Bar/Bar';
 
 class Track {
   private element: HTMLElement;

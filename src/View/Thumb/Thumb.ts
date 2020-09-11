@@ -1,8 +1,8 @@
-import { ViewState, Orientation, SliderType } from '../interfaces/interfaces';
-import { sliderOrientation, sliderType } from '../interfaces/constants';
-import { Observable } from '../Observable/Observable';
-import { View } from './View';
-import { ThumbLabel } from './ThumbLabel';
+import { ViewState, Orientation, SliderType } from '../../interfaces/interfaces';
+import { sliderOrientation, sliderType } from '../../interfaces/constants';
+import { Observable } from '../../Observable/Observable';
+import { View } from '../View/View';
+import { ThumbLabel } from '../ThumbLabel/ThumbLabel';
 
 class Thumb {
   public element: HTMLElement;

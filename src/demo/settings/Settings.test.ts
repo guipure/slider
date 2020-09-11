@@ -1,8 +1,8 @@
 import '@testing-library/jest-dom';
 
-import { Options } from '../src/interfaces/interfaces';
-import { Settings } from '../src/demo/settings/Settings';
-import { Presenter } from '../src/Presenter/Presenter';
+import { Options } from '../../interfaces/interfaces';
+import { Settings } from './Settings';
+import { Presenter } from '../../Presenter/Presenter';
 
 describe('Settings', () => {
   let settings: Settings;

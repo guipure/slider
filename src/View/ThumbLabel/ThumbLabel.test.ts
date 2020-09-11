@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom';
 
-import { View } from '../src/View/View';
-import { ViewOptions } from '../src/interfaces/interfaces';
+import { View } from '../View/View';
+import { ViewOptions } from '../../interfaces/interfaces';
 
 const standardOptions: ViewOptions = {
   min: -10,

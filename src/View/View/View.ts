@@ -1,10 +1,10 @@
 /* eslint-disable no-new */
-import { ViewOptions, ViewState, Orientation } from '../interfaces/interfaces';
-import { sliderOrientation, sliderType } from '../interfaces/constants';
-import { Observable } from '../Observable/Observable';
-import { Track } from './Track';
-import { Thumb } from './Thumb';
-import { Scale } from './Scale';
+import { ViewOptions, ViewState, Orientation } from '../../interfaces/interfaces';
+import { sliderOrientation, sliderType } from '../../interfaces/constants';
+import { Observable } from '../../Observable/Observable';
+import { Track } from '../Track/Track';
+import { Thumb } from '../Thumb/Thumb';
+import { Scale } from '../Scale/Scale';
 
 class View {
   public state: ViewState;

@@ -1,4 +1,4 @@
-import { Observable } from '../src/Observable/Observable';
+import { Observable } from './Observable';
 
 test('Observable can notify a subscriber', () => {
   const manager = new Observable();

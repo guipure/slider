@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom';
 
-import { Options } from '../src/interfaces/interfaces';
-import { Presenter } from '../src/Presenter/Presenter';
+import { Options } from '../interfaces/interfaces';
+import { Presenter } from './Presenter';
 
 describe('Presenter', () => {
   let anchor: HTMLElement;

@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom';
 
-import { View } from '../src/View/View';
-import { ViewOptions } from '../src/interfaces/interfaces';
+import { View } from '../View/View';
+import { ViewOptions } from '../../interfaces/interfaces';
 
 const standardOptions: ViewOptions = {
   min: -10,
@@ -21,7 +21,7 @@ function createSlider(options: ViewOptions): View {
   return slider;
 }
 
-describe('Thumb', () => {
+describe('Bar', () => {
   let view: View;
   let slider: HTMLElement;
 
@@ -38,17 +38,8 @@ describe('Thumb', () => {
   });
 
   test('must be visible', () => {
-    const thumbs = slider.querySelectorAll('.slider__thumb');
+    const bar = slider.querySelector('.slider__bar') as HTMLElement;
 
-    expect(thumbs[0]).toBeVisible();
-    expect(thumbs[1]).toBeVisible();
-  });
-
-  test('if type=single only one thumb must be visible', () => {
-    view.setState({ type: 'single' });
-    const thumbs = slider.querySelectorAll('.slider__thumb');
-
-    expect(thumbs[0]).toBeVisible();
-    expect(thumbs[1]).not.toBeVisible();
+    expect(bar).toBeVisible();
   });
 });

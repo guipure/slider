@@ -1,5 +1,5 @@
-import { sliderOrientation, sliderType } from '../interfaces/constants';
-import { View } from './View';
+import { sliderOrientation, sliderType } from '../../interfaces/constants';
+import { View } from '../View/View';
 
 class Bar {
   private element: HTMLElement;

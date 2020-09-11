@@ -1,5 +1,5 @@
-import { Model } from '../src/Model/Model';
-import { ModelOptions } from '../src/interfaces/interfaces';
+import { Model } from './Model';
+import { ModelOptions } from '../interfaces/interfaces';
 
 const defaultOptions: ModelOptions = {
   min: -5,
