@@ -1,25 +1,31 @@
 import { Orientation } from '../../interfaces/interfaces';
 import { Thumb } from '../Thumb/Thumb';
+import { View } from '../View/View';
 
 class ThumbLabel {
   private element: HTMLElement;
 
-  constructor(private thumb: Thumb, private orientation: Orientation, private hideFromTo: boolean) {
-    this.element = this.createLabel(orientation);
-    this.init(thumb);
+  constructor(
+    private slider: View,
+    private thumb: Thumb,
+    private orientation: Orientation,
+    private hideFromTo: boolean,
+  ) {
+    this.element = this.create();
+    this.init();
   }
 
-  private init(thumb: Thumb): void {
+  private init(): void {
     this.update();
-    thumb.element.append(this.element);
+    this.thumb.addLabel(this.element);
 
-    thumb.events.subscribe('thumbMove', this.update.bind(this));
-    thumb.events.subscribe('changedHideFromTo', this.setHideFromTo.bind(this));
+    this.thumb.events.subscribe('thumbMove', this.update.bind(this));
+    this.thumb.events.subscribe('changedHideFromTo', this.setHideFromTo.bind(this));
   }
 
-  private createLabel(orientation: Orientation): HTMLElement {
+  private create(): HTMLElement {
     const element = document.createElement('div');
-    element.className = `slider__thumb-label slider__thumb-label_${orientation}`;
+    element.className = `slider__thumb-label slider__thumb-label_${this.orientation}`;
 
     return element;
   }
@@ -43,7 +49,7 @@ class ThumbLabel {
   private doCollide(): boolean {
     if (this.element.style.display === 'none') return false;
 
-    const slider = this.thumb.element.parentElement as HTMLElement;
+    const slider = this.slider.element as HTMLElement;
     const labels = slider.querySelectorAll('.slider__thumb-label');
 
     if (labels.length < 2) return false;
@@ -78,7 +84,7 @@ class ThumbLabel {
   private uniteLabels(): void {
     if (this.element.style.display === 'none') return;
 
-    const slider = this.thumb.element.parentElement as HTMLElement;
+    const slider = this.slider.element as HTMLElement;
     const labels = slider.querySelectorAll('.slider__thumb-label');
 
     if (labels.length < 2) return;

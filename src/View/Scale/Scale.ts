@@ -1,21 +1,14 @@
 import { sliderOrientation } from '../../interfaces/constants';
-import { View } from '../View/View';
+import { Component } from '../Component/Component';
 
-class Scale {
-  private element: HTMLElement;
-
-  constructor(private slider: View) {
-    this.element = this.createScale();
-    this.init();
-  }
-
-  private init(): void {
+class Scale extends Component {
+  protected init(): void {
     this.update();
     this.slider.element.append(this.element);
     this.slider.events.subscribe('newViewState', this.update.bind(this));
   }
 
-  private createScale(): HTMLElement {
+  protected create(): HTMLElement {
     const element = document.createElement('div');
     element.className = `slider__scale slider__scale_${this.slider.state.orientation}`;
     element.addEventListener('click', this.onScaleClick);

@@ -1,27 +1,26 @@
 import { View } from '../View/View';
 import { Bar } from '../Bar/Bar';
+import { Component } from '../Component/Component';
 
-class Track {
-  private element: HTMLElement;
-
-  constructor(private slider: View) {
-    this.element = this.createTrack();
-    this.initTrack();
+class Track extends Component {
+  constructor(slider: View) {
+    super(slider);
     this.initBar();
   }
 
-  private initTrack(): void {
+  protected init(): void {
     this.slider.element.append(this.element);
   }
 
-  private createTrack(): HTMLElement {
+  protected create(): HTMLElement {
     const element = document.createElement('div');
     element.className = `slider__track slider__track_${this.slider.state.orientation}`;
     return element;
   }
 
   private initBar(): void {
-    new Bar(this.element, this.slider);
+    const bar = new Bar(this.slider);
+    this.element.append(bar.element);
   }
 }
 

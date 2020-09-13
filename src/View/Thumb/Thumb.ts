@@ -1,35 +1,30 @@
 import { ViewState, Orientation, SliderType } from '../../interfaces/interfaces';
 import { sliderOrientation, sliderType } from '../../interfaces/constants';
 import { Observable } from '../../Observable/Observable';
-import { View } from '../View/View';
 import { ThumbLabel } from '../ThumbLabel/ThumbLabel';
+import { Component } from '../Component/Component';
+import { View } from '../View/View';
 
-class Thumb {
-  public element: HTMLElement;
-
+class Thumb extends Component {
   public events: Observable;
 
   public currentValue: number = 0;
 
-  constructor(private slider: View) {
+  constructor(slider: View) {
+    super(slider);
     this.events = new Observable();
-    this.element = this.createThumb();
-    this.init();
+    this.createLabel();
   }
 
-  private init(): void {
-    this.update(this.slider.state);
-    this.createLabel();
+  public addLabel(label: HTMLElement) {
+    this.element.append(label);
+  }
+
+  protected init(): void {
     this.slider.events.subscribe('newViewState', this.update.bind(this));
   }
 
-  private update(newState: ViewState): void {
-    this.toggleThumb(newState.type);
-    this.placeThumb(newState.from, newState.to);
-    this.events.notify('changedHideFromTo', { hideFromTo: newState.hideFromTo });
-  }
-
-  private createThumb(): HTMLElement {
+  protected create(): HTMLElement {
     const thumb = document.createElement('div');
     const doesOtherThumbExist = !!this.slider.element.querySelector('.slider__thumb');
     const thumbNumber: 'first' | 'second' = doesOtherThumbExist ? 'second' : 'first';
@@ -43,9 +38,17 @@ class Thumb {
     return thumb;
   }
 
+  private update(newState: ViewState): void {
+    this.toggleThumb(newState.type);
+    this.placeThumb(newState.from, newState.to);
+    this.events.notify('changedHideFromTo', { hideFromTo: newState.hideFromTo });
+  }
+
   private createLabel(): void {
+    this.update(this.slider.state);
+
     const { orientation, hideFromTo } = this.slider.state;
-    new ThumbLabel(this, orientation, hideFromTo);
+    new ThumbLabel(this.slider, this, orientation, hideFromTo);
   }
 
   private toggleThumb(type: SliderType): void {

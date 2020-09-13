@@ -1,23 +1,15 @@
 import { sliderOrientation, sliderType } from '../../interfaces/constants';
-import { View } from '../View/View';
+import { Component } from '../Component/Component';
 
-class Bar {
-  private element: HTMLElement;
-
-  constructor(track: HTMLElement, private slider: View) {
-    this.element = this.createBar(track);
-    this.initBar();
-  }
-
-  private initBar(): void {
+class Bar extends Component {
+  protected init(): void {
     this.placeBar(this.element);
     this.slider.events.subscribe('newViewState', this.placeBar.bind(this, this.element));
   }
 
-  private createBar(track: HTMLElement): HTMLElement {
+  protected create(): HTMLElement {
     const bar = document.createElement('div');
     bar.className = `slider__bar slider__bar_${this.slider.state.orientation}`;
-    track.append(bar);
     return bar;
   }
 
