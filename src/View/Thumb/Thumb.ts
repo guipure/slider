@@ -1,23 +1,17 @@
 import { ViewState, Orientation, SliderType } from '../../interfaces/interfaces';
 import { sliderOrientation, sliderType } from '../../interfaces/constants';
-import { Observable } from '../../Observable/Observable';
-import { ThumbLabel } from '../ThumbLabel/ThumbLabel';
 import { Component } from '../Component/Component';
 import { View } from '../View/View';
 
 class Thumb extends Component {
-  public events: Observable;
+  private currentValue: number = 0;
 
-  public currentValue: number = 0;
+  private label: HTMLElement;
 
   constructor(slider: View) {
     super(slider);
-    this.events = new Observable();
-    this.createLabel();
-  }
-
-  public addLabel(label: HTMLElement) {
-    this.element.append(label);
+    this.label = this.createLabel();
+    this.initLabel();
   }
 
   protected init(): void {
@@ -41,14 +35,7 @@ class Thumb extends Component {
   private update(newState: ViewState): void {
     this.toggleThumb(newState.type);
     this.placeThumb(newState.from, newState.to);
-    this.events.notify('changedHideFromTo', { hideFromTo: newState.hideFromTo });
-  }
-
-  private createLabel(): void {
-    this.update(this.slider.state);
-
-    const { orientation, hideFromTo } = this.slider.state;
-    new ThumbLabel(this.slider, this, orientation, hideFromTo);
+    this.setHideFromTo(newState.hideFromTo);
   }
 
   private toggleThumb(type: SliderType): void {
@@ -77,7 +64,7 @@ class Thumb extends Component {
     const position: number = this.slider.convertPxToPercent(coordinate - thumbHalfWidth);
 
     this.element.style[side] = `${position}%`;
-    this.events.notify('thumbMove');
+    this.updateLabel();
   }
 
   private convertValueToPx(value: number): number {
@@ -105,6 +92,86 @@ class Thumb extends Component {
 
   private getSide(orientation: Orientation): 'left' | 'top' {
     return orientation === sliderOrientation.HORIZONTAL ? 'left' : 'top';
+  }
+
+  private createLabel(): HTMLElement {
+    const { orientation } = this.slider.state;
+    const label = document.createElement('div');
+    label.className = `slider__thumb-label slider__thumb-label_${orientation}`;
+
+    return label;
+  }
+
+  private initLabel() {
+    this.update(this.slider.state);
+    this.updateLabel();
+    this.element.append(this.label);
+  }
+
+  private setHideFromTo(hideFromTo: boolean): void {
+    this.label.style.display = hideFromTo ? 'none' : 'block';
+  }
+
+  private updateLabel(): void {
+    this.label.innerHTML = this.currentValue.toString();
+    this.label.style.opacity = '1';
+
+    this.doLabelsCollide() && this.uniteLabels();
+  }
+
+  private doLabelsCollide(): boolean {
+    if (this.label.style.display === 'none') return false;
+
+    const slider = this.slider.element as HTMLElement;
+    const labels = slider.querySelectorAll('.slider__thumb-label');
+
+    if (labels.length < 2) return false;
+
+    const firstLabel = labels[0] as HTMLElement;
+    const secondLabel = labels[1] as HTMLElement;
+
+    const { orientation } = this.slider.state;
+
+    const start = orientation === sliderOrientation.VERTICAL ? 'top' : 'left';
+    const end = orientation === sliderOrientation.VERTICAL ? 'bottom' : 'right';
+
+    const firstLabelStart = firstLabel.getBoundingClientRect()[start];
+    const firstLabelEnd = firstLabel.getBoundingClientRect()[end];
+    const secondLabelStart = secondLabel.getBoundingClientRect()[start];
+    const secondLabelEnd = secondLabel.getBoundingClientRect()[end];
+
+    const areLabelPositionsEqual = (
+      firstLabelStart === secondLabelStart && firstLabelEnd === secondLabelEnd
+    );
+
+    const doLabelPositionsOverlap = (
+      (firstLabelStart <= secondLabelEnd && secondLabelStart <= firstLabelEnd)
+      || (secondLabelStart <= firstLabelEnd && firstLabelStart <= secondLabelEnd)
+    );
+
+    if (areLabelPositionsEqual) return false;
+
+    if (doLabelPositionsOverlap) return true;
+
+    return false;
+  }
+
+  private uniteLabels(): void {
+    if (this.label.style.display === 'none') return;
+
+    const slider = this.slider.element as HTMLElement;
+    const labels = slider.querySelectorAll('.slider__thumb-label');
+
+    if (labels.length < 2) return;
+
+    const firstLabel = labels[0] as HTMLElement;
+    const secondLabel = labels[1] as HTMLElement;
+
+    const firstValue = Number.parseInt(firstLabel.innerHTML, 10);
+    const secondValue = Number.parseInt(secondLabel.innerHTML, 10);
+
+    firstLabel.innerHTML = `${firstValue} — ${secondValue}`;
+    secondLabel.style.opacity = '0';
   }
 }
 
