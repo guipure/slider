@@ -17,7 +17,7 @@ class Thumb extends Component {
   }
 
   protected init(): void {
-    this.slider.events.subscribe('newViewState', this.update);
+    this.slider.events.subscribe('newViewState', this.updateThumb);
   }
 
   protected create(): HTMLElement {
@@ -35,7 +35,7 @@ class Thumb extends Component {
   }
 
   @bind
-  private update(newState: ViewState): void {
+  private updateThumb(newState: ViewState): void {
     this.toggleThumb(newState.type);
     this.placeThumb(newState.from, newState.to);
     this.setHideFromTo(newState.hideFromTo);
@@ -106,7 +106,7 @@ class Thumb extends Component {
   }
 
   private initLabel() {
-    this.update(this.slider.state);
+    this.updateThumb(this.slider.state);
     this.updateLabel();
     this.element.append(this.label);
   }
