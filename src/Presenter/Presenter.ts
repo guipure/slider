@@ -22,7 +22,7 @@ class Presenter {
     this.events = new Observable();
     this.model = this.createModel(options);
     this.view = this.createView(anchor, options, this.model.state);
-    this.subscribe();
+    this.addSubscribtions();
   }
 
   public setOptions(options: Partial<Options>): void {
@@ -50,7 +50,7 @@ class Presenter {
     return correctOptions as ViewOptions;
   }
 
-  private subscribe(): void {
+  private addSubscribtions(): void {
     this.subscribeOnNewModelState();
     this.subscribeOnNewViewState();
     this.subscribeOnNewFromTo();
