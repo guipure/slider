@@ -1,3 +1,5 @@
+import bind from 'bind-decorator';
+
 import { ModelOptions } from '../interfaces/interfaces';
 import { Observable } from '../Observable/Observable';
 
@@ -11,6 +13,7 @@ class Model {
     this.state = this.init(options);
   }
 
+  @bind
   public setState(options: ModelOptions): void {
     const correctedOptions: ModelOptions = this.correctOptions(options);
     this.state = { ...correctedOptions };
@@ -20,7 +23,6 @@ class Model {
 
   private init(options: ModelOptions): ModelOptions {
     this.setState(options);
-    this.setState = this.setState.bind(this);
     return this.state;
   }
 

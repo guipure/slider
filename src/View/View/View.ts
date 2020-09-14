@@ -1,3 +1,5 @@
+import bind from 'bind-decorator';
+
 import { ViewOptions, ViewState, Orientation } from '../../interfaces/interfaces';
 import { sliderOrientation, sliderType } from '../../interfaces/constants';
 import { Observable } from '../../Observable/Observable';
@@ -81,9 +83,9 @@ class View {
   }
 
   private addEventListeners(element: HTMLElement) {
-    element.addEventListener('click', this.onTrackClick.bind(this));
-    element.addEventListener('scaleclick', this.onScaleClick.bind(this));
-    element.addEventListener('mousedown', this.onThumbMouseDown.bind(this));
+    element.addEventListener('click', this.onTrackClick);
+    element.addEventListener('scaleclick', this.onScaleClick);
+    element.addEventListener('mousedown', this.onThumbMouseDown);
   }
 
   private createSliderElements(): void {
@@ -104,6 +106,7 @@ class View {
     return newOrientation !== this.state.orientation;
   }
 
+  @bind
   private onTrackClick(event: MouseEvent): void {
     const target = event.target as HTMLElement;
 
@@ -116,6 +119,7 @@ class View {
     this.setFromTo(this.convertPxToValue(coordinate));
   }
 
+  @bind
   private onScaleClick(event: any): void {
     const { value } = event.detail;
     this.setFromTo(value);
@@ -158,6 +162,7 @@ class View {
     return (fromDistancePx < toDistancePx) ? 'from' : 'to';
   }
 
+  @bind
   private onThumbMouseDown(event: MouseEvent): void {
     const target = event.target as HTMLElement;
 

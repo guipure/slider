@@ -1,3 +1,5 @@
+import bind from 'bind-decorator';
+
 import { Model } from '../Model/Model';
 import { View } from '../View/View/View';
 import {
@@ -55,9 +57,10 @@ class Presenter {
   }
 
   private subscribeOnNewModelState(): void {
-    this.model.events.subscribe('newModelState', this.handleNewModelState.bind(this));
+    this.model.events.subscribe('newModelState', this.handleNewModelState);
   }
 
+  @bind
   private handleNewModelState(modelState: ModelOptions): void {
     const {
       min, max, step, from, to,
@@ -73,17 +76,19 @@ class Presenter {
   }
 
   private subscribeOnNewViewState(): void {
-    this.view.events.subscribe('newViewState', this.handleNewViewState.bind(this));
+    this.view.events.subscribe('newViewState', this.handleNewViewState);
   }
 
+  @bind
   private handleNewViewState(state: ViewState): void {
     this.events.notify('newViewState', state);
   }
 
   private subscribeOnNewFromTo(): void {
-    this.view.events.subscribe('newFromTo', this.handleNewFromTo.bind(this));
+    this.view.events.subscribe('newFromTo', this.handleNewFromTo);
   }
 
+  @bind
   private handleNewFromTo(newFromTo: Partial<ModelOptions>): void {
     const modelState: ModelOptions = this.model.state;
     const newModelState: ModelOptions = { ...modelState, ...newFromTo };

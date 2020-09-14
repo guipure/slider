@@ -1,3 +1,5 @@
+import bind from 'bind-decorator';
+
 import { sliderOrientation } from '../../interfaces/constants';
 import { Component } from '../Component/Component';
 
@@ -5,7 +7,7 @@ class Scale extends Component {
   protected init(): void {
     this.update();
     this.slider.element.append(this.element);
-    this.slider.events.subscribe('newViewState', this.update.bind(this));
+    this.slider.events.subscribe('newViewState', this.update);
   }
 
   protected create(): HTMLElement {
@@ -15,6 +17,7 @@ class Scale extends Component {
     return element;
   }
 
+  @bind
   private update(): void {
     if (this.slider.state.hideScale) {
       this.element.style.display = 'none';

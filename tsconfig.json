@@ -4,7 +4,8 @@
     "module": "commonjs",
     "lib": ["es2020", "dom"],
     "strict": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "experimentalDecorators": true
   },
   "include": ["src/**/*", "webpack/*", "babel.config.js", "jest.config.js"],
   "exclude": ["node_modules"]

@@ -1,3 +1,5 @@
+import bind from 'bind-decorator';
+
 import { Presenter } from '../../Presenter/Presenter';
 import { Options } from '../../interfaces/interfaces';
 import { settingsTemplate } from './settingsTemplate';
@@ -14,6 +16,7 @@ class Settings {
     this.init();
   }
 
+  @bind
   public updateFromTo(newSetting: Partial<Options>) {
     this.state = { ...this.state, ...newSetting };
     this.initValues();
@@ -22,7 +25,7 @@ class Settings {
   private init() {
     this.createSettings();
     this.initValues();
-    this.slider.events.subscribe('newViewState', this.updateFromTo.bind(this));
+    this.slider.events.subscribe('newViewState', this.updateFromTo);
   }
 
   private createForm(): HTMLFormElement {

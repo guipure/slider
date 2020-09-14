@@ -1,3 +1,5 @@
+import bind from 'bind-decorator';
+
 import { ViewState, Orientation, SliderType } from '../../interfaces/interfaces';
 import { sliderOrientation, sliderType } from '../../interfaces/constants';
 import { Component } from '../Component/Component';
@@ -15,7 +17,7 @@ class Thumb extends Component {
   }
 
   protected init(): void {
-    this.slider.events.subscribe('newViewState', this.update.bind(this));
+    this.slider.events.subscribe('newViewState', this.update);
   }
 
   protected create(): HTMLElement {
@@ -32,6 +34,7 @@ class Thumb extends Component {
     return thumb;
   }
 
+  @bind
   private update(newState: ViewState): void {
     this.toggleThumb(newState.type);
     this.placeThumb(newState.from, newState.to);
