@@ -4,6 +4,7 @@ import { Presenter } from '../../Presenter/Presenter';
 import { Options } from '../../interfaces/interfaces';
 import { settingsTemplate } from './settingsTemplate';
 import './settings.scss';
+import './panel.scss';
 
 class Settings {
   public state: Options;
@@ -25,18 +26,27 @@ class Settings {
   private init() {
     this.createSettings();
     this.initValues();
+    this.createPanel();
     this.slider.events.subscribe('newViewState', this.updateFromTo);
   }
 
   private createForm(): HTMLFormElement {
     const form = document.createElement('form');
     form.className = 'settings';
-    this.slider.anchor.append(form);
     return form;
   }
 
   private createSettings() {
     this.form.insertAdjacentHTML('beforeend', settingsTemplate);
+  }
+
+  private createPanel(): void {
+    const panel = document.createElement('div');
+    panel.className = 'panel';
+    const demo = document.querySelector('.demo') as HTMLElement;
+    demo.append(panel);
+    panel.append(this.slider.anchor);
+    panel.append(this.form);
   }
 
   private initValues() {

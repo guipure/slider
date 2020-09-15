@@ -7,6 +7,7 @@ import { Presenter } from '../../Presenter/Presenter';
 describe('Settings', () => {
   let settings: Settings;
   let anchor: HTMLElement;
+  let form: HTMLFormElement;
   const options: Options = {
     min: -5,
     max: 10,
@@ -22,9 +23,19 @@ describe('Settings', () => {
   beforeEach(() => {
     anchor = document.createElement('div');
     anchor.className = 'anchor';
-    document.body.append(anchor);
+
+    const demo = document.createElement('main');
+    demo.className = 'demo';
+
+    document.body.append(demo);
+    demo.append(anchor);
+
     const presenter = new Presenter(anchor, options);
     settings = new Settings(presenter);
+
+    form = anchor.nextSibling
+      ? anchor.nextSibling as HTMLFormElement
+      : document.createElement('form');
   });
 
   afterEach(() => {
@@ -49,7 +60,7 @@ describe('Settings', () => {
   });
 
   test('must change the min value', () => {
-    const minInput = anchor.querySelector('input[name=min]') as HTMLInputElement;
+    const minInput = form.querySelector('input[name=min]') as HTMLInputElement;
     minInput.value = '5';
     minInput.dispatchEvent(new InputEvent('change'));
 
@@ -57,7 +68,7 @@ describe('Settings', () => {
   });
 
   test('if given min is greater than max, must change max', () => {
-    const minInput = anchor.querySelector('input[name=min]') as HTMLInputElement;
+    const minInput = form.querySelector('input[name=min]') as HTMLInputElement;
     minInput.value = '500';
     minInput.dispatchEvent(new InputEvent('change'));
 
@@ -65,7 +76,7 @@ describe('Settings', () => {
   });
 
   test('must change the max value', () => {
-    const maxInput = anchor.querySelector('input[name=max]') as HTMLInputElement;
+    const maxInput = form.querySelector('input[name=max]') as HTMLInputElement;
     maxInput.value = '100';
     maxInput.dispatchEvent(new InputEvent('change'));
 
@@ -73,7 +84,7 @@ describe('Settings', () => {
   });
 
   test('if given max is less than min, must change min', () => {
-    const maxInput = anchor.querySelector('input[name=max]') as HTMLInputElement;
+    const maxInput = form.querySelector('input[name=max]') as HTMLInputElement;
     maxInput.value = '-500';
     maxInput.dispatchEvent(new InputEvent('change'));
 
@@ -81,7 +92,7 @@ describe('Settings', () => {
   });
 
   test('must change the step', () => {
-    const stepInput = anchor.querySelector('input[name=step]') as HTMLInputElement;
+    const stepInput = form.querySelector('input[name=step]') as HTMLInputElement;
     stepInput.value = '5';
     stepInput.dispatchEvent(new InputEvent('change'));
 
@@ -89,7 +100,7 @@ describe('Settings', () => {
   });
 
   test('must not change the step to zero or less', () => {
-    const stepInput: HTMLInputElement = anchor.querySelector('input[name=step]') as HTMLInputElement;
+    const stepInput: HTMLInputElement = form.querySelector('input[name=step]') as HTMLInputElement;
     const currentStep = settings.state.step;
     stepInput.value = '0';
     stepInput.dispatchEvent(new InputEvent('change'));
@@ -103,7 +114,7 @@ describe('Settings', () => {
   });
 
   test('must change the from value', () => {
-    const fromInput = anchor.querySelector('input[name=from]') as HTMLInputElement;
+    const fromInput = form.querySelector('input[name=from]') as HTMLInputElement;
     fromInput.value = '-2';
     fromInput.dispatchEvent(new InputEvent('change'));
 
@@ -111,7 +122,7 @@ describe('Settings', () => {
   });
 
   test('must change the to value', () => {
-    const toInput = anchor.querySelector('input[name=to]') as HTMLInputElement;
+    const toInput = form.querySelector('input[name=to]') as HTMLInputElement;
     toInput.value = '7';
     toInput.dispatchEvent(new InputEvent('change'));
 
@@ -119,8 +130,8 @@ describe('Settings', () => {
   });
 
   test('must change the slider orientation', () => {
-    const verticalRadioBtn = anchor.querySelector('input[value=vertical]') as HTMLInputElement;
-    const horizontalRadioBtn = anchor.querySelector('input[value=horizontal]') as HTMLInputElement;
+    const verticalRadioBtn = form.querySelector('input[value=vertical]') as HTMLInputElement;
+    const horizontalRadioBtn = form.querySelector('input[value=horizontal]') as HTMLInputElement;
     verticalRadioBtn.dispatchEvent(new InputEvent('change'));
     expect(settings.state.orientation).toBe('vertical');
     horizontalRadioBtn.dispatchEvent(new InputEvent('change'));
@@ -128,8 +139,8 @@ describe('Settings', () => {
   });
 
   test('must change the slider type', () => {
-    const singleRadioBtn = anchor.querySelector('input[value=single]') as HTMLInputElement;
-    const doubleRadioBtn = anchor.querySelector('input[value=double]') as HTMLInputElement;
+    const singleRadioBtn = form.querySelector('input[value=single]') as HTMLInputElement;
+    const doubleRadioBtn = form.querySelector('input[value=double]') as HTMLInputElement;
     singleRadioBtn.dispatchEvent(new InputEvent('change'));
     expect(settings.state.type).toBe('single');
     doubleRadioBtn.dispatchEvent(new InputEvent('change'));
@@ -137,8 +148,8 @@ describe('Settings', () => {
   });
 
   test('must change the hideScale option', () => {
-    const hideScaleTrueBtn = anchor.querySelector('input[name=hideScale][value=true]') as HTMLInputElement;
-    const hideScaleFalseBtn = anchor.querySelector('input[name=hideScale][value=false]') as HTMLInputElement;
+    const hideScaleTrueBtn = form.querySelector('input[name=hideScale][value=true]') as HTMLInputElement;
+    const hideScaleFalseBtn = form.querySelector('input[name=hideScale][value=false]') as HTMLInputElement;
     hideScaleTrueBtn.dispatchEvent(new InputEvent('change'));
     expect(settings.state.hideScale).toBe(true);
     hideScaleFalseBtn.dispatchEvent(new InputEvent('change'));
@@ -146,8 +157,8 @@ describe('Settings', () => {
   });
 
   test('must change the hideFromTo option', () => {
-    const hideFromToTrueBtn = anchor.querySelector('input[name=hideFromTo][value=true]') as HTMLInputElement;
-    const hideFromToFalseBtn = anchor.querySelector('input[name=hideFromTo][value=false]') as HTMLInputElement;
+    const hideFromToTrueBtn = form.querySelector('input[name=hideFromTo][value=true]') as HTMLInputElement;
+    const hideFromToFalseBtn = form.querySelector('input[name=hideFromTo][value=false]') as HTMLInputElement;
     hideFromToTrueBtn.dispatchEvent(new InputEvent('change'));
     expect(settings.state.hideFromTo).toBe(true);
     hideFromToFalseBtn.dispatchEvent(new InputEvent('change'));
