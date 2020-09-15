@@ -1,10 +1,26 @@
+.demo {
+  min-width: 770px;
+}
+
+.header {
+  text-align: center;
+  padding-top: 5rem;
+  opacity: 0.8;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.link {
+  text-align: center;
+  padding-bottom: 7rem;
+}
+
+.link a {
+  font-family: 'Courier New', Courier, monospace;
+  color: crimson;
+}
+
 .slider-wrapper {
-  width: 70rem;
+  width: 40rem;
   height: 32rem;
-  margin: 3rem auto;
   padding: 3rem 0;
-  position: relative;
-  display: flex;
-  justify-content: space-between;
-  box-sizing: border-box;
 }
