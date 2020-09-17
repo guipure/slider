@@ -2,6 +2,7 @@ import bind from 'bind-decorator';
 
 import { Presenter } from '../../plugin/Presenter/Presenter';
 import { Options } from '../../plugin/interfaces/interfaces';
+import { sliderType, sliderOrientation } from '../../plugin/interfaces/constants';
 import { settingsTemplate } from './settingsTemplate';
 import './settings.scss';
 import './panel.scss';
@@ -79,21 +80,21 @@ class Settings {
           input.onchange = () => this.setState({ to: Number(input.value) });
           input.value = this.state.to.toString();
           input.step = this.state.step.toString();
-          input.disabled = this.state.type === 'single';
+          input.disabled = this.state.type === sliderType.SINGLE;
           break;
 
         case 'orientation':
           input.onchange = () => this.setState({ orientation: input.value });
-          input.checked = input.value === 'horizontal'
-            ? this.state.orientation === 'horizontal'
-            : this.state.orientation === 'vertical';
+          input.checked = input.value === sliderOrientation.HORIZONTAL
+            ? this.state.orientation === sliderOrientation.HORIZONTAL
+            : this.state.orientation === sliderOrientation.VERTICAL;
           break;
 
         case 'type':
           input.onchange = () => this.setState({ type: input.value });
-          input.checked = input.value === 'single'
-            ? this.state.type === 'single'
-            : this.state.type === 'double';
+          input.checked = input.value === sliderType.SINGLE
+            ? this.state.type === sliderType.SINGLE
+            : this.state.type === sliderType.DOUBLE;
           break;
 
         case 'hideFromTo':
