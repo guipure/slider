@@ -1,7 +1,7 @@
 import '../assets/favicons/favicons';
-import '../slider';
-import '../slider.scss';
-import { Options } from '../interfaces/interfaces';
+import '../plugin/slider';
+import '../plugin/slider.scss';
+import { Options } from '../plugin/interfaces/interfaces';
 import { Settings } from './settings/Settings';
 import './index.scss';
 

@@ -1,7 +1,7 @@
 import bind from 'bind-decorator';
 
-import { Presenter } from '../../Presenter/Presenter';
-import { Options } from '../../interfaces/interfaces';
+import { Presenter } from '../../plugin/Presenter/Presenter';
+import { Options } from '../../plugin/interfaces/interfaces';
 import { settingsTemplate } from './settingsTemplate';
 import './settings.scss';
 import './panel.scss';
