@@ -79,6 +79,7 @@ class Settings {
           input.onchange = () => this.setState({ to: Number(input.value) });
           input.value = this.state.to.toString();
           input.step = this.state.step.toString();
+          input.disabled = this.state.type === 'single';
           break;
 
         case 'orientation':
