@@ -72,11 +72,13 @@ class Settings {
         case 'from':
           input.onchange = () => this.onFromInputChange(Number(input.value));
           input.value = this.state.from.toString();
+          input.step = this.state.step.toString();
           break;
 
         case 'to':
           input.onchange = () => this.onToInputChange(Number(input.value));
           input.value = this.state.to.toString();
+          input.step = this.state.step.toString();
           break;
 
         case 'orientation':
