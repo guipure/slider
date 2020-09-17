@@ -3,7 +3,6 @@ import '../plugin/slider';
 import '../plugin/slider.scss';
 import { Options } from '../plugin/interfaces/interfaces';
 import { Settings } from './settings/Settings';
-import './index.scss';
 
 const firstOptions: Partial<Options> = {};
 

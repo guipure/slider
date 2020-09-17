@@ -45,7 +45,10 @@ function getPlugins(type) {
 const commonConfig = {
   target: 'web',
   context: path.resolve(__dirname, '..', 'src'),
-  entry: './demo/index.ts',
+  entry: {
+    demo: ['./demo/index.ts', './demo/index.scss'],
+    plugin: ['./plugin/slider.ts', './plugin/slider.scss'],
+  },
   output: {
     filename: 'scripts/[name].bundle.js',
     path: path.resolve(__dirname, '..', 'dist'),
