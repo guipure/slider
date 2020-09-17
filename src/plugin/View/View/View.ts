@@ -156,8 +156,12 @@ class View {
 
   private isFromOrTo(coordinate: number): 'from' | 'to' {
     const thumbsPositions: number[] = this.getThumbsPositions();
-    const fromDistancePx = Math.abs(thumbsPositions[0] - coordinate);
-    const toDistancePx = Math.abs(thumbsPositions[1] - coordinate);
+    let fromDistancePx = Math.abs(thumbsPositions[0] - coordinate);
+    let toDistancePx = Math.abs(thumbsPositions[1] - coordinate);
+
+    if (this.state.orientation === sliderOrientation.VERTICAL) {
+      [fromDistancePx, toDistancePx] = [toDistancePx, fromDistancePx];
+    }
 
     return (fromDistancePx < toDistancePx) ? 'from' : 'to';
   }
@@ -199,9 +203,14 @@ class View {
       max,
       step,
     } = this.state;
+
     const pxStep: number = this.getPxStep(this.state);
     const sliderStart: number = this.getSliderPosition();
-    const px = coordinate - sliderStart;
+    const sliderEnd: number = this.getSliderPosition() + this.getSliderSize(orientation);
+
+    const px = orientation === sliderOrientation.HORIZONTAL
+      ? coordinate - sliderStart
+      : sliderEnd - coordinate;
 
     if (px > this.getSliderSize(orientation)) return max;
 

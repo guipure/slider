@@ -78,10 +78,10 @@ class Scale extends Component {
       scaleValue.style.left = `${left}%`;
     } else {
       const height = convert(20);
-      const top = convert(position - 20 / 2);
+      const bottom = convert(position - 20 / 2);
 
       scaleValue.style.height = `${height}%`;
-      scaleValue.style.top = `${top}%`;
+      scaleValue.style.bottom = `${bottom}%`;
     }
   }
 

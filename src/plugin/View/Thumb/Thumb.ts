@@ -62,7 +62,7 @@ class Thumb extends Component {
   private moveThumbAtValue(value: number): void {
     const { orientation } = this.slider.state;
     const coordinate = this.convertValueToPx(value);
-    const side: 'left' | 'top' = this.getSide(orientation);
+    const side: 'left' | 'bottom' = this.getSide(orientation);
     const position: number = this.slider.convertPxToPercent(coordinate);
 
     this.element.style[side] = `${position}%`;
@@ -92,8 +92,8 @@ class Thumb extends Component {
     this.element.style.display = 'none';
   }
 
-  private getSide(orientation: Orientation): 'left' | 'top' {
-    return orientation === sliderOrientation.HORIZONTAL ? 'left' : 'top';
+  private getSide(orientation: Orientation): 'left' | 'bottom' {
+    return orientation === sliderOrientation.HORIZONTAL ? 'left' : 'bottom';
   }
 
   private createLabel(): HTMLElement {
@@ -134,7 +134,7 @@ class Thumb extends Component {
 
     const { orientation } = this.slider.state;
 
-    const start = orientation === sliderOrientation.VERTICAL ? 'top' : 'left';
+    const start = orientation === sliderOrientation.VERTICAL ? 'bottom' : 'left';
     const end = orientation === sliderOrientation.VERTICAL ? 'bottom' : 'right';
 
     const firstLabelStart = firstLabel.getBoundingClientRect()[start];

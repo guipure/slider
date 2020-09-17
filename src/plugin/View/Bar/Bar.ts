@@ -26,12 +26,22 @@ class Bar extends Component {
     const isSingle = this.slider.state.type === sliderType.SINGLE;
 
     if (isSingle) {
-      const length: number = convert(Math.abs(thumbsPositions[1] - sliderPosition));
-      bar.style[side] = '0%';
-      bar.style[dimension] = `${length}%`;
+      if (isHorizontal) {
+        const end: number = convert(Math.abs(thumbsPositions[1] - sliderPosition));
+
+        bar.style[side] = '0%';
+        bar.style[dimension] = `${end}%`;
+      } else {
+        const start: number = convert(Math.abs(thumbsPositions[1] - sliderPosition));
+        const end = 100 - start;
+
+        bar.style[side] = `${start}%`;
+        bar.style[dimension] = `${end}%`;
+      }
     } else {
       const start = convert(Math.abs(thumbsPositions[0] - sliderPosition));
       const length: number = convert(Math.abs(thumbsPositions[1] - thumbsPositions[0]));
+
       bar.style[side] = `${start}%`;
       bar.style[dimension] = `${length}%`;
     }
