@@ -94,17 +94,13 @@ class Settings {
           break;
 
         case 'hideFromTo':
-          input.onchange = () => this.setState({ hideFromTo: input.value === 'true' });
-          input.checked = input.value === 'true'
-            ? this.state.hideFromTo
-            : !this.state.hideFromTo;
+          input.onchange = () => this.setState({ hideFromTo: input.checked });
+          input.checked = this.state.hideFromTo;
           break;
 
         case 'hideScale':
-          input.onchange = () => this.setState({ hideScale: input.value === 'true' });
-          input.checked = input.value === 'true'
-            ? this.state.hideScale
-            : !this.state.hideScale;
+          input.onchange = () => this.setState({ hideScale: input.checked });
+          input.checked = this.state.hideScale;
           break;
         // no default
       }

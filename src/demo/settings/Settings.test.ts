@@ -148,20 +148,26 @@ describe('Settings', () => {
   });
 
   test('must change the hideScale option', () => {
-    const hideScaleTrueBtn = form.querySelector('input[name=hideScale][value=true]') as HTMLInputElement;
-    const hideScaleFalseBtn = form.querySelector('input[name=hideScale][value=false]') as HTMLInputElement;
-    hideScaleTrueBtn.dispatchEvent(new InputEvent('change'));
+    const hideScaleCheckbox = form.querySelector('input[name=hideScale]') as HTMLInputElement;
+
+    hideScaleCheckbox.checked = true;
+    hideScaleCheckbox.dispatchEvent(new InputEvent('change'));
     expect(settings.state.hideScale).toBe(true);
-    hideScaleFalseBtn.dispatchEvent(new InputEvent('change'));
+
+    hideScaleCheckbox.checked = false;
+    hideScaleCheckbox.dispatchEvent(new InputEvent('change'));
     expect(settings.state.hideScale).toBe(false);
   });
 
   test('must change the hideFromTo option', () => {
-    const hideFromToTrueBtn = form.querySelector('input[name=hideFromTo][value=true]') as HTMLInputElement;
-    const hideFromToFalseBtn = form.querySelector('input[name=hideFromTo][value=false]') as HTMLInputElement;
-    hideFromToTrueBtn.dispatchEvent(new InputEvent('change'));
+    const hideFromToCheckbox = form.querySelector('input[name=hideFromTo]') as HTMLInputElement;
+
+    hideFromToCheckbox.checked = true;
+    hideFromToCheckbox.dispatchEvent(new InputEvent('change'));
     expect(settings.state.hideFromTo).toBe(true);
-    hideFromToFalseBtn.dispatchEvent(new InputEvent('change'));
+
+    hideFromToCheckbox.checked = false;
+    hideFromToCheckbox.dispatchEvent(new InputEvent('change'));
     expect(settings.state.hideFromTo).toBe(false);
   });
 

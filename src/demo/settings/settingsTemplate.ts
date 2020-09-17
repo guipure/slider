@@ -49,26 +49,16 @@ const settingsTemplate = `
   </div>
   
   <div class="settings__row">
-    <p class="settings__name">hide From To</p>
-    <label class="settings__radio">
-      true
-      <input class="settings__input" type="radio" name="hideFromTo" value="true" />
-    </label>
-    <label class="settings__radio">
-      false
-      <input class="settings__input" type="radio" name="hideFromTo" value="false" />
-    </label>
+  <label class="settings__checkbox">
+    <span class="settings__name">hide From To</span>
+    <input class="settings__input" type="checkbox" name="hideFromTo" />
+  </label>
   </div>
   
   <div class="settings__row">
-    <p class="settings__name">hide Scale</p>
-    <label class="settings__radio">
-      true
-      <input class="settings__input" type="radio" name="hideScale" value="true" />
-    </label>
-    <label class="settings__radio">
-      false
-      <input class="settings__input" type="radio" name="hideScale" value="false" />
+    <label class="settings__checkbox">
+      <span class="settings__name">hide Scale</span>
+      <input class="settings__input" type="checkbox" name="hideScale" />
     </label>
   </div>
   `;
