@@ -62,9 +62,8 @@ class Thumb extends Component {
   private moveThumbAtValue(value: number): void {
     const { orientation } = this.slider.state;
     const coordinate = this.convertValueToPx(value);
-    const thumbHalfWidth = Number.parseInt(getComputedStyle(this.element).width, 10) / 2;
     const side: 'left' | 'top' = this.getSide(orientation);
-    const position: number = this.slider.convertPxToPercent(coordinate - thumbHalfWidth);
+    const position: number = this.slider.convertPxToPercent(coordinate);
 
     this.element.style[side] = `${position}%`;
     this.updateLabel();

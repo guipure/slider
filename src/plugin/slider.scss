@@ -21,10 +21,12 @@
 
     &_horizontal {
       justify-content: center;
+      transform: translateX(-50%);
     }
 
     &_vertical {
       justify-content: flex-end;
+      transform: translateY(-50%);
     }
   }
 
