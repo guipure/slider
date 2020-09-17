@@ -65,18 +65,18 @@ class Settings {
           break;
 
         case 'step':
-          input.onchange = () => this.setStep(Number(input.value));
+          input.onchange = () => this.setState({ step: Number(input.value) });
           input.value = this.state.step.toString();
           break;
 
         case 'from':
-          input.onchange = () => this.onFromInputChange(Number(input.value));
+          input.onchange = () => this.setState({ from: Number(input.value) });
           input.value = this.state.from.toString();
           input.step = this.state.step.toString();
           break;
 
         case 'to':
-          input.onchange = () => this.onToInputChange(Number(input.value));
+          input.onchange = () => this.setState({ to: Number(input.value) });
           input.value = this.state.to.toString();
           input.step = this.state.step.toString();
           break;
@@ -110,40 +110,8 @@ class Settings {
   }
 
   private setState(newSetting: {}) {
-    newSetting = this.checkMinMax(newSetting);
     this.state = { ...this.state, ...newSetting };
     this.slider.setOptions(this.state);
-  }
-
-  private checkMinMax(setting: Partial<Options>) {
-    const { max, min } = setting;
-
-    if (max) {
-      if (max < this.state.min) return { min: max };
-    } else if (min) {
-      if (min > this.state.max) return { max: min };
-    }
-
-    return setting;
-  }
-
-  private setStep(num: number): void {
-    const step = num > 1 ? Math.round(num) : 1;
-    this.setState({ step });
-  }
-
-  private onFromInputChange(num: number): void {
-    const { min } = this.state;
-    const isValid = num >= min;
-    const from = isValid ? num : min;
-    this.setState({ from });
-  }
-
-  private onToInputChange(num: number): void {
-    const { max } = this.state;
-    const isValid = num <= max;
-    const to = isValid ? num : max;
-    this.setState({ to });
   }
 }
 
