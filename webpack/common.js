@@ -46,7 +46,7 @@ const commonConfig = {
   target: 'web',
   context: path.resolve(__dirname, '..', 'src'),
   entry: {
-    demo: './demo/index.ts',
+    demo: ['./demo/index.ts', './demo/index.scss'],
     plugin: ['./plugin/slider.ts', './plugin/slider.scss'],
   },
   output: {
