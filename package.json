@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "range slider plugin",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development webpack --config webpack/dev.config.js",
     "build": "cross-env NODE_ENV=production webpack --config webpack/prod.config.js",
     "start": "cross-env NODE_ENV=development webpack-dev-server --config webpack/dev.config.js --open",
     "test": "jest",
