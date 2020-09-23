@@ -85,7 +85,7 @@ class Thumb extends Component {
   }
 
   private showThumb(): void {
-    this.element.style.display = 'flex';
+    this.element.style.display = '';
   }
 
   private hideThumb(): void {
