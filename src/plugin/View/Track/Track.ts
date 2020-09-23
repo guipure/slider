@@ -20,7 +20,7 @@ class Track extends Component {
 
   private initBar(): void {
     const bar = new Bar(this.slider);
-    this.element.append(bar.element);
+    this.element.append(bar.getElement());
   }
 }
 

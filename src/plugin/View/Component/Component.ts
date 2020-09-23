@@ -1,11 +1,15 @@
 import { View } from '../View/View';
 
 abstract class Component {
-  public element: HTMLElement;
+  protected element: HTMLElement;
 
-  constructor(public slider: View) {
+  constructor(protected slider: View) {
     this.element = this.create();
     this.init();
+  }
+
+  public getElement() {
+    return this.element;
   }
 
   protected abstract create (): HTMLElement;
