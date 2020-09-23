@@ -110,5 +110,13 @@
     &:hover {
       color: crimson;
     }
+
+    &_horizontal {
+      transform: translateX(-50%);
+    }
+
+    &_vertical {
+      transform: translateY(50%);
+    }
   }
 }

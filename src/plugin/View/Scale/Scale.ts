@@ -61,35 +61,24 @@ class Scale extends Component {
   }
 
   private createScaleValue(fragment: DocumentFragment, value: number, position: number): void {
+    const { orientation } = this.slider.state;
+
     const scaleValue = document.createElement('span');
-    scaleValue.className = 'slider__scale-value';
+    scaleValue.className = `slider__scale-value slider__scale-value_${orientation}`;
     scaleValue.innerHTML = value.toString();
     fragment.append(scaleValue);
 
     const convert = this.slider.convertPxToPercent.bind(this.slider);
-
-    const isHorizontal = this.slider.state.orientation === sliderOrientation.HORIZONTAL;
-
-    if (isHorizontal) {
-      const width = convert(50);
-      const left = convert(position - 50 / 2);
-
-      scaleValue.style.width = `${width}%`;
-      scaleValue.style.left = `${left}%`;
-    } else {
-      const height = convert(20);
-      const bottom = convert(position - 20 / 2);
-
-      scaleValue.style.height = `${height}%`;
-      scaleValue.style.bottom = `${bottom}%`;
-    }
+    const offset = convert(position);
+    const side = orientation === sliderOrientation.HORIZONTAL ? 'left' : 'bottom';
+    scaleValue.style[side] = `${offset}%`;
   }
 
   private onScaleClick(event: Event): void {
     const { target } = event;
 
     if (!(target instanceof HTMLElement)) return;
-    if (target.className !== 'slider__scale-value') return;
+    if (!target.classList.contains('slider__scale-value')) return;
 
     const value = Number(target.innerHTML);
 
