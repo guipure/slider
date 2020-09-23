@@ -23,9 +23,11 @@
   &__input {
     text-align: center;
     margin: 0;
+    cursor: pointer;
   }
 
-  &__radio {
+  &__radio,
+  &__checkbox {
     cursor: pointer;
   }
 }
