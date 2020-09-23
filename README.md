@@ -73,4 +73,4 @@ $(#element).slider()
 
 ### UML-диаграмма
 
-![UML-diagram](https://i.imgur.com/SrzPpif.jpg)
+![UML-diagram](https://i.imgur.com/5qGICwq.jpg)
