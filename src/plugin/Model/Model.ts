@@ -89,6 +89,10 @@ class Model {
     if (isToEqualsFrom) {
       if (correctedTo === max) (correctedFrom = max - lastStep);
       else {
+        if (this.state) {
+          return { from: this.state.from, to: this.state.to };
+        }
+
         correctedTo = correctedFrom === min
           ? min + step
           : correctedFrom + step;
