@@ -41,7 +41,7 @@ const commonConfig = {
   context: path.resolve(__dirname, '..', 'src'),
   entry: {
     demo: './demo/index.ts',
-    plugin: ['./plugin/slider.ts', './plugin/slider.scss'],
+    slider: ['./plugin/slider.ts', './plugin/slider.scss'],
   },
   output: {
     filename: 'scripts/[name].bundle.js',
