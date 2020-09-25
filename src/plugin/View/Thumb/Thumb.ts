@@ -160,6 +160,7 @@ class Thumb extends Component {
 
   private uniteLabels(): void {
     if (this.label.style.display === 'none') return;
+    if (this.getElement().classList.contains('slider__thumb_first')) return;
 
     const slider = this.slider.element as HTMLElement;
     const labels = slider.querySelectorAll('.slider__thumb-label');
