@@ -71,7 +71,7 @@ class Settings {
           break;
 
         case 'from':
-          input.onchange = () => this.setState({ from: Number(input.value) });
+          input.onchange = () => this.onFromChange(input);
           input.value = this.state.from.toString();
           input.step = this.state.step.toString();
           break;
@@ -109,6 +109,14 @@ class Settings {
         // no default
       }
     });
+  }
+
+  @bind
+  private onFromChange(input: HTMLInputElement) {
+    const from = Number(input.value);
+    from === this.state.to
+      ? (input.value = this.state.from.toString())
+      : this.setState({ from });
   }
 
   private setState(newSetting: {}) {

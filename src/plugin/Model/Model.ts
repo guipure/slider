@@ -65,6 +65,7 @@ class Model {
       from,
       to,
     } = options;
+
     let lastStep = (max - min) % step;
 
     lastStep === 0 && (lastStep = step);
@@ -86,23 +87,22 @@ class Model {
     isToLessThanFrom
       && ([correctedTo, correctedFrom] = [correctedFrom, correctedTo]);
 
-    if (isToEqualsFrom) {
-      if (correctedTo === max) (correctedFrom = max - lastStep);
-      else {
-        if (this.state) {
-          return { from: this.state.from, to: this.state.to };
-        }
+    const realStep = max - min < step ? max - min : step;
 
+    if (isToEqualsFrom) {
+      if (correctedTo === max) {
+        correctedFrom = max - lastStep;
+      } else {
         correctedTo = correctedFrom === min
-          ? min + step
-          : correctedFrom + step;
+          ? min + realStep
+          : correctedFrom + realStep;
       }
     }
 
     if (correctedFrom < min) {
       correctedFrom = min;
       if (correctedTo <= min) {
-        correctedTo = min + step;
+        correctedTo = min + realStep;
         return { from: correctedFrom, to: correctedTo };
       }
     }
