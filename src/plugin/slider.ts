@@ -3,6 +3,10 @@ import { Options } from './interfaces/interfaces';
 import { standardOptions } from './interfaces/constants';
 
 declare global {
+  interface Window {
+    $: JQuery;
+  }
+
   interface JQuery {
     slider(options?: Partial<Options>): Presenter
   }

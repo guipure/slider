@@ -1,5 +1,4 @@
 const path = require('path');
-const webpack = require('webpack');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -30,11 +29,6 @@ function getPlugins(type) {
       template: './demo/index.html',
     }),
     new CleanWebpackPlugin(),
-    new webpack.ProvidePlugin({
-      $: 'jquery',
-      jQuery: 'jquery',
-      'window.jQuery': 'jquery',
-    }),
   ].concat(type === 'prod' ? (
     new MiniCssExtractPlugin({
       filename: 'styles/[name].bundle.css',
