@@ -6,8 +6,8 @@ const standardOptions: Options = {
   min: 0,
   max: 10,
   step: 1,
-  from: 2,
-  to: 8,
+  from: 0,
+  to: 0,
   hideFromTo: false,
   hideScale: false,
 };
