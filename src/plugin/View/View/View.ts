@@ -172,7 +172,6 @@ class View {
 
     if (!/thumb/.test(target.className)) return;
 
-    target.classList.add('slider__thumb_large');
     const isHorizontal = this.state.orientation === sliderOrientation.HORIZONTAL;
     const axis: 'clientX' | 'clientY' = isHorizontal ? 'clientX' : 'clientY';
     const coordinate: number = event[axis];
@@ -187,7 +186,6 @@ class View {
     };
 
     const onMouseUp = () => {
-      target.classList.remove('slider__thumb_large');
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
     };
