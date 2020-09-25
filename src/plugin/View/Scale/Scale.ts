@@ -24,7 +24,7 @@ class Scale extends Component {
       return;
     }
 
-    this.element.style.display = 'block';
+    this.element.style.display = '';
     this.element.innerHTML = '';
     this.element.className = `slider__scale slider__scale_${this.slider.state.orientation}`;
 

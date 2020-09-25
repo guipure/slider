@@ -111,7 +111,7 @@ class Thumb extends Component {
   }
 
   private setHideFromTo(hideFromTo: boolean): void {
-    this.label.style.display = hideFromTo ? 'none' : 'block';
+    this.label.style.display = hideFromTo ? 'none' : '';
   }
 
   private updateLabel(): void {
