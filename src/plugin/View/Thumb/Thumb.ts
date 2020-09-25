@@ -42,11 +42,11 @@ class Thumb extends Component {
   }
 
   private toggleThumb(type: SliderType): void {
-    if (this.element.classList.contains('slider__thumb_second')) {
-      type === sliderType.SINGLE
-        ? this.hideThumb()
-        : this.showThumb();
-    }
+    if (!this.element.classList.contains('slider__thumb_second')) return;
+
+    type === sliderType.SINGLE
+      ? this.hideThumb()
+      : this.showThumb();
   }
 
   private placeThumb(from: number, to: number): void {
