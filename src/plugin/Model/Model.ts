@@ -1,37 +1,37 @@
 import bind from 'bind-decorator';
 
-import { ModelOptions } from '../interfaces/interfaces';
+import { Options } from '../interfaces/interfaces';
 import { Observable } from '../Observable/Observable';
 
 class Model {
-  public state: ModelOptions;
+  public state: Options;
 
   public events: Observable;
 
-  constructor(options: ModelOptions) {
+  constructor(options: Options) {
     this.events = new Observable();
     this.state = this.init(options);
   }
 
   @bind
-  public setState(options: ModelOptions): void {
-    const correctedOptions: ModelOptions = this.correctOptions(options);
+  public setState(options: Options): void {
+    const correctedOptions: Options = this.correctOptions(options);
     this.state = { ...correctedOptions };
 
     this.events.notify('newModelState', this.state);
   }
 
-  private init(options: ModelOptions): ModelOptions {
+  private init(options: Options): Options {
     this.setState(options);
     return this.state;
   }
 
-  private correctOptions(options: ModelOptions): ModelOptions {
+  private correctOptions(options: Options): Options {
     const { min, max, step } = options;
 
     const correctedStep = this.correctStep(step);
     const correctedMinMax = this.correctMinMax(min, max, correctedStep.step);
-    const currentOptions: ModelOptions = { ...options, ...correctedMinMax, ...correctedStep };
+    const currentOptions: Options = { ...options, ...correctedMinMax, ...correctedStep };
     const correctedFromTo = this.correctFromAndTo(currentOptions);
 
     return { ...currentOptions, ...correctedFromTo };
@@ -57,7 +57,7 @@ class Model {
     return { step: correctedStep };
   }
 
-  private correctFromAndTo(options: ModelOptions): { from: number, to: number } {
+  private correctFromAndTo(options: Options): { from: number, to: number } {
     const {
       min,
       max,

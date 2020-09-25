@@ -1,6 +1,6 @@
 import bind from 'bind-decorator';
 
-import { ViewOptions, ViewState, Orientation } from '../../interfaces/interfaces';
+import { Options, ViewState, Orientation } from '../../interfaces/interfaces';
 import { sliderOrientation, sliderType } from '../../interfaces/constants';
 import { Observable } from '../../Observable/Observable';
 import { Track } from '../Track/Track';
@@ -14,7 +14,7 @@ class View {
 
   public element: HTMLElement = document.body;
 
-  constructor(private anchor: HTMLElement, options: ViewOptions) {
+  constructor(private anchor: HTMLElement, options: Options) {
     this.events = new Observable();
     this.element = this.createSlider();
     this.state = this.init(options);
@@ -64,7 +64,7 @@ class View {
     return (value * 100) / this.getSliderSize(this.state.orientation);
   }
 
-  private init(options: ViewOptions): ViewState {
+  private init(options: Options): ViewState {
     const pxStep: number = this.getPxStep(options);
     const pxMax: number = this.getSliderSize(options.orientation);
     return {

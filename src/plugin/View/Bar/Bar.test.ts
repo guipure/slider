@@ -1,9 +1,9 @@
 import '@testing-library/jest-dom';
 
 import { View } from '../View/View';
-import { ViewOptions } from '../../interfaces/interfaces';
+import { Options } from '../../interfaces/interfaces';
 
-const standardOptions: ViewOptions = {
+const standardOptions: Options = {
   min: -10,
   max: 10,
   step: 5,
@@ -15,7 +15,7 @@ const standardOptions: ViewOptions = {
   hideScale: false,
 };
 
-function createSlider(options: ViewOptions): View {
+function createSlider(options: Options): View {
   const anchor = document.querySelector('.anchor') as HTMLElement;
   const slider: View = new View(anchor, options);
   return slider;

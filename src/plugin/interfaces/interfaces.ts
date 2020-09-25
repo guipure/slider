@@ -13,32 +13,11 @@ interface Options {
   hideScale: boolean,
 }
 
-interface ViewOptions {
-  min: number,
-  max: number,
-  step: number,
-  from: number,
-  to: number,
-  orientation: Orientation,
-  type: SliderType,
-  hideFromTo: boolean,
-  hideScale: boolean,
-}
-
-interface ViewState extends ViewOptions {
+interface ViewState extends Options {
   pxStep: number,
   pxMax: number,
 }
 
-interface ModelOptions {
-  min: number,
-  max: number,
-  step: number,
-  from: number,
-  to: number,
-  type: SliderType,
-}
-
 export {
-  Options, ViewOptions, ViewState, ModelOptions, Orientation, SliderType,
+  Options, ViewState, Orientation, SliderType,
 };

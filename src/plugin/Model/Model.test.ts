@@ -1,13 +1,16 @@
 import { Model } from './Model';
-import { ModelOptions } from '../interfaces/interfaces';
+import { Options } from '../interfaces/interfaces';
 
-const defaultOptions: ModelOptions = {
+const defaultOptions: Options = {
   min: -5,
   max: 10,
   step: 1,
   from: -2,
   to: 5,
   type: 'double',
+  orientation: 'horizontal',
+  hideFromTo: false,
+  hideScale: false,
 };
 
 describe('Model', () => {
@@ -19,7 +22,7 @@ describe('Model', () => {
   });
 
   test('must swap min=10 and max=9', () => {
-    const badOptions: ModelOptions = {
+    const badOptions: Options = {
       ...defaultOptions,
       min: 10,
       max: 9,
@@ -31,7 +34,7 @@ describe('Model', () => {
   });
 
   test('must swap min=10 and max=-11', () => {
-    const badOptions: ModelOptions = {
+    const badOptions: Options = {
       ...defaultOptions,
       min: 10,
       max: -11,
@@ -43,7 +46,7 @@ describe('Model', () => {
   });
 
   test('must swap min=-10 and max=-11', () => {
-    const badOptions: ModelOptions = {
+    const badOptions: Options = {
       ...defaultOptions,
       min: -10,
       max: -11,
@@ -55,7 +58,7 @@ describe('Model', () => {
   });
 
   test('must correct max=min=10 and increase max by step', () => {
-    const badOptions: ModelOptions = {
+    const badOptions: Options = {
       ...defaultOptions,
       min: 10,
       max: 10,
@@ -67,7 +70,7 @@ describe('Model', () => {
   });
 
   test('must correct a zero step', () => {
-    const badOptions: ModelOptions = {
+    const badOptions: Options = {
       ...defaultOptions,
       min: 10,
       max: 10,
@@ -78,7 +81,7 @@ describe('Model', () => {
   });
 
   test('must correct a step equals -5', () => {
-    const badOptions: ModelOptions = {
+    const badOptions: Options = {
       ...defaultOptions,
       min: 10,
       max: 10,
@@ -89,7 +92,7 @@ describe('Model', () => {
   });
 
   test('must correct a step equals -100', () => {
-    const badOptions: ModelOptions = {
+    const badOptions: Options = {
       ...defaultOptions,
       min: 10,
       max: 10,
@@ -100,7 +103,7 @@ describe('Model', () => {
   });
 
   test('must correct a step equals -0.01', () => {
-    const badOptions: ModelOptions = {
+    const badOptions: Options = {
       ...defaultOptions,
       min: 10,
       max: 10,
@@ -111,7 +114,7 @@ describe('Model', () => {
   });
 
   test('must swap from=5 and to=4', () => {
-    const badOptions: ModelOptions = {
+    const badOptions: Options = {
       ...defaultOptions,
       from: 5,
       to: 4,
@@ -125,7 +128,7 @@ describe('Model', () => {
     const from = 5;
     const to = from;
     const step = 2;
-    const badOptions: ModelOptions = {
+    const badOptions: Options = {
       ...defaultOptions,
       from,
       to,
@@ -141,7 +144,7 @@ describe('Model', () => {
     const from = max;
     const to = max;
     const step = 2;
-    const badOptions: ModelOptions = {
+    const badOptions: Options = {
       ...defaultOptions,
       from,
       to,
@@ -160,7 +163,7 @@ describe('Model', () => {
     const from = -60;
     const to = from;
     const step = 2;
-    const badOptions: ModelOptions = {
+    const badOptions: Options = {
       ...defaultOptions,
       from,
       to,
@@ -178,7 +181,7 @@ describe('Model', () => {
     const step = 15;
     const from = 5;
     const to = from;
-    const badOptions: ModelOptions = {
+    const badOptions: Options = {
       ...defaultOptions,
       from,
       to,

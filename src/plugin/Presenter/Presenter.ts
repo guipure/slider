@@ -2,12 +2,7 @@ import bind from 'bind-decorator';
 
 import { Model } from '../Model/Model';
 import { View } from '../View/View/View';
-import {
-  Options,
-  ViewOptions,
-  ViewState,
-  ModelOptions,
-} from '../interfaces/interfaces';
+import { Options, ViewState } from '../interfaces/interfaces';
 import { standardOptions } from '../interfaces/constants';
 import { Observable } from '../Observable/Observable';
 
@@ -21,7 +16,7 @@ class Presenter {
   constructor(public anchor: HTMLElement, options: Options) {
     this.events = new Observable();
     this.model = this.createModel(options);
-    this.view = this.createView(anchor, options, this.model.state);
+    this.view = this.createView(anchor, this.model.state);
     this.addSubscribtions();
   }
 
@@ -31,23 +26,15 @@ class Presenter {
   }
 
   public getOptions(): Options {
-    const { pxMax, pxStep, ...options } = { ...this.model.state, ...this.view.state };
-    return options;
+    return this.model.state;
   }
 
   private createModel(options: Options): Model {
-    const modelOptions: ModelOptions = options as ModelOptions;
-    return new Model(modelOptions);
+    return new Model(options);
   }
 
-  private createView(anchor: HTMLElement, options: Options, modelOptions: ModelOptions): View {
-    const viewOptions: ViewOptions = this.createViewOptions(options, modelOptions);
-    return new View(anchor, viewOptions);
-  }
-
-  private createViewOptions(options: Options, modelOptions: ModelOptions): ViewOptions {
-    const correctOptions: Options = { ...options, ...modelOptions };
-    return correctOptions as ViewOptions;
+  private createView(anchor: HTMLElement, options: Options): View {
+    return new View(anchor, options);
   }
 
   private addSubscribtions(): void {
@@ -61,18 +48,12 @@ class Presenter {
   }
 
   @bind
-  private handleNewModelState(modelState: ModelOptions): void {
-    const {
-      min, max, step, from, to,
-    } = modelState;
-    this.view.setState({
-      ...this.view.state, min, max, step, from, to,
-    });
+  private handleNewModelState(modelState: Options): void {
+    this.view.setState(modelState);
   }
 
   private handleNewSettings(settings: Options): void {
-    this.view.setState(settings as ViewOptions);
-    this.model.setState(settings as ModelOptions);
+    this.model.setState(settings);
   }
 
   private subscribeOnNewViewState(): void {
@@ -89,9 +70,9 @@ class Presenter {
   }
 
   @bind
-  private handleNewFromTo(newFromTo: Partial<ModelOptions>): void {
-    const modelState: ModelOptions = this.model.state;
-    const newModelState: ModelOptions = { ...modelState, ...newFromTo };
+  private handleNewFromTo(newFromTo: Partial<Options>): void {
+    const modelState: Options = this.model.state;
+    const newModelState: Options = { ...modelState, ...newFromTo };
     this.model.setState(newModelState);
   }
 }
