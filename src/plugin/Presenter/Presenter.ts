@@ -2,7 +2,7 @@ import bind from 'bind-decorator';
 
 import { Model } from '../Model/Model';
 import { View } from '../View/View/View';
-import { Options, ViewState } from '../interfaces/interfaces';
+import { Options } from '../interfaces/interfaces';
 import { standardOptions } from '../interfaces/constants';
 import { Observable } from '../Observable/Observable';
 
@@ -22,7 +22,7 @@ class Presenter {
 
   public setOptions(options: Partial<Options>): void {
     const newOptions: Options = { ...standardOptions, ...options };
-    this.handleNewSettings(newOptions);
+    this.model.setState(newOptions);
   }
 
   public getOptions(): Options {
@@ -38,35 +38,14 @@ class Presenter {
   }
 
   private addSubscribtions(): void {
-    this.subscribeOnNewModelState();
-    this.subscribeOnNewViewState();
-    this.subscribeOnNewFromTo();
-  }
-
-  private subscribeOnNewModelState(): void {
     this.model.events.subscribe('newModelState', this.handleNewModelState);
+    this.view.events.subscribe('newFromTo', this.handleNewFromTo);
   }
 
   @bind
   private handleNewModelState(modelState: Options): void {
     this.view.setState(modelState);
-  }
-
-  private handleNewSettings(settings: Options): void {
-    this.model.setState(settings);
-  }
-
-  private subscribeOnNewViewState(): void {
-    this.view.events.subscribe('newViewState', this.handleNewViewState);
-  }
-
-  @bind
-  private handleNewViewState(state: ViewState): void {
-    this.events.notify('newViewState', state);
-  }
-
-  private subscribeOnNewFromTo(): void {
-    this.view.events.subscribe('newFromTo', this.handleNewFromTo);
+    this.events.notify('newModelState', modelState);
   }
 
   @bind

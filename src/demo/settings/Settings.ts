@@ -28,7 +28,7 @@ class Settings {
     this.createSettings();
     this.initValues();
     this.createPanel();
-    this.slider.events.subscribe('newViewState', this.updateFromTo);
+    this.slider.events.subscribe('newModelState', this.updateFromTo);
   }
 
   private createForm(): HTMLFormElement {
