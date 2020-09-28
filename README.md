@@ -4,7 +4,7 @@
 
 ## Клонирование репозитория
 
-Убедитесь, что у вас установлены [Node.js](https://nodejs.org/en/) и [Git](https://git-scm.com/). Также необходима библиотека [jQuery](https://jquery.com/) версии 3.5.^.
+Убедитесь, что у вас установлены [Node.js](https://nodejs.org/en/) и [Git](https://git-scm.com/). Также необходима библиотека [jQuery](https://jquery.com/) версии ^3.5.0.
 
 В командной строке введите:
 
