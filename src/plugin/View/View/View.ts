@@ -41,7 +41,7 @@ class View {
   }
 
   public getThumbsPositions(): number[] {
-    const thumbs = this.element.querySelectorAll('.slider__thumb');
+    const thumbs = this.element.querySelectorAll('.js-slider__thumb');
 
     const calculatePosition = (element: Element): number => {
       const side: 'left' | 'top' = this.state.orientation === sliderOrientation.HORIZONTAL ? 'left' : 'top';

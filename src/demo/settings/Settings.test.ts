@@ -25,7 +25,7 @@ describe('Settings', () => {
     anchor.className = 'anchor';
 
     const demo = document.createElement('main');
-    demo.className = 'demo';
+    demo.classList.add('demo', 'js-demo');
 
     document.body.append(demo);
     demo.append(anchor);

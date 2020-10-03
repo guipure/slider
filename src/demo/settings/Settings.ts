@@ -44,7 +44,7 @@ class Settings {
   private createPanel(): void {
     const panel = document.createElement('div');
     panel.className = 'panel';
-    const demo = document.querySelector('.demo') as HTMLElement;
+    const demo = document.querySelector('.js-demo') as HTMLElement;
     demo.append(panel);
     panel.append(this.slider.anchor);
     panel.append(this.form);

@@ -22,10 +22,15 @@ class Thumb extends Component {
 
   protected create(): HTMLElement {
     const thumb = document.createElement('div');
-    const doesOtherThumbExist = !!this.slider.element.querySelector('.slider__thumb');
+    const doesOtherThumbExist = !!this.slider.element.querySelector('.js-slider__thumb');
     const thumbNumber: 'first' | 'second' = doesOtherThumbExist ? 'second' : 'first';
 
-    thumb.className = `slider__thumb slider__thumb_${this.slider.state.orientation} slider__thumb_${thumbNumber}`;
+    thumb.classList.add(
+      'slider__thumb',
+      'js-slider__thumb',
+      `slider__thumb_${this.slider.state.orientation}`,
+      `slider__thumb_${thumbNumber}`,
+    );
 
     const handleDragStart = (event: Event) => event.preventDefault();
     thumb.addEventListener('dragstart', handleDragStart);
@@ -99,7 +104,11 @@ class Thumb extends Component {
   private createLabel(): HTMLElement {
     const { orientation } = this.slider.state;
     const label = document.createElement('div');
-    label.className = `slider__thumb-label slider__thumb-label_${orientation}`;
+    label.classList.add(
+      'slider__thumb-label',
+      'js-slider__thumb-label',
+      `slider__thumb-label_${orientation}`,
+    );
 
     return label;
   }
@@ -125,7 +134,7 @@ class Thumb extends Component {
     if (this.label.style.display === 'none') return false;
 
     const slider = this.slider.element;
-    const labels = slider.querySelectorAll('.slider__thumb-label');
+    const labels = slider.querySelectorAll('.js-slider__thumb-label');
 
     if (labels.length < 2) return false;
 
@@ -163,7 +172,7 @@ class Thumb extends Component {
     if (this.getElement().classList.contains('slider__thumb_first')) return;
 
     const slider = this.slider.element;
-    const labels = slider.querySelectorAll('.slider__thumb-label');
+    const labels = slider.querySelectorAll('.js-slider__thumb-label');
 
     if (labels.length < 2) return;
 
