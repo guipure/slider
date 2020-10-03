@@ -168,6 +168,8 @@ class View {
 
   @bind
   private onThumbMouseDown(event: MouseEvent): void {
+    event.preventDefault();
+
     const target = event.target as HTMLElement;
 
     if (!/thumb/.test(target.className)) return;
