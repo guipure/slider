@@ -124,13 +124,13 @@ class Thumb extends Component {
   private doLabelsCollide(): boolean {
     if (this.label.style.display === 'none') return false;
 
-    const slider = this.slider.element as HTMLElement;
+    const slider = this.slider.element;
     const labels = slider.querySelectorAll('.slider__thumb-label');
 
     if (labels.length < 2) return false;
 
-    const firstLabel = labels[0] as HTMLElement;
-    const secondLabel = labels[1] as HTMLElement;
+    const firstLabel = labels[0];
+    const secondLabel = labels[1];
 
     const { orientation } = this.slider.state;
 
@@ -162,12 +162,12 @@ class Thumb extends Component {
     if (this.label.style.display === 'none') return;
     if (this.getElement().classList.contains('slider__thumb_first')) return;
 
-    const slider = this.slider.element as HTMLElement;
+    const slider = this.slider.element;
     const labels = slider.querySelectorAll('.slider__thumb-label');
 
     if (labels.length < 2) return;
 
-    const firstLabel = labels[0] as HTMLElement;
+    const firstLabel = labels[0];
     const secondLabel = labels[1] as HTMLElement;
 
     const firstValue = Number.parseInt(firstLabel.innerHTML, 10);

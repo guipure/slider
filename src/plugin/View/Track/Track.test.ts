@@ -38,7 +38,7 @@ describe('Track', () => {
   });
 
   test('must be visible', () => {
-    const track = slider.querySelector('.slider__track') as HTMLElement;
+    const track = slider.querySelector('.slider__track');
 
     expect(track).toBeVisible();
   });

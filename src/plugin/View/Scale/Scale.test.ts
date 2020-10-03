@@ -54,7 +54,7 @@ describe('Scale', () => {
   });
 
   test('click on a scale value must dispatch a scaleclick event', () => {
-    const scaleValueElement: HTMLElement = slider.querySelector('.slider__scale-value') as HTMLElement;
+    const scaleValueElement = slider.querySelector('.slider__scale-value') as HTMLElement;
     const value = Number(scaleValueElement.innerHTML);
     const checkScaleClick = jest.fn((event) => event.detail.value);
     slider.addEventListener('scaleclick', checkScaleClick);
@@ -65,7 +65,7 @@ describe('Scale', () => {
 
   test('click on a scale value must dispatch a scaleclick event if type is single', () => {
     view.setState({ type: 'single' });
-    const scaleValueElement: HTMLElement = slider.querySelector('.slider__scale-value') as HTMLElement;
+    const scaleValueElement = slider.querySelector('.slider__scale-value') as HTMLElement;
     const value = Number(scaleValueElement.innerHTML);
     const checkScaleClick = jest.fn((event) => event.detail.value);
     slider.addEventListener('scaleclick', checkScaleClick);
@@ -75,7 +75,7 @@ describe('Scale', () => {
   });
 
   test('click on a scale (not a concrete value) must not dispatch a scaleclick event', () => {
-    const scaleValueElement: HTMLElement = slider.querySelector('.slider__scale') as HTMLElement;
+    const scaleValueElement = slider.querySelector('.slider__scale') as HTMLElement;
     const checkScaleClick = jest.fn();
     slider.addEventListener('scaleclick', checkScaleClick);
     scaleValueElement.click();
