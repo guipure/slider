@@ -22,7 +22,7 @@ test('Observable can notify a few subscribers', () => {
 test('Observable can provide data to subscribers', () => {
   const manager = new Observable();
   const callback = jest.fn((data): string => data.text);
-  const text: string = 'it is a very important text';
+  const text = 'it is a very important text';
   const data = { text };
   manager.subscribe('newText', callback);
   manager.notify('newText', data);

@@ -70,8 +70,8 @@ class Model {
 
     lastStep === 0 && (lastStep = step);
 
-    let correctedFrom: number = correct(from);
-    let correctedTo: number = correct(to);
+    let correctedFrom = correct(from);
+    let correctedTo = correct(to);
 
     function correct(num: number): number {
       const isNumGreaterThanMax = num >= max - lastStep / 2;

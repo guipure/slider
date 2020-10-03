@@ -27,12 +27,12 @@ class Bar extends Component {
 
     if (isSingle) {
       if (isHorizontal) {
-        const end: number = convert(Math.abs(thumbsPositions[1] - sliderPosition));
+        const end = convert(Math.abs(thumbsPositions[1] - sliderPosition));
 
         bar.style[side] = '0%';
         bar.style[dimension] = `${end}%`;
       } else {
-        const start: number = convert(Math.abs(thumbsPositions[1] - sliderPosition));
+        const start = convert(Math.abs(thumbsPositions[1] - sliderPosition));
         const end = 100 - start;
 
         bar.style[side] = `${start}%`;
@@ -40,7 +40,7 @@ class Bar extends Component {
       }
     } else {
       const start = convert(Math.abs(thumbsPositions[0] - sliderPosition));
-      const length: number = convert(Math.abs(thumbsPositions[1] - thumbsPositions[0]));
+      const length = convert(Math.abs(thumbsPositions[1] - thumbsPositions[0]));
 
       bar.style[side] = `${start}%`;
       bar.style[dimension] = `${length}%`;

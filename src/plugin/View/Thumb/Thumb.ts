@@ -6,7 +6,7 @@ import { Component } from '../Component/Component';
 import { View } from '../View/View';
 
 class Thumb extends Component {
-  private currentValue: number = 0;
+  private currentValue = 0;
 
   private label: HTMLElement;
 
@@ -63,7 +63,7 @@ class Thumb extends Component {
     const { orientation } = this.slider.state;
     const coordinate = this.convertValueToPx(value);
     const side: 'left' | 'bottom' = this.getSide(orientation);
-    const position: number = this.slider.convertPxToPercent(coordinate);
+    const position = this.slider.convertPxToPercent(coordinate);
 
     this.element.style[side] = `${position}%`;
     this.updateLabel();

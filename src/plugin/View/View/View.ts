@@ -26,10 +26,10 @@ class View {
     const updatedState: ViewState = { ...this.state, ...newState };
 
     const { orientation } = updatedState;
-    const pxStep: number = this.getPxStep(updatedState);
-    const pxMax: number = this.getSliderSize(orientation);
+    const pxStep = this.getPxStep(updatedState);
+    const pxMax = this.getSliderSize(orientation);
 
-    const isOrientationChanged: boolean = this.isOrientationChanged(newState.orientation);
+    const isOrientationChanged = this.isOrientationChanged(newState.orientation);
 
     this.state = {
       ...updatedState, pxStep, pxMax,
@@ -50,7 +50,7 @@ class View {
       return element.getBoundingClientRect()[side] + width / 2;
     };
 
-    const thumbsPositions: number[] = [calculatePosition(thumbs[0]), calculatePosition(thumbs[1])];
+    const thumbsPositions = [calculatePosition(thumbs[0]), calculatePosition(thumbs[1])];
 
     return thumbsPositions.sort((a, b) => a - b);
   }
@@ -65,8 +65,8 @@ class View {
   }
 
   private init(options: Options): ViewState {
-    const pxStep: number = this.getPxStep(options);
-    const pxMax: number = this.getSliderSize(options.orientation);
+    const pxStep = this.getPxStep(options);
+    const pxMax = this.getSliderSize(options.orientation);
     return {
       ...options, pxStep, pxMax,
     };
@@ -112,7 +112,7 @@ class View {
 
     if (!/track|bar/.test(target.className)) return;
 
-    const coordinate: number = this.state.orientation === sliderOrientation.HORIZONTAL
+    const coordinate = this.state.orientation === sliderOrientation.HORIZONTAL
       ? event.clientX
       : event.clientY;
 
@@ -155,7 +155,7 @@ class View {
   }
 
   private isFromOrTo(coordinate: number): 'from' | 'to' {
-    const thumbsPositions: number[] = this.getThumbsPositions();
+    const thumbsPositions = this.getThumbsPositions();
     let fromDistancePx = Math.abs(thumbsPositions[0] - coordinate);
     let toDistancePx = Math.abs(thumbsPositions[1] - coordinate);
 
@@ -176,7 +176,7 @@ class View {
 
     const isHorizontal = this.state.orientation === sliderOrientation.HORIZONTAL;
     const axis: 'clientX' | 'clientY' = isHorizontal ? 'clientX' : 'clientY';
-    const coordinate: number = event[axis];
+    const coordinate = event[axis];
 
     const side = this.isFromOrTo(coordinate);
     const value = this.convertPxToValue(coordinate);
@@ -204,9 +204,9 @@ class View {
       step,
     } = this.state;
 
-    const pxStep: number = this.getPxStep(this.state);
-    const sliderStart: number = this.getSliderPosition();
-    const sliderEnd: number = this.getSliderPosition() + this.getSliderSize(orientation);
+    const pxStep = this.getPxStep(this.state);
+    const sliderStart = this.getSliderPosition();
+    const sliderEnd = this.getSliderPosition() + this.getSliderSize(orientation);
 
     const px = orientation === sliderOrientation.HORIZONTAL
       ? coordinate - sliderStart

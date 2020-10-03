@@ -5,7 +5,7 @@ import { Presenter } from './Presenter';
 
 describe('Presenter', () => {
   let anchor: HTMLElement;
-  const anchorClassName: string = 'anchor';
+  const anchorClassName = 'anchor';
   let presenter: Presenter;
   const options: Options = {
     min: -5,
